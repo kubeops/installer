@@ -1,0 +1,18 @@
+project:
+  name: Kubernetes Panopticon by AppsCode
+  shortName: Kubernetes Panopticon
+  url: https://github.com/kubeops-tools/panopticon
+  description: Kubernetes Panopticon for Kubernetes
+  app: a Kubernetes Panopticon
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: panopticon
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+- Kubernetes 1.14+
+release:
+  name: panopticon
+  namespace: kube-system
