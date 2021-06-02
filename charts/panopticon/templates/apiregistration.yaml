@@ -59,3 +59,22 @@ subjects:
 - kind: ServiceAccount
   name: {{ include "panopticon.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
+{{- if .Values.apiserver.enableValidatingWebhook }}
+---
+# register as aggregated apiserver
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1alpha1.validators.metrics.appscode.com
+  labels:
+    {{- include "panopticon.labels" . | nindent 4 }}
+spec:
+  group: validators.metrics.appscode.com
+  version: v1alpha1
+  service:
+    namespace: {{ .Release.Namespace }}
+    name: {{ include "panopticon.fullname" . }}
+  caBundle: {{ $caCrt }}
+  groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
+  versionPriority: {{ .Values.apiserver.versionPriority }}
+{{- end }}

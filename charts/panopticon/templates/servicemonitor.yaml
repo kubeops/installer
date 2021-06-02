@@ -23,6 +23,7 @@ spec:
   - port: api
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     scheme: https
+    interval: 10s
     tlsConfig:
       ca:
         secret:
