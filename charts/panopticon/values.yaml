@@ -83,6 +83,10 @@ apiserver:
   versionPriority: 15
   # If true, uses kube-apiserver FQDN for AKS cluster to workaround https://github.com/Azure/AKS/issues/522 (default true)
   useKubeapiserverFqdnForAks: true
+  # If true, validating webhook is configured for MetricsConfigurations CRDs
+  enableValidatingWebhook: true
+  # CA certificate used by the Kubernetes api server. This field is automatically assigned by the panopticon server.
+  ca: not-ca-cert
   healthcheck:
     # If true, enables the readiness and liveliness probes for the operator pod.
     enabled: false
