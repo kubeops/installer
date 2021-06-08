@@ -93,7 +93,7 @@ apiserver:
   servingCerts:
     # If true, generates on install/upgrade the certs that allow the kube-apiserver (and potentially ServiceMonitor)
     # to authenticate operators pods. Otherwise specify certs in `apiserver.servingCerts.{caCrt, serverCrt, serverKey}`.
-    # See also: [example terraform](https://github.com/kubeops-tools/panopticon-installer/blob/master/charts/identity-server/example-terraform.tf)
+    # See also: [example terraform](https://github.com/kubeops/panopticon-installer/blob/master/charts/identity-server/example-terraform.tf)
     generate: true
     # CA certficate used by serving certificate of webhook server.
     caCrt: ""

@@ -1,7 +1,7 @@
 project:
   name: Kubernetes Panopticon by AppsCode
   shortName: Kubernetes Panopticon
-  url: https://github.com/kubeops-tools/panopticon
+  url: https://github.com/kubeops/panopticon
   description: Kubernetes Panopticon for Kubernetes
   app: a Kubernetes Panopticon
 repository:

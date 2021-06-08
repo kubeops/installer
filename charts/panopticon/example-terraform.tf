@@ -14,7 +14,7 @@ locals {
 locals {
   searchlight_chart_name = "panopticon"
 
-  # re-implement: https://github.com/kubeops-tools/panopticon/blob/0.3.0/charts/panopticon/templates/_helpers.tpl#L9-L20
+  # re-implement: https://github.com/kubeops/panopticon/blob/0.3.0/charts/panopticon/templates/_helpers.tpl#L9-L20
   # in hcl
   searchlight_release_fullname = length(regexall("\\Q${local.searchlight_chart_name}\\E", local.searchlight_release_name)) != 0 ? trimsuffix(substr(local.searchlight_release_name, 0, 63), "-") : trimsuffix(substr("${local.searchlight_release_name}-${local.searchlight_chart_name}", 0, 63), "-")
 }
