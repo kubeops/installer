@@ -7,7 +7,7 @@
 ```console
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install panopticon appscode/panopticon -n kube-system
+$ helm install panopticon appscode/panopticon -n kubeops
 ```
 
 ## Introduction
@@ -16,14 +16,14 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 
 ## Prerequisites
 
-- Kubernetes 1.14+
+- Kubernetes 1.16+
 
 ## Installing the Chart
 
 To install the chart with the release name `panopticon`:
 
 ```console
-$ helm install panopticon appscode/panopticon -n kube-system
+$ helm install panopticon appscode/panopticon -n kubeops
 ```
 
 The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -35,7 +35,7 @@ The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the def
 To uninstall/delete the `panopticon`:
 
 ```console
-$ helm delete panopticon -n kube-system
+$ helm delete panopticon -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -92,12 +92,12 @@ The following table lists the configurable parameters of the `panopticon` chart 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install panopticon appscode/panopticon -n kube-system --set replicaCount=1
+$ helm install panopticon appscode/panopticon -n kubeops --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install panopticon appscode/panopticon -n kube-system --values values.yaml
+$ helm install panopticon appscode/panopticon -n kubeops --values values.yaml
 ```
