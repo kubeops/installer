@@ -102,8 +102,6 @@ apiserver:
     serverCrt: ""
     # Private key for the serving certificate used by webhook server.
     serverKey: ""
-# If true, sends usage analytics
-enableAnalytics: true
 monitoring:
   # If true, enables monitoring Auditor
   enabled: false

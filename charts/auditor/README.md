@@ -7,7 +7,7 @@
 ```console
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install auditor appscode/auditor -n kube-system
+$ helm install auditor appscode/auditor -n kubeops
 ```
 
 ## Introduction
@@ -16,14 +16,14 @@ This chart deploys a Kubernetes Auditor on a [Kubernetes](http://kubernetes.io) 
 
 ## Prerequisites
 
-- Kubernetes 1.14+
+- Kubernetes 1.16+
 
 ## Installing the Chart
 
 To install the chart with the release name `auditor`:
 
 ```console
-$ helm install auditor appscode/auditor -n kube-system
+$ helm install auditor appscode/auditor -n kubeops
 ```
 
 The command deploys a Kubernetes Auditor on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -35,7 +35,7 @@ The command deploys a Kubernetes Auditor on the Kubernetes cluster in the defaul
 To uninstall/delete the `auditor`:
 
 ```console
-$ helm delete auditor -n kube-system
+$ helm delete auditor -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -78,7 +78,6 @@ The following table lists the configurable parameters of the `auditor` chart and
 | apiserver.servingCerts.caCrt         | CA certficate used by serving certificate of webhook server.                                                                                                                                                                                                                                                                                                  | `""`                                                                  |
 | apiserver.servingCerts.serverCrt     | Serving certficate used by webhook server.                                                                                                                                                                                                                                                                                                                    | `""`                                                                  |
 | apiserver.servingCerts.serverKey     | Private key for the serving certificate used by webhook server.                                                                                                                                                                                                                                                                                               | `""`                                                                  |
-| enableAnalytics                      | If true, sends usage analytics                                                                                                                                                                                                                                                                                                                                | `true`                                                                |
 | monitoring.enabled                   | If true, enables monitoring Auditor                                                                                                                                                                                                                                                                                                                           | `false`                                                               |
 | monitoring.agent                     | Name of monitoring agent (either "prometheus.io/operator" or "prometheus.io/builtin")                                                                                                                                                                                                                                                                         | `"none"`                                                              |
 | monitoring.serviceMonitor.labels     | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/operator`.                                                                                                                                                                                           | `{}`                                                                  |
@@ -87,12 +86,12 @@ The following table lists the configurable parameters of the `auditor` chart and
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```console
-$ helm install auditor appscode/auditor -n kube-system --set replicaCount=1
+$ helm install auditor appscode/auditor -n kubeops --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```console
-$ helm install auditor appscode/auditor -n kube-system --values values.yaml
+$ helm install auditor appscode/auditor -n kubeops --values values.yaml
 ```

@@ -8,7 +8,7 @@ provider "helm" {
 
 locals {
   searchlight_release_name = "panopticon"
-  searchlight_namespace    = "kube-system"
+  searchlight_namespace    = "kubeops"
 }
 
 locals {
