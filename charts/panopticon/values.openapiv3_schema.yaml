@@ -784,13 +784,63 @@ properties:
     - useKubeapiserverFqdnForAks
     - versionPriority
     type: object
+  cleaner:
+    properties:
+      registry:
+        type: string
+      repository:
+        type: string
+      skip:
+        type: boolean
+      tag:
+        type: string
+    required:
+    - registry
+    - repository
+    - skip
+    - tag
+    type: object
   criticalAddon:
     type: boolean
   enableAnalytics:
     type: boolean
   fullnameOverride:
     type: string
-  image:
+  imagePullPolicy:
+    type: string
+  imagePullSecrets:
+    items:
+      type: string
+    type: array
+  license:
+    type: string
+  logLevel:
+    format: int32
+    type: integer
+  monitoring:
+    properties:
+      agent:
+        type: string
+      enabled:
+        type: boolean
+      serviceMonitor:
+        properties:
+          labels:
+            additionalProperties:
+              type: string
+            type: object
+        type: object
+    required:
+    - agent
+    - serviceMonitor
+    type: object
+  nameOverride:
+    type: string
+  nodeSelector:
+    additionalProperties:
+      type: string
+    type: object
+  operator:
     properties:
       registry:
         type: string
@@ -959,40 +1009,6 @@ properties:
     - repository
     - tag
     type: object
-  imagePullPolicy:
-    type: string
-  imagePullSecrets:
-    items:
-      type: string
-    type: array
-  license:
-    type: string
-  logLevel:
-    format: int32
-    type: integer
-  monitoring:
-    properties:
-      agent:
-        type: string
-      enabled:
-        type: boolean
-      serviceMonitor:
-        properties:
-          labels:
-            additionalProperties:
-              type: string
-            type: object
-        type: object
-    required:
-    - agent
-    - serviceMonitor
-    type: object
-  nameOverride:
-    type: string
-  nodeSelector:
-    additionalProperties:
-      type: string
-    type: object
   podAnnotations:
     additionalProperties:
       type: string
@@ -1129,6 +1145,8 @@ properties:
     type: object
   policy:
     type: string
+  registryFQDN:
+    type: string
   replicaCount:
     format: int32
     type: integer
@@ -1184,9 +1202,11 @@ properties:
     type: array
 required:
 - apiserver
-- image
+- cleaner
 - imagePullPolicy
 - monitoring
+- operator
+- registryFQDN
 - replicaCount
 - serviceAccount
 type: object

@@ -17,7 +17,7 @@ limitations under the License.
 package install
 
 import (
-	"kubeops.dev/panopticon-installer/apis/installer/v1alpha1"
+	"kubeops.dev/installer/apis/installer/v1alpha1"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
