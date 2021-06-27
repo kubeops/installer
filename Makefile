@@ -16,7 +16,7 @@ SHELL=/bin/bash -o pipefail
 
 GO_PKG   := kubeops.dev
 REPO     := $(notdir $(shell pwd))
-BIN      := panopticon-installer
+BIN      := installer
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS          ?= "crd:trivialVersions=true,preserveUnknownFields=false,crdVersions={v1}"
@@ -252,11 +252,11 @@ chart-%:
 chart-contents-%:
 	@yq w -i ./charts/$*/doc.yaml repository.name --tag '!!str' $(CHART_REGISTRY)
 	@yq w -i ./charts/$*/doc.yaml repository.url --tag '!!str' $(CHART_REGISTRY_URL)
-	@if [ ! -z "$(CHART_VERSION)" ]; then                                              \
-		yq w -i ./charts/$*/Chart.yaml version --tag '!!str' $(CHART_VERSION);         \
+	@if [ ! -z "$(CHART_VERSION)" ]; then \
+		yq w -i ./charts/$*/Chart.yaml version --tag '!!str' $(CHART_VERSION); \
 	fi
-	@if [ ! -z "$(APP_VERSION)" ]; then                                                \
-		yq w -i ./charts/$*/Chart.yaml appVersion --tag '!!str' $(APP_VERSION);        \
+	@if [ ! -z "$(APP_VERSION)" ]; then \
+		yq w -i ./charts/$*/Chart.yaml appVersion --tag '!!str' $(APP_VERSION); \
 	fi
 
 fmt: $(BUILD_DIRS)

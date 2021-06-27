@@ -17,7 +17,7 @@ limitations under the License.
 package fuzzer
 
 import (
-	"kubeops.dev/panopticon-installer/apis/installer/v1alpha1"
+	"kubeops.dev/installer/apis/installer/v1alpha1"
 
 	fuzz "github.com/google/gofuzz"
 	runtimeserializer "k8s.io/apimachinery/pkg/runtime/serializer"

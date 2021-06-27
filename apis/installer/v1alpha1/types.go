@@ -21,24 +21,24 @@ import (
 )
 
 type ImageRef struct {
-	Repository string `json:"repository"`
-	PullPolicy string `json:"pullPolicy"`
-	Tag        string `json:"tag"`
-	// Security options the pod should run with.
-	// +optional
-	SecurityContext *core.SecurityContext `json:"securityContext"`
-}
-
-type ContianerRef struct {
 	Registry   string `json:"registry"`
 	Repository string `json:"repository"`
 	Tag        string `json:"tag"`
+}
+
+type Container struct {
+	ImageRef `json:",inline"`
 	// Compute Resources required by the sidecar container.
 	// +optional
 	Resources core.ResourceRequirements `json:"resources"`
 	// Security options the pod should run with.
 	// +optional
 	SecurityContext *core.SecurityContext `json:"securityContext"`
+}
+
+type CleanerRef struct {
+	ImageRef `json:",inline"`
+	Skip     bool `json:"skip"`
 }
 
 type ServiceAccountSpec struct {

@@ -1,4 +1,4 @@
-module kubeops.dev/panopticon-installer
+module kubeops.dev/installer
 
 go 1.16
 
