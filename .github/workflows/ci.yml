@@ -59,7 +59,7 @@ jobs:
         id: params
         run: |
           rnd=$(head /dev/urandom | tr -dc a-z0-9 | head -c 10 ; echo '')
-          echo ::set-output name=namespace::panopticon-$rnd
+          echo ::set-output name=namespace::kubeops-$rnd
 
       - name: Create Kubernetes ${{ matrix.k8s }} cluster
         id: kind
@@ -91,6 +91,11 @@ jobs:
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
           CLUSTER_UID=$(kubectl get ns kube-system -o=jsonpath='{.metadata.uid}')
+          echo "issuing auditor license"
+          LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=auditor-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
+          # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
+          yq w -i ./charts/auditor/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
+          echo "issuing panopticon license"
           LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=panopticon-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
           # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
           yq w -i ./charts/panopticon/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
