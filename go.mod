@@ -4,8 +4,8 @@ go 1.16
 
 require (
 	github.com/google/gofuzz v1.1.0
-	k8s.io/api v0.21.0
-	k8s.io/apimachinery v0.21.0
+	k8s.io/api v0.21.1
+	k8s.io/apimachinery v0.21.1
 	kmodules.xyz/schema-checker v0.1.2
 )
 

@@ -33,5 +33,5 @@ _testmain.go
 
 /bin
 /.go
-
+/.crds
 .DS_Store

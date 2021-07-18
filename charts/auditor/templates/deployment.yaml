@@ -35,8 +35,8 @@ spec:
       containers:
       - name: operator
         securityContext:
-          {{- toYaml .Values.image.securityContext | nindent 10 }}
-        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          {{- toYaml .Values.operator.securityContext | nindent 10 }}
+        image: {{ include "operator.registry" . }}/{{ .Values.operator.repository }}:{{ .Values.operator.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
         - run
@@ -76,7 +76,7 @@ spec:
           initialDelaySeconds: 5
       {{- end }}
         resources:
-          {{- toYaml .Values.image.resources | nindent 10 }}
+          {{- toYaml .Values.operator.resources | nindent 10 }}
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
