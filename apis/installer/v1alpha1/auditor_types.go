@@ -50,7 +50,7 @@ type AuditorSpec struct {
 	FullnameOverride string    `json:"fullnameOverride"`
 	ReplicaCount     int32     `json:"replicaCount"`
 	RegistryFQDN     string    `json:"registryFQDN"`
-	Image            Container `json:"image"`
+	Operator         Container `json:"operator"`
 	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`

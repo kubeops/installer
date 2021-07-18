@@ -63,7 +63,7 @@ BASEIMAGE_DBG    ?= debian:buster
 
 GO_VERSION       ?= 1.16
 BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)
-CHART_TEST_IMAGE ?= quay.io/helmpack/chart-testing:v3.0.0
+CHART_TEST_IMAGE ?= quay.io/helmpack/chart-testing:v3.4.0
 
 OUTBIN = bin/$(OS)_$(ARCH)/$(BIN)
 ifeq ($(OS),windows)
@@ -170,7 +170,7 @@ gen-crds:
 		controller-gen                      \
 			$(CRD_OPTIONS)                  \
 			paths="./apis/..."              \
-			output:crd:artifacts:config=crds
+			output:crd:artifacts:config=.crds
 
 crds_to_patch :=
 
@@ -178,43 +178,27 @@ crds_to_patch :=
 patch-crds: $(addprefix patch-crd-, $(crds_to_patch))
 patch-crd-%: $(BUILD_DIRS)
 	@echo "patching $*"
-	@kubectl patch -f crds/$* -p "$$(cat hack/crd-patch.json)" --type=json --local=true -o yaml > bin/$*
-	@mv bin/$* crds/$*
+	@kubectl patch -f .crds/$* -p "$$(cat hack/crd-patch.json)" --type=json --local=true -o yaml > bin/$*
+	@mv bin/$* .crds/$*
 
 .PHONY: label-crds
 label-crds: $(BUILD_DIRS)
-	@for f in crds/*.yaml; do \
+	@for f in .crds/*.yaml; do \
 		echo "applying app.kubernetes.io/name=kubedb label to $$f"; \
 		kubectl label --overwrite -f $$f --local=true -o yaml app.kubernetes.io/name=kubedb > bin/crd.yaml; \
 		mv bin/crd.yaml $$f; \
 	done
-
-.PHONY: gen-bindata
-gen-bindata:
-	@docker run                                                 \
-	    -i                                                      \
-	    --rm                                                    \
-	    -u $$(id -u):$$(id -g)                                  \
-	    -v $$(pwd):/src                                         \
-	    -w /src/crds                                        \
-		-v /tmp:/.cache                                         \
-	    --env HTTP_PROXY=$(HTTP_PROXY)                          \
-	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
-	    $(BUILD_IMAGE)                                          \
-	    go-bindata -ignore=\\.go -ignore=\\.DS_Store -mode=0644 -modtime=1573722179 -o bindata.go -pkg crds ./...
 
 .PHONY: gen-values-schema
 gen-values-schema: $(BUILD_DIRS)
 	@for dir in charts/*/; do \
 		dir=$${dir%*/}; \
 		dir=$${dir##*/}; \
-		crd_file=crds/installer.kubeops.dev_$$(echo $$dir | tr -d '-')s.yaml; \
+		crd_file=.crds/installer.kubeops.dev_$$(echo $$dir | tr -d '-')s.yaml; \
 		if [ ! -f $${crd_file} ]; then \
 			continue; \
 		fi; \
-		yq r $${crd_file} spec.versions[0].schema.openAPIV3Schema.properties.spec > bin/values.openapiv3_schema.yaml; \
-		yq d bin/values.openapiv3_schema.yaml description > charts/$${dir}/values.openapiv3_schema.yaml; \
-		rm -rf bin/values.openapiv3_schema.yaml; \
+		yq -y --indentless '.spec.versions[0].schema.openAPIV3Schema.properties.spec | del(.description)' $${crd_file} > charts/$${dir}/values.openapiv3_schema.yaml; \
 	done
 
 .PHONY: gen-chart-doc
@@ -250,13 +234,14 @@ chart-%:
 	@$(MAKE) chart-contents-$* gen-chart-doc-$* --no-print-directory
 
 chart-contents-%:
-	@yq w -i ./charts/$*/doc.yaml repository.name --tag '!!str' $(CHART_REGISTRY)
-	@yq w -i ./charts/$*/doc.yaml repository.url --tag '!!str' $(CHART_REGISTRY_URL)
-	@if [ ! -z "$(CHART_VERSION)" ]; then \
-		yq w -i ./charts/$*/Chart.yaml version --tag '!!str' $(CHART_VERSION); \
+	@yq -y --indentless -i '.repository.name="$(CHART_REGISTRY)"' ./charts/$*/doc.yaml
+	@yq -y --indentless -i '.repository.url="$(CHART_REGISTRY_URL)"' ./charts/$*/doc.yaml
+	@if [ -n "$(CHART_VERSION)" ]; then \
+	  yq -y --indentless -i '.version="$(CHART_VERSION)"' ./charts/$*/Chart.yaml; \
 	fi
-	@if [ ! -z "$(APP_VERSION)" ]; then \
-		yq w -i ./charts/$*/Chart.yaml appVersion --tag '!!str' $(APP_VERSION); \
+	@if [ -n "$(APP_VERSION)" ]; then \
+		yq -y --indentless -i '.appVersion="$(APP_VERSION)"' ./charts/$*/Chart.yaml; \
+		yqq w -i ./charts/$*/values.yaml operator.tag --tag '!!str' $(APP_VERSION); \
 	fi
 
 fmt: $(BUILD_DIRS)

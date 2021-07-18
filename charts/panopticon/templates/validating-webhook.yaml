@@ -1,5 +1,5 @@
 {{- if .Values.apiserver.enableValidatingWebhook }}
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: validators.metrics.appscode.com
@@ -26,6 +26,7 @@ webhooks:
           - "*"
         resources:
           - metricsconfigurations
+    admissionReviewVersions: ["v1beta1"]
     failurePolicy: Fail
     sideEffects: None
 {{- end }}

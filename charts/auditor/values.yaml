@@ -23,7 +23,7 @@ policy: ""
 # Docker registry fqdn used to pull Stash related images.
 # Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}
 registryFQDN: ""
-image:
+operator:
   # Docker registry used to pull operator image
   registry: appscode
   # Name of operator container image
