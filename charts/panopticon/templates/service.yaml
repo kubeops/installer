@@ -18,5 +18,10 @@ spec:
   - name: api
     port: 443
     targetPort: 8443
+  - name: api-self
+    port: 8081
+    targetPort: 8081
   selector:
     {{- include "panopticon.selectorLabels" . | nindent 4 }}
+
+

@@ -31,3 +31,8 @@ spec:
           key: tls.crt
       serverName: "{{ include "panopticon.fullname" . }}.{{ .Release.Namespace }}.svc"
 {{- end }}
+  - port: api-self
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    scheme: http
+    interval: 10s
+
