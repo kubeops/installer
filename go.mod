@@ -3,7 +3,12 @@ module kubeops.dev/installer
 go 1.16
 
 require (
+	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/google/gofuzz v1.1.0
+	github.com/onsi/ginkgo v1.16.4 // indirect
+	github.com/onsi/gomega v1.13.0 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	k8s.io/api v0.21.1
 	k8s.io/apimachinery v0.21.1
 	kmodules.xyz/schema-checker v0.1.2
@@ -97,13 +102,13 @@ replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20201110
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.27.1
 
-replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.1.0-rc.1.0.20210503022716-7e2d4913a125
+replace helm.sh/helm/v3 => github.com/kubepack/helm/v3 v3.6.1-0.20210518225915-c3e0ce48dd1b
 
 replace k8s.io/api => k8s.io/api v0.21.0
 
 replace k8s.io/apimachinery => github.com/kmodules/apimachinery v0.21.1-rc.0.0.20210405112358-ad4c2289ba4c
 
-replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.1-0.20210427013338-53dee545b83c
+replace k8s.io/apiserver => github.com/kmodules/apiserver v0.21.2-0.20210716212718-83e5493ac170
 
 replace k8s.io/cli-runtime => k8s.io/cli-runtime v0.21.0
 
@@ -120,3 +125,5 @@ replace k8s.io/utils => k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 replace kmodules.xyz/resource-metadata => kmodules.xyz/resource-metadata v0.5.0
 
 replace sigs.k8s.io/application => github.com/kmodules/application v0.8.4-0.20210427030912-90eeee3bc4ad
+
+replace github.com/satori/go.uuid => github.com/gofrs/uuid v4.0.0+incompatible
