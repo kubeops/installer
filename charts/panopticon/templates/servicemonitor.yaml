@@ -24,6 +24,9 @@ spec:
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     scheme: https
     interval: 10s
+    relabelings:
+      - action: labeldrop
+        regex: (pod|service|endpoint|namespace)
     tlsConfig:
       ca:
         secret:
