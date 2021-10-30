@@ -92,6 +92,11 @@ jobs:
           # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
           yqq w -i ./charts/panopticon/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
 
+      - name: Install cert-manager
+        run: |
+          kubectl create namespace cert-manager
+          kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
+
       - name: Test charts
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
