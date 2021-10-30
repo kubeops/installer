@@ -1,0 +1,3 @@
+To verify that cert-manager-csi-driver-cacerts CSI driver has started, run:
+
+  kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "cert-manager-csi-driver-cacerts.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"

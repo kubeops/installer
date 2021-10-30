@@ -1,0 +1,83 @@
+# Default values for cert-manager-csi-driver-cacerts.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+app:
+  # Verbosity of cert-manager-csi-driver-cacerts logging.
+  logLevel: 2 # 1-5
+  # Options for CSI driver
+  driver:
+    # Name of the driver which will be registered with Kubernetes.
+    name: cacerts.csi.cert-manager.io
+  # Options for the liveness container.
+  livenessProbe:
+    # The port that will expose the livness of the csi-driver
+    port: 9809
+
+# Docker registry fqdn used to pull CSI driver image.
+# Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}
+registryFQDN: ""
+
+driver:
+  # Docker registry used to pull node driver image
+  registry: appscode
+  # Name of driver container image
+  repository: csi-driver-cacerts
+  # driver container image tag
+  tag: v0.0.1
+  # Kubernetes imagePullPolicy on the driver container
+  pullPolicy: IfNotPresent
+  # Compute Resources required by the driver container
+  resources: {}
+
+nodeDriverRegistrar:
+  # Docker registry used to pull node-driver-registrar image
+  registry: k8s.gcr.io/sig-storage
+  # Name of node-driver-registrar container image
+  repository: csi-node-driver-registrar
+  # node-driver-registrar container image tag
+  tag: v2.3.0
+  # Kubernetes imagePullPolicy on node-driver-registrar
+  pullPolicy: IfNotPresent
+  # Compute Resources required by the node-driver-registrar container
+  resources: {}
+
+livenessProbe:
+  # Docker registry used to pull livenessprobe image
+  registry: k8s.gcr.io/sig-storage
+  # Name of livenessprobe container image
+  repository: livenessprobe
+  # livenessprobe container image tag
+  tag: v2.4.0
+  # Kubernetes imagePullPolicy on liveness probe.
+  pullPolicy: IfNotPresent
+  # Compute Resources required by the livenessprobe container
+  resources: # +doc-gen:break
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 10m
+      memory: 20Mi
+
+imagePullSecrets: []
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Annotations applied to csi driver daemonset
+annotations: {}
+# Annotations passed to csi driver pod(s).
+podAnnotations: {}
+
+# Tolerations for pod assignment
+tolerations: []

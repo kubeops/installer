@@ -1,0 +1,18 @@
+project:
+  name: Cert-manager ca-certificates CSI Driver by AppsCode
+  shortName: ca-certs CSI driver
+  url: https://github.com/kubeops/csi-driver-cacerts
+  description: A Helm chart for cert-manager-csi-driver-cacerts
+  app: a CSI driver
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: cert-manager-csi-driver-cacerts
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: cert-manager-csi-driver-cacerts
+  namespace: cert-manager

@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "cert-manager-csi-driver-cacerts.fullname" . }}
+  labels:
+    {{- include "cert-manager-csi-driver-cacerts.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cert-manager-csi-driver-cacerts.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cert-manager-csi-driver-cacerts.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "cert-manager-csi-driver-cacerts.name" . }}
+      containers:
+
+        - name: node-driver-registrar
+          image: {{ .Values.nodeDriverRegistrar.registry }}/{{ .Values.nodeDriverRegistrar.repository }}:{{ .Values.nodeDriverRegistrar.tag }}
+          imagePullPolicy: {{ .Values.nodeDriverRegistrar.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "rm -rf /registration/cert-manager-csi-driver-cacerts /registration/cert-manager-csi-driver-cacerts-reg.sock"]
+          args:
+            - -v={{ .Values.app.logLevel }}
+            - --csi-address=/csi/csi.sock
+            - --kubelet-registration-path=/var/lib/kubelet/plugins/cert-manager-csi-driver-cacerts/csi.sock
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          volumeMounts:
+          - mountPath: /csi
+            name: socket-dir
+          - mountPath: /registration
+            name: registration-dir
+          resources:
+            {{- toYaml .Values.nodeDriverRegistrar.resources | nindent 12 }}
+
+        - name: liveness-probe
+          image: {{ .Values.livenessProbe.registry }}/{{ .Values.livenessProbe.repository }}:{{ .Values.livenessProbe.tag }}
+          args:
+            - --csi-address=/csi/csi.sock
+            - --probe-timeout=3s
+            - --health-port={{.Values.app.livenessProbe.port}}
+            - -v={{ .Values.app.logLevel }}
+          imagePullPolicy: {{ .Values.livenessProbe.pullPolicy }}
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+          resources:
+            {{- toYaml .Values.livenessProbe.resources | nindent 12 }}
+
+        - name: driver
+          image: {{ include "driver.registry" . }}/{{ .Values.driver.repository }}:{{ .Values.driver.tag }}
+          args:
+            - -v={{ .Values.app.logLevel }}
+            - --drivername={{ .Values.app.driver.name }}
+            - --endpoint=$(CSI_ENDPOINT)
+            - --nodeid=$(KUBE_NODE_NAME)
+          env:
+            - name: CSI_ENDPOINT
+              value: unix:///csi/csi.sock
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+          imagePullPolicy: {{ .Values.driver.pullPolicy }}
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: {{.Values.app.livenessProbe.port}}
+              name: healthz
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: healthz
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 2
+          volumeMounts:
+            - mountPath: /csi
+              name: socket-dir
+            - mountPath: /var/lib/kubelet/pods
+              mountPropagation: Bidirectional
+              name: mountpoint-dir
+            - mountPath: /var/lib/containers/storage
+              mountPropagation: Bidirectional
+              name: storageroot-dir
+            - mountPath: /var/run/containers/storage
+              mountPropagation: Bidirectional
+              name: storagerunroot-dir
+          resources:
+            {{- toYaml .Values.driver.resources | nindent 12 }}
+
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+
+      volumes:
+        - hostPath:
+            path: /var/lib/kubelet/plugins/cert-manager-csi-driver-cacerts
+            type: DirectoryOrCreate
+          name: socket-dir
+        - hostPath:
+            path: /var/lib/kubelet/pods
+            type: DirectoryOrCreate
+          name: mountpoint-dir
+        - hostPath:
+            path: /var/lib/kubelet/plugins_registry
+            type: Directory
+          name: registration-dir
+        - hostPath:
+            path: /var/lib/containers/storage
+            type: DirectoryOrCreate
+          name: storageroot-dir
+        - hostPath:
+            path: /var/run/containers/storage
+            type: DirectoryOrCreate
+          name: storagerunroot-dir

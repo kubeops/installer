@@ -13,3 +13,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+crd-importer \
+    --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
+    --out=./charts/panopticon/crds
+
+crd-importer \
+    --input=https://github.com/kubeops/csi-driver-cacerts/raw/v0.0.1/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
+    --out=./charts/cert-manager-csi-driver-cacerts/crds
