@@ -1,0 +1,13 @@
+apiVersion: v2
+name: cluster-connector
+description: A Helm chart for cluster-connector
+type: application
+version: v2021.11.07
+appVersion: v0.0.1
+home: https://github.com/kubeops/cluster-connector
+icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
+sources:
+- https://github.com/kubeops/cluster-connector
+maintainers:
+- name: appscode
+  email: support@appscode.com
