@@ -2,6 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "cluster-connector.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cluster-connector.labels" . | nindent 4 }}
 rules:
