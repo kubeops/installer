@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cluster-connector.fullname" . }}
+  labels:
+    {{- include "cluster-connector.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cluster-connector.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cluster-connector.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cluster-connector.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: license-issuer
+          image: appscode/kubectl:1.22
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - "cluster_uid=$(kubectl get ns kube-system -o=jsonpath='{.metadata.uid}');curl -X POST -d \"name={{.Values.user.name | urlquery}}&email={{.Values.user.email | urlquery}}&product={{.Values.user.product | urlquery}}&cluster=${cluster_uid}&tos={{.Values.user.tos | urlquery}}&token={{.Values.user.token | urlquery}}\" https://license-issuer.appscode.com/issue-license > /var/run/secrets/appscode/license/key.txt"
+          volumeMounts:
+            - mountPath: /var/run/secrets/appscode/license
+              name: license
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - run
+            - --license-file=/var/run/secrets/appscode/license/key.txt
+          ports:
+            - name: metrics
+              containerPort: 8080
+              protocol: TCP
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          volumeMounts:
+            - mountPath: /var/run/secrets/appscode/license
+              name: license
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: license
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
