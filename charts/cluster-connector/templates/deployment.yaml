@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "cluster-connector.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cluster-connector.labels" . | nindent 4 }}
 spec:
