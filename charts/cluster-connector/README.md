@@ -68,6 +68,7 @@ The following table lists the configurable parameters of the `cluster-connector`
 | user.product               |                                                                                                                        | `console-enterprise`         |
 | user.tos                   |                                                                                                                        | `'true'`                     |
 | user.token                 |                                                                                                                        | `''`                         |
+| linkID                     |                                                                                                                        | `''`                         |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:

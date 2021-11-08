@@ -47,6 +47,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - run
+            - --link-id={{ .Values.linkID }}
             - --license-file=/var/run/secrets/appscode/license/key.txt
           ports:
             - name: metrics
