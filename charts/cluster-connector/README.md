@@ -69,6 +69,7 @@ The following table lists the configurable parameters of the `cluster-connector`
 | user.tos                   |                                                                                                                        | `'true'`                     |
 | user.token                 |                                                                                                                        | `''`                         |
 | linkID                     |                                                                                                                        | `''`                         |
+| nats.address               |                                                                                                                        | `''`                         |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:

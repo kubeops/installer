@@ -48,6 +48,7 @@ spec:
           args:
             - run
             - --link-id={{ .Values.linkID }}
+            - --nats-addr={{ .Values.nats.address }}
             - --license-file=/var/run/secrets/appscode/license/key.txt
           ports:
             - name: metrics

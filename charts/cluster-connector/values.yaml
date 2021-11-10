@@ -61,3 +61,6 @@ user:
   tos: 'true'
   token: ''
 linkID: ''
+
+nats:
+  address: ''
