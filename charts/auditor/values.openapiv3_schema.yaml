@@ -1188,7 +1188,6 @@ required:
 - imagePullPolicy
 - monitoring
 - operator
-- registryFQDN
 - replicaCount
 - serviceAccount
 type: object

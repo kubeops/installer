@@ -116,9 +116,9 @@ apiserver:
 enableAnalytics: true
 monitoring:
   # If true, enables monitoring Panopticon
-  enabled: false
+  enabled: true
   # Name of monitoring agent (either "prometheus.io/operator" or "prometheus.io/builtin")
-  agent: "none"
+  agent: prometheus.io/operator
   serviceMonitor:
     # Specify the labels for ServiceMonitor.
     # Prometheus crd will select ServiceMonitor using these labels.
