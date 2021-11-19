@@ -32,6 +32,22 @@ spec:
   groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
   versionPriority: {{ .Values.apiserver.versionPriority }}
 ---
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  name: v1alpha1.ui.k8s.appscode.com
+  labels:
+    {{- include "kube-ui-server.labels" . | nindent 4 }}
+spec:
+  group: ui.k8s.appscode.com
+  version: v1alpha1
+  service:
+    namespace: {{ .Release.Namespace }}
+    name: {{ include "kube-ui-server.fullname" . }}
+  caBundle: {{ $caCrt }}
+  groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
+  versionPriority: {{ .Values.apiserver.versionPriority }}
+---
 apiVersion: v1
 kind: Secret
 metadata:
