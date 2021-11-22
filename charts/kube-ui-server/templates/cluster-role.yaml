@@ -45,3 +45,8 @@ rules:
   - roles
   - rolebindings
   verbs: ["get", "list", "watch"]
+- apiGroups:
+  - "*"
+  resources:
+  - "*"
+  verbs: ["get", "list"]
