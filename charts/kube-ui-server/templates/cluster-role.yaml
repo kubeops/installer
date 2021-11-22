@@ -6,6 +6,7 @@ metadata:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
 rules:
 - apiGroups:
+  - auditor.appscode.com
   - identity.k8s.appscode.com
   - ui.k8s.appscode.com
   resources:
@@ -37,7 +38,7 @@ rules:
   - configmaps
   verbs: ["get", "list", "watch"]
 - apiGroups:
-  - authorization.k8s.io
+  - rbac.authorization.k8s.io
   resources:
   - clusterroles
   - clusterrolebindings
