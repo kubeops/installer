@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeops:identity:admin
+  name: kubeops:ui:editor
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -11,7 +11,17 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
+  - auditor.appscode.com
+  resources:
+  - siteinfos
+  verbs: ["create"]
+- apiGroups:
   - identity.k8s.appscode.com
   resources:
   - whoamis
   verbs: ["create"]
+- apiGroups:
+  - ui.k8s.appscode.com
+  resources:
+  - "*"
+  verbs: ["get", "list"]
