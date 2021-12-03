@@ -49,6 +49,44 @@ spec:
         - --tls-cert-file=/var/serving-cert/tls.crt
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
+    {{- with .Values.prometheus }}
+      {{- if .address }}
+        - --prometheus.address={{ .address }}
+      {{- end }}
+      {{- if .basicAuth.username }}
+        - --prometheus.basic-auth-username={{ .basicAuth.username }}
+      {{- end }}
+      {{- if .basicAuth.password }}
+        - --prometheus.basic-auth-password={{ .basicAuth.password }}
+      {{- end }}
+      {{- if .basicAuth.passwordFile }}
+        - --prometheus.basic-auth-password-file={{ .basicAuth.passwordFile }}
+      {{- end }}
+      {{- if .bearerToken }}
+        - --prometheus.bearer-token={{ .bearerToken }}
+      {{- end }}
+      {{- if .bearerTokenFile }}
+        - --prometheus.bearer-token-file={{ .bearerTokenFile }}
+      {{- end }}
+      {{- if .proxyURL }}
+        - --prometheus.proxy-url={{ .proxyURL }}
+      {{- end }}
+      {{- if .tlsConfig.caFile }}
+        - --prometheus.ca-cert-file={{ .tlsConfig.caFile }}
+      {{- end }}
+      {{- if .tlsConfig.certFile }}
+        - --prometheus.client-cert-file={{ .tlsConfig.certFile }}
+      {{- end }}
+      {{- if .tlsConfig.keyFile }}
+        - --prometheus.client-key-file={{ .tlsConfig.keyFile }}
+      {{- end }}
+      {{- if .tlsConfig.serverName }}
+        - --prometheus.server-name={{ .tlsConfig.serverName }}
+      {{- end }}
+      {{- if .tlsConfig.insecureSkipVerify }}
+        - --prometheus.insecure-skip-verify={{ .tlsConfig.insecureSkipVerify }}
+      {{- end }}
+    {{- end }}
         ports:
         - containerPort: 8443
         env:

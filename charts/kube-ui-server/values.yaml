@@ -95,3 +95,32 @@ monitoring:
     # Prometheus crd will select ServiceMonitor using these labels.
     # Only usable when monitoring agent is `prometheus.io/operator`.
     labels: {}
+
+prometheus:
+  # "The address of metrics storage where metrics data will be sent"
+  address: ""
+  # "The HTTP basic authentication username for the targets."
+  basicAuth:
+    # "The HTTP basic authentication username for the targets."
+    username: ""
+    # "The HTTP basic authentication password for the targets."
+    password: ""
+    # "The HTTP basic authentication password file for the targets."
+    passwordFile: ""
+  # "prometheus.bearer-token", p.BearerToken, "The bearer token for the targets."
+  bearerToken: ""
+  # "The bearer token file for the targets."
+  bearerTokenFile: ""
+  # "HTTP proxy server to use to connect to the targets."
+  proxyURL: ""
+  tlsConfig:
+    # "The path of the CA cert to use for the remote metric storage."
+    caFile: ""
+    # "The path of the client cert to use for communicating with the remote metric storage."
+    certFile: ""
+    # "The path of the client key to use for communicating with the remote metric storage."
+    keyFile: ""
+    # "The server name which will be used to verify metrics storage."
+    serverName: ""
+    # "To skip tls verification when communicating with the remote metric storage."
+    insecureSkipVerify: ""
