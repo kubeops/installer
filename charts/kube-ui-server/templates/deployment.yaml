@@ -50,41 +50,35 @@ spec:
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
     {{- with .Values.prometheus }}
-      {{- if .address }}
-        - --prometheus.address={{ .address }}
+      {{- with .address }}
+        - --prometheus.address={{ . }}
       {{- end }}
-      {{- if .basicAuth.username }}
-        - --prometheus.basic-auth-username={{ .basicAuth.username }}
+      {{- with .basicAuth.username }}
+        - --prometheus.basic-auth-username={{ . }}
       {{- end }}
       {{- if .basicAuth.password }}
-        - --prometheus.basic-auth-password={{ .basicAuth.password }}
-      {{- end }}
-      {{- if .basicAuth.passwordFile }}
-        - --prometheus.basic-auth-password-file={{ .basicAuth.passwordFile }}
+        - --prometheus.basic-auth-password-file=/var/run/secrets/prometheus/auth/password
       {{- end }}
       {{- if .bearerToken }}
-        - --prometheus.bearer-token={{ .bearerToken }}
-      {{- end }}
-      {{- if .bearerTokenFile }}
-        - --prometheus.bearer-token-file={{ .bearerTokenFile }}
+        - --prometheus.bearer-token-file=/var/run/secrets/prometheus/auth/token
       {{- end }}
       {{- if .proxyURL }}
         - --prometheus.proxy-url={{ .proxyURL }}
       {{- end }}
-      {{- if .tlsConfig.caFile }}
-        - --prometheus.ca-cert-file={{ .tlsConfig.caFile }}
+      {{- if .tlsConfig.ca }}
+        - --prometheus.ca-cert-file=/var/run/secrets/prometheus/tls/ca.crt
       {{- end }}
-      {{- if .tlsConfig.certFile }}
-        - --prometheus.client-cert-file={{ .tlsConfig.certFile }}
+      {{- if .tlsConfig.cert }}
+        - --prometheus.client-cert-file=/var/run/secrets/prometheus/tls/client.crt
       {{- end }}
-      {{- if .tlsConfig.keyFile }}
-        - --prometheus.client-key-file={{ .tlsConfig.keyFile }}
+      {{- if .tlsConfig.key }}
+        - --prometheus.client-key-file=/var/run/secrets/prometheus/tls/client.key
       {{- end }}
-      {{- if .tlsConfig.serverName }}
-        - --prometheus.server-name={{ .tlsConfig.serverName }}
+      {{- with .tlsConfig.serverName }}
+        - --prometheus.server-name={{ . }}
       {{- end }}
-      {{- if .tlsConfig.insecureSkipVerify }}
-        - --prometheus.insecure-skip-verify={{ .tlsConfig.insecureSkipVerify }}
+      {{- with .tlsConfig.insecureSkipVerify }}
+        - --prometheus.insecure-skip-verify={{ . }}
       {{- end }}
     {{- end }}
         ports:
@@ -117,11 +111,31 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
+      {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
+        - mountPath: /var/run/secrets/prometheus/auth
+          name: prometheus-auth
+      {{- end }}
+      {{- if .Values.prometheus.tlsConfig.ca }}
+        - mountPath: /var/run/secrets/prometheus/tls
+          name: prometheus-tls
+      {{- end }}
       volumes:
       - name: serving-cert
         secret:
           defaultMode: 420
           secretName: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
+      {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
+      - name: prometheus-auth
+        secret:
+          defaultMode: 420
+          secretName: {{ include "kubedb-provisioner.fullname" . }}-prometheus-auth
+      {{- end }}
+      {{- if .Values.prometheus.tlsConfig.ca }}
+      - name: prometheus-tls
+        secret:
+          defaultMode: 420
+          secretName: {{ include "kubedb-provisioner.fullname" . }}-prometheus-tls
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or .Values.tolerations $criticalAddon }}

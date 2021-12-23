@@ -97,30 +97,26 @@ monitoring:
     labels: {}
 
 prometheus:
-  # "The address of metrics storage where metrics data will be sent"
+  # The address of Prometheus server.
   address: ""
-  # "The HTTP basic authentication username for the targets."
+  # The HTTP basic authentication username for the Prometheus server.
   basicAuth:
-    # "The HTTP basic authentication username for the targets."
+    # The HTTP basic authentication username for the Prometheus server.
     username: ""
-    # "The HTTP basic authentication password for the targets."
+    # The HTTP basic authentication password for the Prometheus server.
     password: ""
-    # "The HTTP basic authentication password file for the targets."
-    passwordFile: ""
-  # "prometheus.bearer-token", p.BearerToken, "The bearer token for the targets."
+  # The bearer token for the Prometheus server.
   bearerToken: ""
-  # "The bearer token file for the targets."
-  bearerTokenFile: ""
-  # "HTTP proxy server to use to connect to the targets."
+  # HTTP proxy server to use to connect to the Prometheus server.
   proxyURL: ""
   tlsConfig:
-    # "The path of the CA cert to use for the remote metric storage."
-    caFile: ""
-    # "The path of the client cert to use for communicating with the remote metric storage."
-    certFile: ""
-    # "The path of the client key to use for communicating with the remote metric storage."
-    keyFile: ""
-    # "The server name which will be used to verify metrics storage."
+    # The CA cert to use for the Prometheus server.
+    ca: ""
+    # The client cert to use for communicating with the Prometheus server.
+    cert: ""
+    # The client key to use for communicating with the Prometheus server.
+    key: ""
+    # The server name which will be used to verify the Prometheus server address.
     serverName: ""
-    # "To skip tls verification when communicating with the remote metric storage."
+    # To skip tls verification when communicating with the Prometheus server.
     insecureSkipVerify: ""
