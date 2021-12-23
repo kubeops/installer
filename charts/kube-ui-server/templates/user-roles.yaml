@@ -21,6 +21,11 @@ rules:
   - whoamis
   verbs: ["create"]
 - apiGroups:
+  - meta.k8s.appscode.com
+  resources:
+  - "*"
+  verbs: ["create", "get", "list"]
+- apiGroups:
   - ui.k8s.appscode.com
   resources:
   - "*"
