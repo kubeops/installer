@@ -1,0 +1,21 @@
+# if basic auth or bearer token is provided, then create a secret for auth
+{{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "kubedb-provisioner.fullname" . }}-prometheus-auth
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kubedb-provisioner.labels" . | nindent 4 }}
+type: Opaque
+data:
+{{- with .Values.prometheus.basicAuth.username }}
+  username: {{ . | b64enc | quote }}
+{{- end }}
+{{- with .Values.prometheus.basicAuth.password }}
+  password: {{ . | b64enc | quote }}
+{{- end }}
+{{- with .Values.prometheus.bearerToken }}
+  token: {{ . | b64enc | quote }}
+{{- end }}
+{{- end }}
