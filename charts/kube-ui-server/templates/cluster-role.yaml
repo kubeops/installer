@@ -49,4 +49,4 @@ rules:
   - "*"
   resources:
   - "*"
-  verbs: ["get", "list"]
+  verbs: ["get", "list", "watch"]
