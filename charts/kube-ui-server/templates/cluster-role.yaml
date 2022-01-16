@@ -46,7 +46,53 @@ rules:
   - rolebindings
   verbs: ["get", "list", "watch"]
 - apiGroups:
-  - "*"
+  - ui.k8s.appscode.com
   resources:
-  - "*"
-  verbs: ["get", "list", "watch"]
+  - genericresources
+  - genericresourceservices
+  - podviews
+  - resourcesummaries
+  verbs: ["get", "list"]
+- nonResourceURLs:
+  - ""
+  - "/"
+  - "/apis/meta.k8s.appscode.com/v1alpha1"
+  - "/apis/ui.k8s.appscode.com/v1alpha1"
+  - "/apis/auditor.appscode.com/v1alpha1"
+  - "/apis/identity.k8s.appscode.com/v1alpha1"
+  verbs: ["get"]
+- apiGroups:
+  - ui.kubedb.com
+  resources:
+  - mongodbqueries
+  - mongodbschemaoverviews
+  verbs: ["get", "list"]
+- apiGroups:
+  - stash.appscode.com
+  resources:
+  - backupsessions
+  verbs: ["get", "list"]
+- apiGroups:
+  - ui.stash.appscode.com
+  resources:
+  - backupoverviews
+  verbs: ["get", "list"]
+- apiGroups:
+  - ops.kubedb.com
+  resources:
+  - mongodbopsrequests
+  verbs: ["get", "list"]
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - get
+  - list

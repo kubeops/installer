@@ -21,12 +21,26 @@ rules:
   - whoamis
   verbs: ["create"]
 - apiGroups:
-  - meta.k8s.appscode.com
-  resources:
-  - "*"
-  verbs: ["create", "get", "list"]
-- apiGroups:
   - ui.k8s.appscode.com
   resources:
-  - "*"
+  - genericresources
+  - genericresourceservices
+  - podviews
+  - resourcesummaries
+  verbs: ["get", "list"]
+- apiGroups:
+  - meta.k8s.appscode.com
+  resources:
+  - renders
+  - renderapis
+  - resourcegraphs
+  verbs: ["create"]
+- apiGroups:
+  - meta.k8s.appscode.com
+  resources:
+  - resourcedescriptors
+  - resourceblockdefinitions
+  - resourcelayouts
+  - resourceoutlines
+  - resourcetabledefinitions
   verbs: ["get", "list"]
