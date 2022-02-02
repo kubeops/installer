@@ -33,6 +33,7 @@ rules:
   resources:
   - renders
   - renderapis
+  - rendermenus
   - resourcegraphs
   verbs: ["create"]
 - apiGroups:
@@ -43,4 +44,15 @@ rules:
   - resourcelayouts
   - resourceoutlines
   - resourcetabledefinitions
+  - menus
   verbs: ["get", "list"]
+- apiGroups:
+  - meta.k8s.appscode.com
+  resources:
+  - usermenus
+  verbs: ["*"]
+- apiGroups:
+  - meta.k8s.appscode.com
+  resources:
+  - usermenus/available
+  verbs: ["get"]
