@@ -21,7 +21,7 @@ rules:
   - whoamis
   verbs: ["create"]
 - apiGroups:
-  - ui.k8s.appscode.com
+  - core.k8s.appscode.com
   resources:
   - genericresources
   - genericresourceservices

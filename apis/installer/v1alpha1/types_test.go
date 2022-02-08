@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1_test
 
 import (
+	"os"
 	"testing"
 
 	"kubeops.dev/installer/apis/installer/v1alpha1"
@@ -25,10 +26,10 @@ import (
 )
 
 func TestDefaultValues(t *testing.T) {
-	checker := schemachecker.New("../../..", []interface{}{
+	checker := schemachecker.New(os.DirFS("../../.."),
 		v1alpha1.AuditorSpec{},
 		v1alpha1.PanopticonSpec{},
 		v1alpha1.KubeUiServerSpec{},
-	})
+	)
 	checker.TestAll(t)
 }
