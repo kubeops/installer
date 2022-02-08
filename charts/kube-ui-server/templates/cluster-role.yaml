@@ -8,7 +8,7 @@ rules:
 - apiGroups:
   - auditor.appscode.com
   - identity.k8s.appscode.com
-  - ui.k8s.appscode.com
+  - core.k8s.appscode.com
   resources:
   - "*"
   verbs: ["*"]
@@ -46,7 +46,7 @@ rules:
   - rolebindings
   verbs: ["get", "list", "watch"]
 - apiGroups:
-  - ui.k8s.appscode.com
+  - core.k8s.appscode.com
   resources:
   - genericresources
   - genericresourceservices
@@ -57,7 +57,7 @@ rules:
   - ""
   - "/"
   - "/apis/meta.k8s.appscode.com/v1alpha1"
-  - "/apis/ui.k8s.appscode.com/v1alpha1"
+  - "/apis/core.k8s.appscode.com/v1alpha1"
   - "/apis/auditor.appscode.com/v1alpha1"
   - "/apis/identity.k8s.appscode.com/v1alpha1"
   verbs: ["get"]
