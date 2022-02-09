@@ -26,3 +26,5 @@ crd-importer \
     --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.54.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
+
+# Todo(Pulak): Import CRDs

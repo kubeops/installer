@@ -1,0 +1,32 @@
+{{- if eq "true" ( include "cleaner.generate" . ) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "supervisor.fullname" . }}-cleaner
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "supervisor.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 120
+  template:
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "supervisor.serviceAccountName" . }}
+      containers:
+      - name: kubectl
+        image: {{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}
+        command:
+          - sh
+          - -c
+          - "sleep 2; \
+          kubectl delete validatingwebhookconfigurations validators.supervisor.appscode.com || true; \
+          kubectl delete mutatingwebhookconfiguration mutators.supervisor.appscode.com || true; \
+          kubectl delete apiservice v1alpha1.mutators.supervisor.appscode.com || true; \
+          kubectl delete apiservice v1alpha1.validators.supervisor.appscode.com || true;"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+      restartPolicy: Never
+{{ end }}
