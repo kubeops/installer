@@ -32,7 +32,6 @@ spec:
   groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
   versionPriority: {{ .Values.apiserver.versionPriority }}
 {{- end }}
-{{- if .Values.apiserver.enableMutatingWebhook }}
 ---
 apiVersion: v1
 kind: Secret
