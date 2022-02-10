@@ -12,9 +12,9 @@ webhooks:
   - name: maintenancewindows.validators.supervisor.appscode.com
     clientConfig:
       service:
-        namespace: default
-        name: kubernetes
-        path: /apis/maintenancewindows.validators.supervisor.appscode.com/v1alpha1/maintenancewindows
+        namespace: {{ .Release.Namespace }}
+        name: {{ include "supervisor.fullname" . }}
+        path: /validate-supervisor-appscode-com-v1alpha1-maintenancewindow
       caBundle: {{ b64enc .Values.apiserver.ca }}
     rules:
       - operations:
@@ -33,9 +33,9 @@ webhooks:
   - name: clustermaintenancewindows.validators.supervisor.appscode.com
     clientConfig:
       service:
-        namespace: default
-        name: kubernetes
-        path: /apis/clustermaintenancewindows.validators.supervisor.appscode.com/v1alpha1/clustermaintenancewindows
+        namespace: {{ .Release.Namespace }}
+        name: {{ include "supervisor.fullname" . }}
+        path: /validate-supervisor-appscode-com-v1alpha1-clustermaintenancewindow
       caBundle: {{ b64enc .Values.apiserver.ca }}
     rules:
       - operations:

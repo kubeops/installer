@@ -20,7 +20,7 @@ rules:
   resources:
   - mutatingwebhookconfigurations
   - validatingwebhookconfigurations
-  verbs: ["delete", "list", "watch", "patch"]
+  verbs: ["*"]
 - apiGroups:
   - supervisor.appscode.com
   resources:
