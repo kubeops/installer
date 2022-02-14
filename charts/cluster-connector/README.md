@@ -44,32 +44,32 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the `cluster-connector` chart and their default values.
 
-|         Parameter          |                                                      Description                                                       |           Default            |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------|------------------------------|
-| replicaCount               |                                                                                                                        | `1`                          |
-| image.repository           |                                                                                                                        | `appscode/cluster-connector` |
-| image.pullPolicy           |                                                                                                                        | `IfNotPresent`               |
-| image.tag                  | Overrides the image tag whose default is the chart appVersion.                                                         | `"v0.0.1"`                   |
-| imagePullSecrets           |                                                                                                                        | `[]`                         |
-| nameOverride               |                                                                                                                        | `""`                         |
-| fullnameOverride           |                                                                                                                        | `""`                         |
-| serviceAccount.create      | Specifies whether a service account should be created                                                                  | `true`                       |
-| serviceAccount.annotations | Annotations to add to the service account                                                                              | `{}`                         |
-| serviceAccount.name        | The name of the service account to use. If not set and create is true, a name is generated using the fullname template | `""`                         |
-| podAnnotations             |                                                                                                                        | `{}`                         |
-| podSecurityContext         |                                                                                                                        | `{}`                         |
-| securityContext            |                                                                                                                        | `{}`                         |
-| resources                  |                                                                                                                        | `{}`                         |
-| nodeSelector               |                                                                                                                        | `{}`                         |
-| tolerations                |                                                                                                                        | `[]`                         |
-| affinity                   |                                                                                                                        | `{}`                         |
-| user.name                  |                                                                                                                        | `''`                         |
-| user.email                 |                                                                                                                        | `''`                         |
-| user.product               |                                                                                                                        | `console-enterprise`         |
-| user.tos                   |                                                                                                                        | `'true'`                     |
-| user.token                 |                                                                                                                        | `''`                         |
-| linkID                     |                                                                                                                        | `''`                         |
-| nats.address               |                                                                                                                        | `''`                         |
+|         Parameter          |                                                      Description                                                       |                 Default                 |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| replicaCount               |                                                                                                                        | <code>1</code>                          |
+| image.repository           |                                                                                                                        | <code>appscode/cluster-connector</code> |
+| image.pullPolicy           |                                                                                                                        | <code>IfNotPresent</code>               |
+| image.tag                  | Overrides the image tag whose default is the chart appVersion.                                                         | <code>"v0.0.1"</code>                   |
+| imagePullSecrets           |                                                                                                                        | <code>[]</code>                         |
+| nameOverride               |                                                                                                                        | <code>""</code>                         |
+| fullnameOverride           |                                                                                                                        | <code>""</code>                         |
+| serviceAccount.create      | Specifies whether a service account should be created                                                                  | <code>true</code>                       |
+| serviceAccount.annotations | Annotations to add to the service account                                                                              | <code>{}</code>                         |
+| serviceAccount.name        | The name of the service account to use. If not set and create is true, a name is generated using the fullname template | <code>""</code>                         |
+| podAnnotations             |                                                                                                                        | <code>{}</code>                         |
+| podSecurityContext         |                                                                                                                        | <code>{}</code>                         |
+| securityContext            |                                                                                                                        | <code>{}</code>                         |
+| resources                  |                                                                                                                        | <code>{}</code>                         |
+| nodeSelector               |                                                                                                                        | <code>{}</code>                         |
+| tolerations                |                                                                                                                        | <code>[]</code>                         |
+| affinity                   |                                                                                                                        | <code>{}</code>                         |
+| user.name                  |                                                                                                                        | <code>''</code>                         |
+| user.email                 |                                                                                                                        | <code>''</code>                         |
+| user.product               |                                                                                                                        | <code>console-enterprise</code>         |
+| user.tos                   |                                                                                                                        | <code>'true'</code>                     |
+| user.token                 |                                                                                                                        | <code>''</code>                         |
+| linkID                     |                                                                                                                        | <code>''</code>                         |
+| nats.address               |                                                                                                                        | <code>''</code>                         |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
