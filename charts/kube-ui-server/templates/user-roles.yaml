@@ -49,6 +49,11 @@ rules:
 - apiGroups:
   - meta.k8s.appscode.com
   resources:
+  - menus/available
+  verbs: ["get"]
+- apiGroups:
+  - meta.k8s.appscode.com
+  resources:
   - usermenus
   verbs: ["*"]
 - apiGroups:
