@@ -111,6 +111,8 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
+        - mountPath: /tmp
+          name: tmp-dir
       {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
         - mountPath: /var/run/secrets/prometheus/auth
           name: prometheus-auth
@@ -124,6 +126,8 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
+      - name: tmp-dir
+        emptyDir: {}
       {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
       - name: prometheus-auth
         secret:
