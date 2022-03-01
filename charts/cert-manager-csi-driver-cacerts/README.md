@@ -4,10 +4,11 @@
 
 ## TL;DR;
 
-```console
+```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager
+$ helm search repo appscode/cert-manager-csi-driver-cacerts --version=v2021.10.29
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2021.10.29
 ```
 
 ## Introduction
@@ -20,10 +21,10 @@ This chart deploys a CSI driver on a [Kubernetes](http://kubernetes.io) cluster 
 
 ## Installing the Chart
 
-To install the chart with the release name `cert-manager-csi-driver-cacerts`:
+To install/upgrade the chart with the release name `cert-manager-csi-driver-cacerts`:
 
-```console
-$ helm install cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager
+```bash
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2021.10.29
 ```
 
 The command deploys a CSI driver on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -32,10 +33,10 @@ The command deploys a CSI driver on the Kubernetes cluster in the default config
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `cert-manager-csi-driver-cacerts`:
+To uninstall the `cert-manager-csi-driver-cacerts`:
 
-```console
-$ helm delete cert-manager-csi-driver-cacerts -n cert-manager
+```bash
+$ helm uninstall cert-manager-csi-driver-cacerts -n cert-manager
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -76,15 +77,15 @@ The following table lists the configurable parameters of the `cert-manager-csi-d
 | tolerations                    | Tolerations for pod assignment                                                                                                     | <code>[]</code>                                                                                  |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
-```console
-$ helm install cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --set app.logLevel=2 # 1-5
+```bash
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2021.10.29 --set app.logLevel=2 # 1-5
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
-```console
-$ helm install cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --values values.yaml
+```bash
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2021.10.29 --values values.yaml
 ```

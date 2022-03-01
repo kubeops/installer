@@ -4,10 +4,11 @@
 
 ## TL;DR;
 
-```console
+```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install panopticon appscode/panopticon -n kubeops
+$ helm search repo appscode/panopticon --version=v2021.11.25
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2021.11.25
 ```
 
 ## Introduction
@@ -20,10 +21,10 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 
 ## Installing the Chart
 
-To install the chart with the release name `panopticon`:
+To install/upgrade the chart with the release name `panopticon`:
 
-```console
-$ helm install panopticon appscode/panopticon -n kubeops
+```bash
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2021.11.25
 ```
 
 The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -32,10 +33,10 @@ The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the def
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `panopticon`:
+To uninstall the `panopticon`:
 
-```console
-$ helm delete panopticon -n kubeops
+```bash
+$ helm uninstall panopticon -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -89,15 +90,15 @@ The following table lists the configurable parameters of the `panopticon` chart 
 | monitoring.serviceMonitor.labels     | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/operator`.                                                                                                                                                                                           | <code>{}</code>                                                                  |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
-```console
-$ helm install panopticon appscode/panopticon -n kubeops --set replicaCount=1
+```bash
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2021.11.25 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
-```console
-$ helm install panopticon appscode/panopticon -n kubeops --values values.yaml
+```bash
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2021.11.25 --values values.yaml
 ```

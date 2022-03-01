@@ -4,10 +4,11 @@
 
 ## TL;DR;
 
-```console
+```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install auditor appscode/auditor -n kubeops
+$ helm search repo appscode/auditor --version=v2021.08.22
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22
 ```
 
 ## Introduction
@@ -20,10 +21,10 @@ This chart deploys a Kubernetes Auditor on a [Kubernetes](http://kubernetes.io) 
 
 ## Installing the Chart
 
-To install the chart with the release name `auditor`:
+To install/upgrade the chart with the release name `auditor`:
 
-```console
-$ helm install auditor appscode/auditor -n kubeops
+```bash
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22
 ```
 
 The command deploys a Kubernetes Auditor on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -32,10 +33,10 @@ The command deploys a Kubernetes Auditor on the Kubernetes cluster in the defaul
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `auditor`:
+To uninstall the `auditor`:
 
-```console
-$ helm delete auditor -n kubeops
+```bash
+$ helm uninstall auditor -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -83,15 +84,15 @@ The following table lists the configurable parameters of the `auditor` chart and
 | monitoring.serviceMonitor.labels     | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/operator`.                                                                                                                                                                                           | <code>{}</code>                                                                  |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
-```console
-$ helm install auditor appscode/auditor -n kubeops --set replicaCount=1
+```bash
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
-```console
-$ helm install auditor appscode/auditor -n kubeops --values values.yaml
+```bash
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22 --values values.yaml
 ```

@@ -4,10 +4,11 @@
 
 ## TL;DR;
 
-```console
+```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm install cluster-connector appscode/cluster-connector -n kubeops
+$ helm search repo appscode/cluster-connector --version=v2021.11.08
+$ helm upgrade -i cluster-connector appscode/cluster-connector -n kubeops --create-namespace --version=v2021.11.08
 ```
 
 ## Introduction
@@ -20,10 +21,10 @@ This chart deploys a Kubernetes Cluster Connector on a [Kubernetes](http://kuber
 
 ## Installing the Chart
 
-To install the chart with the release name `cluster-connector`:
+To install/upgrade the chart with the release name `cluster-connector`:
 
-```console
-$ helm install cluster-connector appscode/cluster-connector -n kubeops
+```bash
+$ helm upgrade -i cluster-connector appscode/cluster-connector -n kubeops --create-namespace --version=v2021.11.08
 ```
 
 The command deploys a Kubernetes Cluster Connector on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -32,10 +33,10 @@ The command deploys a Kubernetes Cluster Connector on the Kubernetes cluster in 
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `cluster-connector`:
+To uninstall the `cluster-connector`:
 
-```console
-$ helm delete cluster-connector -n kubeops
+```bash
+$ helm uninstall cluster-connector -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -72,15 +73,15 @@ The following table lists the configurable parameters of the `cluster-connector`
 | nats.address               |                                                                                                                        | <code>''</code>                         |
 
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
-```console
-$ helm install cluster-connector appscode/cluster-connector -n kubeops --set replicaCount=1
+```bash
+$ helm upgrade -i cluster-connector appscode/cluster-connector -n kubeops --create-namespace --version=v2021.11.08 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
-```console
-$ helm install cluster-connector appscode/cluster-connector -n kubeops --values values.yaml
+```bash
+$ helm upgrade -i cluster-connector appscode/cluster-connector -n kubeops --create-namespace --version=v2021.11.08 --values values.yaml
 ```
