@@ -36,7 +36,7 @@ rules:
   - ""
   resources:
   - configmaps
-  verbs: ["get", "list", "watch", "delete"]
+  verbs: ["get", "list", "watch", "update", "patch", "delete"]
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:
