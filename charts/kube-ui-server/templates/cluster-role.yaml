@@ -13,81 +13,10 @@ rules:
   - "*"
   verbs: ["*"]
 - apiGroups:
-  - ""
-  resources:
-  - nodes
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  verbs: ["get", "list"]
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  verbs: ["get", "list"]
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs: ["create"]
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs: ["get", "list", "watch", "update", "patch", "delete"]
-- apiGroups:
-  - rbac.authorization.k8s.io
-  resources:
-  - clusterroles
-  - clusterrolebindings
-  - roles
-  - rolebindings
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - core.k8s.appscode.com
-  resources:
-  - genericresources
-  - genericresourceservices
-  - podviews
-  - resourcesummaries
-  verbs: ["get", "list"]
-- nonResourceURLs:
-  - ""
-  - "/"
-  - "/apis/meta.k8s.appscode.com/v1alpha1"
-  - "/apis/core.k8s.appscode.com/v1alpha1"
-  - "/apis/auditor.appscode.com/v1alpha1"
-  - "/apis/identity.k8s.appscode.com/v1alpha1"
-  verbs: ["get"]
-- apiGroups:
-  - ui.kubedb.com
-  resources:
-  - mongodbqueries
-  - mongodbschemaoverviews
-  verbs: ["get", "list"]
-- apiGroups:
-  - stash.appscode.com
-  resources:
-  - backupsessions
-  verbs: ["get", "list"]
-- apiGroups:
-  - ui.stash.appscode.com
-  resources:
-  - backupoverviews
-  verbs: ["get", "list"]
-- apiGroups:
-  - ops.kubedb.com
-  resources:
-  - mongodbopsrequests
-  verbs: ["get", "list"]
-- apiGroups:
   - '*'
   resources:
   - '*'
   verbs:
-  - create
   - get
   - list
   - watch
@@ -95,4 +24,13 @@ rules:
   - '*'
   verbs:
   - get
-  - list
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs: ["*"]
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs: ["create"]
