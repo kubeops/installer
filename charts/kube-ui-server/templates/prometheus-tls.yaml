@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "kubedb-provisioner.fullname" . }}-prometheus-tls
+  name: {{ include "kube-ui-server.fullname" . }}-prometheus-tls
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "kubedb-provisioner.labels" . | nindent 4 }}
+    {{- include "kube-ui-server.labels" . | nindent 4 }}
 type: Opaque
 data:
 {{- with .Values.prometheus.tlsConfig.ca }}
