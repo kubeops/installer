@@ -95,28 +95,3 @@ monitoring:
     # Prometheus crd will select ServiceMonitor using these labels.
     # Only usable when monitoring agent is `prometheus.io/operator`.
     labels: {}
-
-prometheus:
-  # The address of Prometheus server.
-  address: ""
-  # The HTTP basic authentication username for the Prometheus server.
-  basicAuth:
-    # The HTTP basic authentication username for the Prometheus server.
-    username: ""
-    # The HTTP basic authentication password for the Prometheus server.
-    password: ""
-  # The bearer token for the Prometheus server.
-  bearerToken: ""
-  # HTTP proxy server to use to connect to the Prometheus server.
-  proxyURL: ""
-  tlsConfig:
-    # The CA cert to use for the Prometheus server.
-    ca: ""
-    # The client cert to use for communicating with the Prometheus server.
-    cert: ""
-    # The client key to use for communicating with the Prometheus server.
-    key: ""
-    # The server name which will be used to verify the Prometheus server address.
-    serverName: ""
-    # To skip tls verification when communicating with the Prometheus server.
-    insecureSkipVerify: ""

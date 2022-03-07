@@ -49,38 +49,6 @@ spec:
         - --tls-cert-file=/var/serving-cert/tls.crt
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
-    {{- with .Values.prometheus }}
-      {{- with .address }}
-        - --prometheus.address={{ . }}
-      {{- end }}
-      {{- with .basicAuth.username }}
-        - --prometheus.basic-auth-username={{ . }}
-      {{- end }}
-      {{- if .basicAuth.password }}
-        - --prometheus.basic-auth-password-file=/var/run/secrets/prometheus/auth/password
-      {{- end }}
-      {{- if .bearerToken }}
-        - --prometheus.bearer-token-file=/var/run/secrets/prometheus/auth/token
-      {{- end }}
-      {{- if .proxyURL }}
-        - --prometheus.proxy-url={{ .proxyURL }}
-      {{- end }}
-      {{- if .tlsConfig.ca }}
-        - --prometheus.ca-cert-file=/var/run/secrets/prometheus/tls/ca.crt
-      {{- end }}
-      {{- if .tlsConfig.cert }}
-        - --prometheus.client-cert-file=/var/run/secrets/prometheus/tls/client.crt
-      {{- end }}
-      {{- if .tlsConfig.key }}
-        - --prometheus.client-key-file=/var/run/secrets/prometheus/tls/client.key
-      {{- end }}
-      {{- with .tlsConfig.serverName }}
-        - --prometheus.server-name={{ . }}
-      {{- end }}
-      {{- with .tlsConfig.insecureSkipVerify }}
-        - --prometheus.insecure-skip-verify={{ . }}
-      {{- end }}
-    {{- end }}
         ports:
         - containerPort: 8443
         env:
@@ -113,14 +81,6 @@ spec:
           name: serving-cert
         - mountPath: /tmp
           name: tmp-dir
-      {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
-        - mountPath: /var/run/secrets/prometheus/auth
-          name: prometheus-auth
-      {{- end }}
-      {{- if .Values.prometheus.tlsConfig.ca }}
-        - mountPath: /var/run/secrets/prometheus/tls
-          name: prometheus-tls
-      {{- end }}
       volumes:
       - name: serving-cert
         secret:
@@ -128,18 +88,6 @@ spec:
           secretName: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
       - name: tmp-dir
         emptyDir: {}
-      {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
-      - name: prometheus-auth
-        secret:
-          defaultMode: 420
-          secretName: {{ include "kube-ui-server.fullname" . }}-prometheus-auth
-      {{- end }}
-      {{- if .Values.prometheus.tlsConfig.ca }}
-      - name: prometheus-tls
-        secret:
-          defaultMode: 420
-          secretName: {{ include "kube-ui-server.fullname" . }}-prometheus-tls
-      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or .Values.tolerations $criticalAddon }}
