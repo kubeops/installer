@@ -65,19 +65,19 @@ spec:
       {{- if .proxyURL }}
         - --prometheus.proxy-url={{ .proxyURL }}
       {{- end }}
-      {{- if .tlsConfig.ca }}
+      {{- if .tls.ca }}
         - --prometheus.ca-cert-file=/var/run/secrets/prometheus/tls/ca.crt
       {{- end }}
-      {{- if .tlsConfig.cert }}
+      {{- if .tls.cert }}
         - --prometheus.client-cert-file=/var/run/secrets/prometheus/tls/client.crt
       {{- end }}
-      {{- if .tlsConfig.key }}
+      {{- if .tls.key }}
         - --prometheus.client-key-file=/var/run/secrets/prometheus/tls/client.key
       {{- end }}
-      {{- with .tlsConfig.serverName }}
+      {{- with .tls.serverName }}
         - --prometheus.server-name={{ . }}
       {{- end }}
-      {{- with .tlsConfig.insecureSkipVerify }}
+      {{- with .tls.insecureSkipTLSVerify }}
         - --prometheus.insecure-skip-verify={{ . }}
       {{- end }}
     {{- end }}
@@ -117,7 +117,7 @@ spec:
         - mountPath: /var/run/secrets/prometheus/auth
           name: prometheus-auth
       {{- end }}
-      {{- if .Values.prometheus.tlsConfig.ca }}
+      {{- if .Values.prometheus.tls.ca }}
         - mountPath: /var/run/secrets/prometheus/tls
           name: prometheus-tls
       {{- end }}
@@ -134,7 +134,7 @@ spec:
           defaultMode: 420
           secretName: {{ include "kube-ui-server.fullname" . }}-prometheus-auth
       {{- end }}
-      {{- if .Values.prometheus.tlsConfig.ca }}
+      {{- if .Values.prometheus.tls.ca }}
       - name: prometheus-tls
         secret:
           defaultMode: 420

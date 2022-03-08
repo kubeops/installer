@@ -109,7 +109,7 @@ prometheus:
   bearerToken: ""
   # HTTP proxy server to use to connect to the Prometheus server.
   proxyURL: ""
-  tlsConfig:
+  tls:
     # The CA cert to use for the Prometheus server.
     ca: ""
     # The client cert to use for communicating with the Prometheus server.
@@ -119,4 +119,4 @@ prometheus:
     # The server name which will be used to verify the Prometheus server address.
     serverName: ""
     # To skip tls verification when communicating with the Prometheus server.
-    insecureSkipVerify: ""
+    insecureSkipTLSVerify: false
