@@ -105,22 +105,19 @@ version:
 	@echo commit_hash=$(commit_hash)
 	@echo commit_timestamp=$(commit_timestamp)
 
-.PHONY: clientset
-clientset:
-	@docker run --rm 	                                          \
-		-u $$(id -u):$$(id -g)                                    \
-		-v /tmp:/.cache                                           \
-		-v $$(pwd):$(DOCKER_REPO_ROOT)                            \
-		-w $(DOCKER_REPO_ROOT)                                    \
-		--env HTTP_PROXY=$(HTTP_PROXY)                            \
-		--env HTTPS_PROXY=$(HTTPS_PROXY)                          \
-		$(CODE_GENERATOR_IMAGE)                                   \
-		/go/src/k8s.io/code-generator/generate-groups.sh          \
-			"deepcopy"                                            \
-			$(GO_PKG)/$(REPO)/client                              \
-			$(GO_PKG)/$(REPO)/apis                                \
-			"$(API_GROUPS)"                                       \
-			--go-header-file "./hack/license/go.txt"
+.PHONY: codegen
+codegen:
+	@echo "Generating deepcopy funcs"
+	@docker run --rm \
+		-u $$(id -u):$$(id -g) \
+		-v /tmp:/.cache \
+		-v $$(pwd):$(DOCKER_REPO_ROOT) \
+		-w $(DOCKER_REPO_ROOT) \
+	    --env HTTP_PROXY=$(HTTP_PROXY) \
+	    --env HTTPS_PROXY=$(HTTPS_PROXY) \
+		$(CODE_GENERATOR_IMAGE) \
+		controller-gen \
+			object:headerFile="./hack/license/go.txt" paths="./apis/..."
 
 # Generate openapi schema
 .PHONY: openapi
@@ -220,7 +217,7 @@ gen-chart-doc-%:
 manifests: gen-crds gen-values-schema gen-chart-doc
 
 .PHONY: gen
-gen: clientset manifests
+gen: codegen manifests
 
 CHART_REGISTRY     ?= appscode
 CHART_REGISTRY_URL ?= https://charts.appscode.com/stable/
