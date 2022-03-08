@@ -17,6 +17,8 @@ rules:
   resources:
   - '*'
   verbs:
+  # create used for raw REST query
+  - create
   - get
   - list
   - watch
