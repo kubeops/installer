@@ -83,8 +83,16 @@ type PanopticonSpec struct {
 	Monitoring      Monitoring `json:"monitoring"`
 	// +optional
 	License string `json:"license"`
-	// +optional
-	Policy string `json:"policy"`
+}
+
+type WebHookSpec struct {
+	GroupPriorityMinimum       int32           `json:"groupPriorityMinimum"`
+	VersionPriority            int32           `json:"versionPriority"`
+	EnableValidatingWebhook    bool            `json:"enableValidatingWebhook"`
+	CA                         string          `json:"ca"`
+	UseKubeapiserverFqdnForAks bool            `json:"useKubeapiserverFqdnForAks"`
+	Healthcheck                HealthcheckSpec `json:"healthcheck"`
+	ServingCerts               ServingCerts    `json:"servingCerts"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

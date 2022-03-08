@@ -751,6 +751,10 @@ properties:
     type: object
   apiserver:
     properties:
+      ca:
+        type: string
+      enableValidatingWebhook:
+        type: boolean
       groupPriorityMinimum:
         format: int32
         type: integer
@@ -778,6 +782,8 @@ properties:
         format: int32
         type: integer
     required:
+    - ca
+    - enableValidatingWebhook
     - groupPriorityMinimum
     - healthcheck
     - servingCerts
@@ -1144,8 +1150,6 @@ properties:
             type: string
         type: object
     type: object
-  policy:
-    type: string
   registryFQDN:
     type: string
   replicaCount:

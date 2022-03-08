@@ -786,8 +786,6 @@ properties:
     type: object
   criticalAddon:
     type: boolean
-  enableAnalytics:
-    type: boolean
   fullnameOverride:
     type: string
   image:
@@ -1126,6 +1124,50 @@ properties:
             type: string
         type: object
     type: object
+  prometheus:
+    properties:
+      address:
+        type: string
+      basicAuth:
+        properties:
+          password:
+            type: string
+          username:
+            type: string
+        required:
+        - password
+        - username
+        type: object
+      bearerToken:
+        type: string
+      proxyURL:
+        type: string
+      tls:
+        properties:
+          ca:
+            type: string
+          cert:
+            type: string
+          insecureSkipTLSVerify:
+            type: boolean
+          key:
+            type: string
+          serverName:
+            type: string
+        required:
+        - ca
+        - cert
+        - insecureSkipTLSVerify
+        - key
+        - serverName
+        type: object
+    required:
+    - address
+    - basicAuth
+    - bearerToken
+    - proxyURL
+    - tls
+    type: object
   replicaCount:
     format: int32
     type: integer
@@ -1184,6 +1226,7 @@ required:
 - image
 - imagePullPolicy
 - monitoring
+- prometheus
 - replicaCount
 - serviceAccount
 type: object
