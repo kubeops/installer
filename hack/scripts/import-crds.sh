@@ -15,10 +15,14 @@
 # limitations under the License.
 
 crd-importer \
+    --input=https://github.com/kubeops/csi-driver-cacerts/raw/v0.0.1/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
+    --out=./charts/cert-manager-csi-driver-cacerts/crds
+
+crd-importer \
+    --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/appcatalog.appscode.com_appbindings.yaml \
+    --out=./charts/kube-ui-server/crds
+
+crd-importer \
     --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.54.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
-
-crd-importer \
-    --input=https://github.com/kubeops/csi-driver-cacerts/raw/v0.0.1/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
-    --out=./charts/cert-manager-csi-driver-cacerts/crds
