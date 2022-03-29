@@ -91,9 +91,9 @@ apiserver:
   # https://github.com/kubernetes/kube-aggregator/blob/release-1.9/pkg/apis/apiregistration/v1beta1/types.go#L66-L70
   # for more information on proper values of this field
   versionPriority: 15
-  # If true, mutating webhook is configured for Grafana CRDss
-  enableMutatingWebhook: false
-  # If true, validating webhook is configured for Grafana CRDss
+  # If true, mutating webhook is configured for Supervisor CRDs
+  enableMutatingWebhook: true
+  # If true, validating webhook is configured for Supervisor CRDs
   enableValidatingWebhook: true
   # CA certificate used by the Kubernetes api server. This field is automatically assigned by the operator.
   ca: not-ca-cert

@@ -47,6 +47,7 @@ spec:
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
         - --enable-validating-webhook={{ .Values.apiserver.enableValidatingWebhook }}
+        - --enable-mutating-webhook={{ .Values.apiserver.enableMutatingWebhook }}
         - --webhook-cert-dir=/var/serving-cert
         - --max-concurrent-reconcile={{ .Values.maxConcurrentReconcile }}
         - --requeue-after-duration={{ .Values.requeueAfterDuration }}

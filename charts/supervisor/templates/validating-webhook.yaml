@@ -50,4 +50,25 @@ webhooks:
     admissionReviewVersions: ["v1beta1"]
     failurePolicy: Fail
     sideEffects: None
+
+  - name: recommendations.validators.supervisor.appscode.com
+    clientConfig:
+      service:
+        namespace: {{ .Release.Namespace }}
+        name: {{ include "supervisor.fullname" . }}
+        path: /validate-supervisor-appscode-com-v1alpha1-recommendation
+      caBundle: {{ b64enc .Values.apiserver.ca }}
+    rules:
+      - operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - supervisor.appscode.com
+        apiVersions:
+          - "*"
+        resources:
+          - recommendations
+    admissionReviewVersions: ["v1beta1"]
+    failurePolicy: Fail
+    sideEffects: None
 {{- end }}
