@@ -72,8 +72,8 @@ Returns the appscode license
 {{/*
 Returns the registry used for operator docker image
 */}}
-{{- define "operator.registry" -}}
-{{- list .Values.registryFQDN .Values.operator.registry | compact | join "/" }}
+{{- define "image.registry" -}}
+{{- list .Values.registryFQDN .Values.image.registry | compact | join "/" }}
 {{- end }}
 
 {{/*

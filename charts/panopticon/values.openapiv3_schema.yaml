@@ -751,8 +751,6 @@ properties:
     type: object
   apiserver:
     properties:
-      ca:
-        type: string
       enableValidatingWebhook:
         type: boolean
       groupPriorityMinimum:
@@ -782,7 +780,6 @@ properties:
         format: int32
         type: integer
     required:
-    - ca
     - enableValidatingWebhook
     - groupPriorityMinimum
     - healthcheck
@@ -808,47 +805,9 @@ properties:
     type: object
   criticalAddon:
     type: boolean
-  enableAnalytics:
-    type: boolean
   fullnameOverride:
     type: string
-  imagePullPolicy:
-    type: string
-  imagePullSecrets:
-    items:
-      type: string
-    type: array
-  license:
-    type: string
-  logLevel:
-    format: int32
-    type: integer
-  monitoring:
-    properties:
-      agent:
-        enum:
-        - prometheus.io
-        - prometheus.io/operator
-        - prometheus.io/builtin
-        type: string
-      serviceMonitor:
-        properties:
-          labels:
-            additionalProperties:
-              type: string
-            type: object
-        type: object
-    required:
-    - agent
-    - serviceMonitor
-    type: object
-  nameOverride:
-    type: string
-  nodeSelector:
-    additionalProperties:
-      type: string
-    type: object
-  operator:
+  image:
     properties:
       registry:
         type: string
@@ -1016,6 +975,42 @@ properties:
     - registry
     - repository
     - tag
+    type: object
+  imagePullPolicy:
+    type: string
+  imagePullSecrets:
+    items:
+      type: string
+    type: array
+  license:
+    type: string
+  logLevel:
+    format: int32
+    type: integer
+  monitoring:
+    properties:
+      agent:
+        enum:
+        - prometheus.io
+        - prometheus.io/operator
+        - prometheus.io/builtin
+        type: string
+      serviceMonitor:
+        properties:
+          labels:
+            additionalProperties:
+              type: string
+            type: object
+        type: object
+    required:
+    - agent
+    - serviceMonitor
+    type: object
+  nameOverride:
+    type: string
+  nodeSelector:
+    additionalProperties:
+      type: string
     type: object
   podAnnotations:
     additionalProperties:
@@ -1210,9 +1205,9 @@ properties:
 required:
 - apiserver
 - cleaner
+- image
 - imagePullPolicy
 - monitoring
-- operator
 - registryFQDN
 - replicaCount
 - serviceAccount

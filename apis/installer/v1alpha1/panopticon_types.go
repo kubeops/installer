@@ -50,7 +50,7 @@ type PanopticonSpec struct {
 	FullnameOverride string     `json:"fullnameOverride"`
 	ReplicaCount     int32      `json:"replicaCount"`
 	RegistryFQDN     string     `json:"registryFQDN"`
-	Operator         Container  `json:"operator"`
+	Image            Container  `json:"image"`
 	Cleaner          CleanerRef `json:"cleaner"`
 	ImagePullPolicy  string     `json:"imagePullPolicy"`
 	//+optional
@@ -77,9 +77,7 @@ type PanopticonSpec struct {
 	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
 	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
 	Apiserver          WebHookSpec              `json:"apiserver"`
-	//+optional
-	EnableAnalytics bool       `json:"enableAnalytics"`
-	Monitoring      Monitoring `json:"monitoring"`
+	Monitoring         Monitoring               `json:"monitoring"`
 	// +optional
 	License string `json:"license"`
 }
@@ -88,7 +86,6 @@ type WebHookSpec struct {
 	GroupPriorityMinimum       int32           `json:"groupPriorityMinimum"`
 	VersionPriority            int32           `json:"versionPriority"`
 	EnableValidatingWebhook    bool            `json:"enableValidatingWebhook"`
-	CA                         string          `json:"ca"`
 	UseKubeapiserverFqdnForAks bool            `json:"useKubeapiserverFqdnForAks"`
 	Healthcheck                HealthcheckSpec `json:"healthcheck"`
 	ServingCerts               ServingCerts    `json:"servingCerts"`
