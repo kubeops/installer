@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/auditor --version=v2021.08.22
-$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22
+$ helm search repo appscode/auditor --version=v2022.04.04
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2022.04.04
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Kubernetes Auditor on a [Kubernetes](http://kubernetes.io) 
 To install/upgrade the chart with the release name `auditor`:
 
 ```bash
-$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2022.04.04
 ```
 
 The command deploys a Kubernetes Auditor on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -86,12 +86,12 @@ The following table lists the configurable parameters of the `auditor` chart and
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22 --set replicaCount=1
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2022.04.04 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2021.08.22 --values values.yaml
+$ helm upgrade -i auditor appscode/auditor -n kubeops --create-namespace --version=v2022.04.04 --values values.yaml
 ```

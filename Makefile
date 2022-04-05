@@ -228,9 +228,9 @@ APP_VERSION        ?= $(CHART_VERSION)
 update-charts: $(shell find $$(pwd)/charts -maxdepth 1 -mindepth 1 -type d -printf 'chart-%f ')
 
 chart-%:
-	@$(MAKE) chart-contents-$* gen-chart-doc-$* --no-print-directory
+	@$(MAKE) contents-$* gen-chart-doc-$* --no-print-directory
 
-chart-contents-%:
+contents-%:
 	@yq -y --indentless -i '.repository.name="$(CHART_REGISTRY)"' ./charts/$*/doc.yaml
 	@yq -y --indentless -i '.repository.url="$(CHART_REGISTRY_URL)"' ./charts/$*/doc.yaml
 	@if [ -n "$(CHART_VERSION)" ]; then \
@@ -238,7 +238,6 @@ chart-contents-%:
 	fi
 	@if [ -n "$(APP_VERSION)" ]; then \
 		yq -y --indentless -i '.appVersion="$(APP_VERSION)"' ./charts/$*/Chart.yaml; \
-		yqq w -i ./charts/$*/values.yaml operator.tag --tag '!!str' $(APP_VERSION); \
 	fi
 
 fmt: $(BUILD_DIRS)
