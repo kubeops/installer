@@ -19,17 +19,14 @@ spec:
       labels:
         {{- include "cluster-connector.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "cluster-connector.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: license-issuer
-          image: appscode/kubectl:1.22
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ include "kubectl.registry" . }}/{{ .Values.kubectl.repository }}:{{ .Values.kubectl.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command:
             - sh
             - -c
@@ -43,8 +40,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           args:
             - run
             - --link-id={{ .Values.linkID }}

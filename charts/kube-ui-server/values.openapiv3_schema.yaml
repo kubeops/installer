@@ -969,9 +969,11 @@ properties:
   monitoring:
     properties:
       agent:
+        enum:
+        - prometheus.io
+        - prometheus.io/operator
+        - prometheus.io/builtin
         type: string
-      enabled:
-        type: boolean
       serviceMonitor:
         properties:
           labels:
@@ -1168,6 +1170,8 @@ properties:
     - proxyURL
     - tls
     type: object
+  registryFQDN:
+    type: string
   replicaCount:
     format: int32
     type: integer
@@ -1227,6 +1231,7 @@ required:
 - imagePullPolicy
 - monitoring
 - prometheus
+- registryFQDN
 - replicaCount
 - serviceAccount
 type: object

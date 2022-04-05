@@ -64,10 +64,11 @@ type ServingCerts struct {
 	ServerKey string `json:"serverKey"`
 }
 
+// +kubebuilder:validation:Enum=prometheus.io;prometheus.io/operator;prometheus.io/builtin
+type MonitoringAgent string
+
 type Monitoring struct {
-	// +optional
-	Enabled        bool                  `json:"enabled"`
-	Agent          string                `json:"agent"`
+	Agent          MonitoringAgent       `json:"agent"`
 	ServiceMonitor *ServiceMonitorLabels `json:"serviceMonitor"`
 }
 
