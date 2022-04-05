@@ -20,13 +20,13 @@ license: ""
 # Docker registry fqdn used to pull docker images
 # Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}
 registryFQDN: ""
-operator:
+image:
   # Docker registry used to pull operator image
   registry: appscode
   # Name of operator container image
   repository: panopticon
   # Operator container image tag
-  tag: v0.0.3
+  tag: v0.0.4
   # Compute Resources required by the operator container
   resources: {}
   # Security options the operator container should run with
@@ -43,7 +43,7 @@ cleaner:
   # Webhook cleaner container image
   repository: kubectl
   # Webhook cleaner container image tag
-  tag: v1.16
+  tag: v1.22
   # Skip generating cleaner YAML
   skip: false
 # Specify an array of imagePullSecrets.
@@ -95,8 +95,6 @@ apiserver:
   useKubeapiserverFqdnForAks: true
   # If true, validating webhook is configured for MetricsConfigurations CRDs
   enableValidatingWebhook: true
-  # CA certificate used by the Kubernetes api server. This field is automatically assigned by the panopticon server.
-  ca: not-ca-cert
   healthcheck:
     # If true, enables the readiness and liveliness probes for the operator pod.
     enabled: false
@@ -111,8 +109,6 @@ apiserver:
     serverCrt: ""
     # Private key for the serving certificate used by webhook server.
     serverKey: ""
-# If true, sends usage analytics
-enableAnalytics: true
 monitoring:
   # Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")
   agent: prometheus.io/operator
