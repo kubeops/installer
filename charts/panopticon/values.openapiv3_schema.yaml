@@ -826,9 +826,11 @@ properties:
   monitoring:
     properties:
       agent:
+        enum:
+        - prometheus.io
+        - prometheus.io/operator
+        - prometheus.io/builtin
         type: string
-      enabled:
-        type: boolean
       serviceMonitor:
         properties:
           labels:
@@ -1211,6 +1213,7 @@ required:
 - imagePullPolicy
 - monitoring
 - operator
+- registryFQDN
 - replicaCount
 - serviceAccount
 type: object

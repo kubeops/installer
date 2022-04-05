@@ -47,13 +47,12 @@ type PanopticonSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
-	FullnameOverride string `json:"fullnameOverride"`
-	ReplicaCount     int32  `json:"replicaCount"`
-	//+optional
-	RegistryFQDN    string     `json:"registryFQDN"`
-	Operator        Container  `json:"operator"`
-	Cleaner         CleanerRef `json:"cleaner"`
-	ImagePullPolicy string     `json:"imagePullPolicy"`
+	FullnameOverride string     `json:"fullnameOverride"`
+	ReplicaCount     int32      `json:"replicaCount"`
+	RegistryFQDN     string     `json:"registryFQDN"`
+	Operator         Container  `json:"operator"`
+	Cleaner          CleanerRef `json:"cleaner"`
+	ImagePullPolicy  string     `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional
