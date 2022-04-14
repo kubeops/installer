@@ -30,6 +30,7 @@ func TestDefaultValues(t *testing.T) {
 		v1alpha1.AuditorSpec{},
 		v1alpha1.PanopticonSpec{},
 		v1alpha1.KubeUiServerSpec{},
+		v1alpha1.SupervisorSpec{},
 	)
 	checker.TestAll(t)
 }

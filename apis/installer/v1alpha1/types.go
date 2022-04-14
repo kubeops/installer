@@ -76,3 +76,32 @@ type ServiceMonitorLabels struct {
 	// +optional
 	Labels map[string]string `json:"labels"`
 }
+
+type ApiserverSpec struct {
+	GroupPriorityMinimum       int32           `json:"groupPriorityMinimum"`
+	VersionPriority            int32           `json:"versionPriority"`
+	UseKubeapiserverFqdnForAks bool            `json:"useKubeapiserverFqdnForAks"`
+	Healthcheck                HealthcheckSpec `json:"healthcheck"`
+	ServingCerts               ServingCerts    `json:"servingCerts"`
+}
+
+type PrometheusConfig struct {
+	Address     string    `json:"address"`
+	BasicAuth   BasicAuth `json:"basicAuth"`
+	BearerToken string    `json:"bearerToken"`
+	ProxyURL    string    `json:"proxyURL"`
+	TLS         TLSConfig `json:"tls"`
+}
+
+type BasicAuth struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type TLSConfig struct {
+	Ca                    string `json:"ca"`
+	Cert                  string `json:"cert"`
+	Key                   string `json:"key"`
+	ServerName            string `json:"serverName"`
+	InsecureSkipTLSVerify bool   `json:"insecureSkipTLSVerify"`
+}
