@@ -751,16 +751,11 @@ properties:
     type: object
   apiserver:
     properties:
-      bypassValidatingWebhookXray:
-        type: boolean
-      ca:
-        type: string
       enableMutatingWebhook:
         type: boolean
       enableValidatingWebhook:
         type: boolean
       groupPriorityMinimum:
-        format: int32
         type: integer
       healthcheck:
         properties:
@@ -783,10 +778,8 @@ properties:
       useKubeapiserverFqdnForAks:
         type: boolean
       versionPriority:
-        format: int32
         type: integer
     required:
-    - ca
     - enableMutatingWebhook
     - enableValidatingWebhook
     - groupPriorityMinimum
@@ -795,64 +788,13 @@ properties:
     - useKubeapiserverFqdnForAks
     - versionPriority
     type: object
-  cleaner:
-    properties:
-      registry:
-        type: string
-      repository:
-        type: string
-      tag:
-        type: string
-    required:
-    - registry
-    - repository
-    - tag
-    type: object
+  beforeDeadlineDuration:
+    type: string
   criticalAddon:
-    type: boolean
-  enableAnalytics:
     type: boolean
   fullnameOverride:
     type: string
-  imagePullPolicy:
-    type: string
-  imagePullSecrets:
-    items:
-      type: string
-    type: array
-  logLevel:
-    format: int32
-    type: integer
-  monitoring:
-    properties:
-      agent:
-        type: string
-      operator:
-        type: boolean
-      prometheus:
-        properties:
-          namespace:
-            type: string
-        type: object
-      serviceMonitor:
-        properties:
-          labels:
-            additionalProperties:
-              type: string
-            type: object
-        type: object
-    required:
-    - agent
-    - prometheus
-    - serviceMonitor
-    type: object
-  nameOverride:
-    type: string
-  nodeSelector:
-    additionalProperties:
-      type: string
-    type: object
-  operator:
+  image:
     properties:
       registry:
         type: string
@@ -980,11 +922,11 @@ properties:
                   "Localhost".
                 type: string
               type:
-                description: "type indicates which kind of seccomp profile will be
-                  applied. Valid options are: \n Localhost - a profile defined in
-                  a file on the node should be used. RuntimeDefault - the container
-                  runtime default profile should be used. Unconfined - no profile
-                  should be applied."
+                description: "type indicates which kind of seccomp profile will be\
+                  \ applied. Valid options are: \n Localhost - a profile defined in\
+                  \ a file on the node should be used. RuntimeDefault - the container\
+                  \ runtime default profile should be used. Unconfined - no profile\
+                  \ should be applied."
                 type: string
             required:
             - type
@@ -1021,6 +963,42 @@ properties:
     - repository
     - tag
     type: object
+  imagePullPolicy:
+    type: string
+  imagePullSecrets:
+    items:
+      type: string
+    type: array
+  logLevel:
+    format: int32
+    type: integer
+  maxConcurrentReconcile:
+    type: integer
+  monitoring:
+    properties:
+      agent:
+        enum:
+        - prometheus.io
+        - prometheus.io/operator
+        - prometheus.io/builtin
+        type: string
+      serviceMonitor:
+        properties:
+          labels:
+            additionalProperties:
+              type: string
+            type: object
+        type: object
+    required:
+    - agent
+    - serviceMonitor
+    type: object
+  nameOverride:
+    type: string
+  nodeSelector:
+    additionalProperties:
+      type: string
+    type: object
   podAnnotations:
     additionalProperties:
       type: string
@@ -1031,12 +1009,13 @@ properties:
       values of each field.'
     properties:
       fsGroup:
-        description: "A special supplemental group that applies to all containers
-          in a pod. Some volume types allow the Kubelet to change the ownership of
-          that volume to be owned by the pod: \n 1. The owning GID will be the FSGroup
-          2. The setgid bit is set (new files created in the volume will be owned
-          by FSGroup) 3. The permission bits are OR'd with rw-rw---- \n If unset,
-          the Kubelet will not modify the ownership and permissions of any volume."
+        description: "A special supplemental group that applies to all containers\
+          \ in a pod. Some volume types allow the Kubelet to change the ownership\
+          \ of that volume to be owned by the pod: \n 1. The owning GID will be the\
+          \ FSGroup 2. The setgid bit is set (new files created in the volume will\
+          \ be owned by FSGroup) 3. The permission bits are OR'd with rw-rw---- \n\
+          \ If unset, the Kubelet will not modify the ownership and permissions of\
+          \ any volume."
         format: int64
         type: integer
       fsGroupChangePolicy:
@@ -1098,10 +1077,10 @@ properties:
               seccomp profile location. Must only be set if type is "Localhost".
             type: string
           type:
-            description: "type indicates which kind of seccomp profile will be applied.
-              Valid options are: \n Localhost - a profile defined in a file on the
-              node should be used. RuntimeDefault - the container runtime default
-              profile should be used. Unconfined - no profile should be applied."
+            description: "type indicates which kind of seccomp profile will be applied.\
+              \ Valid options are: \n Localhost - a profile defined in a file on the\
+              \ node should be used. RuntimeDefault - the container runtime default\
+              \ profile should be used. Unconfined - no profile should be applied."
             type: string
         required:
         - type
@@ -1155,9 +1134,15 @@ properties:
             type: string
         type: object
     type: object
+  registryFQDN:
+    type: string
   replicaCount:
     format: int32
     type: integer
+  requeueAfterDuration:
+    type: string
+  retryAfterDuration:
+    type: string
   serviceAccount:
     properties:
       annotations:
@@ -1210,10 +1195,14 @@ properties:
     type: array
 required:
 - apiserver
-- cleaner
+- beforeDeadlineDuration
+- image
 - imagePullPolicy
+- maxConcurrentReconcile
 - monitoring
-- operator
+- registryFQDN
 - replicaCount
+- requeueAfterDuration
+- retryAfterDuration
 - serviceAccount
 type: object

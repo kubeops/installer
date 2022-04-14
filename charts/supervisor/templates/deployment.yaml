@@ -35,8 +35,8 @@ spec:
       containers:
       - name: operator
         securityContext:
-          {{- toYaml .Values.operator.securityContext | nindent 10 }}
-        image: {{ include "operator.registry" . }}/{{ .Values.operator.repository }}:{{ .Values.operator.tag }}
+          {{- toYaml .Values.image.securityContext | nindent 10 }}
+        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
         - run
@@ -48,12 +48,10 @@ spec:
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
         - --enable-validating-webhook={{ .Values.apiserver.enableValidatingWebhook }}
         - --enable-mutating-webhook={{ .Values.apiserver.enableMutatingWebhook }}
-        - --webhook-cert-dir=/var/serving-cert
         - --max-concurrent-reconcile={{ .Values.maxConcurrentReconcile }}
         - --requeue-after-duration={{ .Values.requeueAfterDuration }}
         - --retry-after-duration={{ .Values.retryAfterDuration }}
         - --before-deadline-duration={{ .Values.beforeDeadlineDuration }}
-
         ports:
         - containerPort: 8443
         env:
@@ -80,7 +78,7 @@ spec:
           initialDelaySeconds: 5
       {{- end }}
         resources:
-          {{- toYaml .Values.operator.resources | nindent 10 }}
+          {{- toYaml .Values.image.resources | nindent 10 }}
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert

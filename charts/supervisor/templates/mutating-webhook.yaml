@@ -1,21 +1,20 @@
 {{- if .Values.apiserver.enableMutatingWebhook }}
+{{- $caCrt := dig "data" "ca.crt" "unknown" (lookup "v1" "ConfigMap" .Release.Namespace "kube-root-ca.crt") | b64enc }}
+
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: mutators.supervisor.appscode.com
   labels:
   {{- include "supervisor.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
 webhooks:
   - name: recommendations.mutators.supervisor.appscode.com
     clientConfig:
       service:
-        namespace: {{ .Release.Namespace }}
-        name: {{ include "supervisor.fullname" . }}
-        path: /mutate-supervisor-appscode-com-v1alpha1-recommendation
-      caBundle: {{ b64enc .Values.apiserver.ca }}
+        namespace: default
+        name: kubernetes
+        path: /apis/mutators.supervisor.appscode.com/v1alpha1/recommendationwebhooks
+      caBundle: {{ $caCrt }}
     rules:
       - operations:
           - CREATE
@@ -29,4 +28,4 @@ webhooks:
     admissionReviewVersions: ["v1beta1"]
     failurePolicy: Fail
     sideEffects: None
-  {{- end }}
+{{- end }}

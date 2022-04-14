@@ -5,17 +5,18 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "supervisor.labels" . | nindent 4 }}
-  {{- if eq .Values.monitoring.agent "prometheus.io/builtin" }}
+{{- if eq "prometheus.io/builtin" ( include "monitoring.agent" . ) }}
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: "/metrics"
     prometheus.io/port: "8443"
     prometheus.io/scheme: "https"
-  {{- end }}
+{{- end }}
 spec:
   ports:
   # Port used to expose admission webhook apiserver
-  - port: 443
-    targetPort: 9443
+  - name: api
+    port: 443
+    targetPort: 8443
   selector:
     {{- include "supervisor.selectorLabels" . | nindent 4 }}

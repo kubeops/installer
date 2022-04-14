@@ -5,13 +5,11 @@ metadata:
   name: {{ include "supervisor.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- if .Values.monitoring.serviceMonitor.labels }}
-    {{- range $key, $val := .Values.monitoring.serviceMonitor.labels }}
-    {{ $key }}: {{ $val }}
-    {{- end }}
-    {{- else }}
-      {{- include "supervisor.selectorLabels" . | nindent 4 }}
-    {{- end }}
+  {{- if eq "true" ( include "monitoring.apply-servicemonitor-label" . ) }}
+    {{- include "monitoring.servicemonitor-label" . | nindent 4 }}
+  {{- else }}
+    {{- include "supervisor.selectorLabels" . | nindent 4 }}
+  {{- end }}
 spec:
   namespaceSelector:
     matchNames:
@@ -20,7 +18,7 @@ spec:
     matchLabels:
       {{- include "supervisor.selectorLabels" . | nindent 6 }}
   endpoints:
-  - port: operator
+  - port: api
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     scheme: https
     tlsConfig:
