@@ -34,7 +34,7 @@ webhooks:
       service:
         namespace: default
         name: kubernetes
-        path: /apis/mutators.validators.appscode.com/v1alpha1/clustermaintenancewindowwebhooks
+        path: /apis/validators.supervisor.appscode.com/v1alpha1/clustermaintenancewindowwebhooks
       caBundle: {{ $caCrt }}
     rules:
       - operations:
