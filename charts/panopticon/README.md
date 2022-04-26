@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/panopticon --version=v2022.04.04
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.04
+$ helm search repo appscode/panopticon --version=v2022.04.25
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.25
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 To install/upgrade the chart with the release name `panopticon`:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.04
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.25
 ```
 
 The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -54,7 +54,7 @@ The following table lists the configurable parameters of the `panopticon` chart 
 | registryFQDN                         | Docker registry fqdn used to pull docker images Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}                                                                                                                                                                                                                                | <code>""</code>                           |
 | image.registry                       | Docker registry used to pull operator image                                                                                                                                                                                                                                                                                                                   | <code>appscode</code>                     |
 | image.repository                     | Name of operator container image                                                                                                                                                                                                                                                                                                                              | <code>panopticon</code>                   |
-| image.tag                            | Operator container image tag                                                                                                                                                                                                                                                                                                                                  | <code>v0.0.4</code>                       |
+| image.tag                            | Operator container image tag                                                                                                                                                                                                                                                                                                                                  | <code>v0.0.5</code>                       |
 | image.resources                      | Compute Resources required by the operator container                                                                                                                                                                                                                                                                                                          | <code>{}</code>                           |
 | image.securityContext                | Security options the operator container should run with                                                                                                                                                                                                                                                                                                       | <code>{}</code>                           |
 | cleaner.registry                     | Docker registry used to pull Webhook cleaner image                                                                                                                                                                                                                                                                                                            | <code>appscode</code>                     |
@@ -90,12 +90,12 @@ The following table lists the configurable parameters of the `panopticon` chart 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.04 --set replicaCount=1
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.25 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.04 --values values.yaml
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2022.04.25 --values values.yaml
 ```
