@@ -29,7 +29,7 @@ image:
   # Name of operator container image
   repository: supervisor
   # Operator container image tag
-  tag: v0.0.1
+  tag: ""
   # Compute Resources required by the operator container
   resources: {}
   # Security options the operator container should run with
