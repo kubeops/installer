@@ -26,7 +26,7 @@ image:
   # Name of operator container image
   repository: panopticon
   # Operator container image tag
-  tag: v0.0.5
+  tag: ""
   # Compute Resources required by the operator container
   resources: {}
   # Security options the operator container should run with

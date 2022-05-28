@@ -27,7 +27,7 @@ driver:
   # Name of driver container image
   repository: csi-driver-cacerts
   # driver container image tag
-  tag: v0.0.1
+  tag: ""
   # Kubernetes imagePullPolicy on the driver container
   pullPolicy: IfNotPresent
   # Compute Resources required by the driver container

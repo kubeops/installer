@@ -18,7 +18,7 @@ image:
   # Name of operator container image
   repository: cluster-connector
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v0.0.1"
+  tag: ""
 kubectl:
   # Docker registry used to pull operator image
   registry: appscode
