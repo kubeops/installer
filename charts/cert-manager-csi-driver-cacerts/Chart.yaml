@@ -2,7 +2,7 @@ apiVersion: v2
 name: cert-manager-csi-driver-cacerts
 description: A Helm chart for cert-manager-csi-driver-cacerts
 type: application
-version: v2022.04.04
+version: v2022.06.14
 appVersion: v0.0.1
 home: https://github.com/kubeops/csi-driver-cacerts
 icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
