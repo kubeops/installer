@@ -7,8 +7,10 @@ metadata:
 rules:
 - apiGroups:
   - auditor.appscode.com
-  - identity.k8s.appscode.com
   - core.k8s.appscode.com
+  - identity.k8s.appscode.com
+  - meta.k8s.appscode.com
+  - ui.k8s.appscode.com
   resources:
   - "*"
   verbs: ["*"]
