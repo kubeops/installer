@@ -46,6 +46,8 @@ cleaner:
   tag: v1.22
   # Skip generating cleaner YAML
   skip: false
+  # Security options the cleaner pod container should run with
+  securityContext: {}
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
 #
