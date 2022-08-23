@@ -18,6 +18,8 @@ spec:
       serviceAccountName: {{ include "panopticon.serviceAccountName" . }}
       containers:
       - name: busybox
+        securityContext:
+          {{- toYaml .Values.cleaner.securityContext | nindent 10 }}
         image: {{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}
         command:
           - sh
@@ -27,4 +29,6 @@ spec:
            kubectl delete apiservice v1alpha1.validators.metrics.appscode.com || true;"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
       restartPolicy: Never
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
 {{ end }}

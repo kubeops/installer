@@ -39,6 +39,9 @@ type Container struct {
 type CleanerRef struct {
 	ImageRef `json:",inline"`
 	Skip     bool `json:"skip"`
+	// Security options the pod should run with.
+	// +optional
+	SecurityContext *core.SecurityContext `json:"securityContext"`
 }
 
 type ServiceAccountSpec struct {
