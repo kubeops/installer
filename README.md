@@ -9,4 +9,4 @@ Kubernetes Panopticon installer Helm chart
 
 To speak with us, please leave a message on [our website](https://appscode.com/contact/).
 
-To receive product annoucements, follow us on [Twitter](https://twitter.com/Kubeops).
+To receive product announcements, follow us on [Twitter](https://twitter.com/Kubeops).
