@@ -29,12 +29,14 @@ spec:
             {{- toYaml .Values.image.securityContext | nindent 12 }}
           image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          {{- if .Values.platform.token }}
           env:
             - name: PLATFORM_API_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: {{ include "cluster-connector.fullname" . }}-token
                   key: token
+          {{- end }}
           args:
             - run
             - --link-id={{ .Values.linkID | quote }}
