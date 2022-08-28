@@ -19,13 +19,16 @@ image:
   repository: cluster-connector
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
-kubectl:
-  # Docker registry used to pull operator image
-  registry: appscode
-  # Name of operator container image
-  repository: kubectl
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.22"
+  # Compute Resources required by the operator container
+  resources: {}
+  # Security options the operator container should run with
+  securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
@@ -52,39 +55,17 @@ podAnnotations: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
 nodeSelector: {}
 
 tolerations: []
 
 affinity: {}
 
-user:
-  name: ''
-  email: ''
-  product: console-enterprise
-  tos: 'true'
-  token: ''
-linkID: ''
+platform:
+  baseURL: ""
+  token: ""
+
+linkID: ""
 
 nats:
-  address: ''
+  address: ""
