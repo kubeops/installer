@@ -56,6 +56,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Auditor{},
 		&AuditorList{},
+		&ClusterConnector{},
+		&ClusterConnectorList{},
 		&KubeUiServer{},
 		&KubeUiServerList{},
 		&Panopticon{},

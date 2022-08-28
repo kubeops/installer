@@ -27,10 +27,11 @@ import (
 
 func TestDefaultValues(t *testing.T) {
 	checker := schemachecker.New(os.DirFS("../../.."),
-		v1alpha1.AuditorSpec{},
-		v1alpha1.PanopticonSpec{},
-		v1alpha1.KubeUiServerSpec{},
-		v1alpha1.SupervisorSpec{},
+		schemachecker.TestCase{Obj: v1alpha1.AuditorSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.ClusterConnectorSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.KubeUiServerSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.PanopticonSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
 	)
 	checker.TestAll(t)
 }

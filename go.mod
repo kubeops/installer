@@ -6,13 +6,13 @@ require (
 	github.com/google/gofuzz v1.2.0
 	k8s.io/api v0.24.1
 	k8s.io/apimachinery v0.24.1
-	kmodules.xyz/schema-checker v0.3.0
+	kmodules.xyz/schema-checker v0.4.1
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-logr/logr v1.2.0 // indirect
-	github.com/gobuffalo/flect v0.2.5 // indirect
+	github.com/gobeam/stringy v0.0.5 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect

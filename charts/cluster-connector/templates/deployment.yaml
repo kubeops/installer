@@ -23,29 +23,24 @@ spec:
       serviceAccountName: {{ include "cluster-connector.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      initContainers:
-        - name: license-issuer
-          image: {{ include "kubectl.registry" . }}/{{ .Values.kubectl.repository }}:{{ .Values.kubectl.tag }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
-          command:
-            - sh
-            - -c
-            - "cluster_uid=$(kubectl get ns kube-system -o=jsonpath='{.metadata.uid}');curl -X POST -d \"name={{.Values.user.name | urlquery}}&email={{.Values.user.email | urlquery}}&product={{.Values.user.product | urlquery}}&cluster=${cluster_uid}&tos={{.Values.user.tos | urlquery}}&token={{.Values.user.token | urlquery}}\" https://license-issuer.appscode.com/issue-license > /var/run/secrets/appscode/license/key.txt"
-          volumeMounts:
-            - mountPath: /var/run/secrets/appscode/license
-              name: license
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.image.securityContext | nindent 12 }}
           image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          env:
+            - name: PLATFORM_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cluster-connector.fullname" . }}-token
+                  key: token
           args:
             - run
-            - --link-id={{ .Values.linkID }}
-            - --nats-addr={{ .Values.nats.address }}
+            - --link-id={{ .Values.linkID | quote }}
+            - --baseURL={{ .Values.platform.baseURL | quote }}
+            - --token=$(PLATFORM_API_TOKEN)
+            - --nats-addr={{ .Values.nats.address | quote }}
             - --license-file=/var/run/secrets/appscode/license/key.txt
           ports:
             - name: metrics
@@ -66,7 +61,7 @@ spec:
             - mountPath: /var/run/secrets/appscode/license
               name: license
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.image.resources | nindent 12 }}
       volumes:
         - name: license
           emptyDir: {}
