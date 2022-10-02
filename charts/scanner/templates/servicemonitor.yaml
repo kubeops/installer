@@ -1,0 +1,38 @@
+{{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "scanner.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- if eq "true" ( include "monitoring.apply-servicemonitor-label" . ) }}
+    {{- include "monitoring.servicemonitor-label" . | nindent 4 }}
+  {{- else }}
+    {{- include "scanner.selectorLabels" . | nindent 4 }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "scanner.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - port: api
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    scheme: https
+    interval: 10s
+    relabelings:
+      - action: labeldrop
+        regex: (pod|service|endpoint|namespace)
+    tlsConfig:
+      ca:
+        secret:
+          name: {{ include "scanner.fullname" . }}-apiserver-cert
+          key: tls.crt
+      serverName: "{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc"
+  - port: telemetry
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    scheme: http
+    interval: 10s
+{{- end }}

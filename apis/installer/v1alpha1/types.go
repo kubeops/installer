@@ -88,6 +88,15 @@ type ApiserverSpec struct {
 	ServingCerts               ServingCerts    `json:"servingCerts"`
 }
 
+type WebHookSpec struct {
+	GroupPriorityMinimum       int32           `json:"groupPriorityMinimum"`
+	VersionPriority            int32           `json:"versionPriority"`
+	EnableValidatingWebhook    bool            `json:"enableValidatingWebhook"`
+	UseKubeapiserverFqdnForAks bool            `json:"useKubeapiserverFqdnForAks"`
+	Healthcheck                HealthcheckSpec `json:"healthcheck"`
+	ServingCerts               ServingCerts    `json:"servingCerts"`
+}
+
 type PrometheusConfig struct {
 	Address     string    `json:"address"`
 	BasicAuth   BasicAuth `json:"basicAuth"`

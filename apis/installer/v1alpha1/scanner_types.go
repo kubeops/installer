@@ -22,12 +22,12 @@ import (
 )
 
 const (
-	ResourceKindPanopticon = "Panopticon"
-	ResourcePanopticon     = "panopticon"
-	ResourcePanopticons    = "panopticons"
+	ResourceKindScanner = "Scanner"
+	ResourceScanner     = "scanner"
+	ResourceScanners    = "scanners"
 )
 
-// Panopticon defines the schama for Panopticon Installer.
+// Scanner defines the schama for Scanner Installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -35,24 +35,23 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=panopticons,singular=panopticon,categories={kubeops,appscode}
-type Panopticon struct {
+// +kubebuilder:resource:path=scanners,singular=scanner,categories={kubeops,appscode}
+type Scanner struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PanopticonSpec `json:"spec,omitempty"`
+	Spec              ScannerSpec `json:"spec,omitempty"`
 }
 
-// PanopticonSpec is the schema for Panopticon Operator values file
-type PanopticonSpec struct {
+// ScannerSpec is the schema for Scanner Operator values file
+type ScannerSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
-	FullnameOverride string     `json:"fullnameOverride"`
-	ReplicaCount     int32      `json:"replicaCount"`
-	RegistryFQDN     string     `json:"registryFQDN"`
-	Image            Container  `json:"image"`
-	Cleaner          CleanerRef `json:"cleaner"`
-	ImagePullPolicy  string     `json:"imagePullPolicy"`
+	FullnameOverride string    `json:"fullnameOverride"`
+	ReplicaCount     int32     `json:"replicaCount"`
+	RegistryFQDN     string    `json:"registryFQDN"`
+	Image            Container `json:"image"`
+	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional
@@ -76,18 +75,29 @@ type PanopticonSpec struct {
 	// +optional
 	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
 	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	Apiserver          WebHookSpec              `json:"apiserver"`
+	Apiserver          ApiserverSpec            `json:"apiserver"`
 	Monitoring         Monitoring               `json:"monitoring"`
 	// +optional
-	License string `json:"license"`
+	Licenses map[string]string `json:"licenses"`
+	Nats     Nats              `json:"nats"`
+}
+
+type NatsCredentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type Nats struct {
+	Addr string          `json:"addr"`
+	Auth NatsCredentials `json:"auth"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// PanopticonList is a list of Panopticons
-type PanopticonList struct {
+// ScannerList is a list of Scanners
+type ScannerList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of Panopticon CRD objects
-	Items []Panopticon `json:"items,omitempty"`
+	// Items is a list of Scanner CRD objects
+	Items []Scanner `json:"items,omitempty"`
 }

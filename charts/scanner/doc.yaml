@@ -1,0 +1,18 @@
+project:
+  name: AppsCode Scanner
+  shortName: AppsCode Scanner
+  url: https://github.com/kubeops/scanner
+  description: AppsCode Scanner
+  app: a Kubernetes license proxyserver
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: scanner
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: scanner
+  namespace: kubeops
