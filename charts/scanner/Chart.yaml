@@ -1,0 +1,12 @@
+apiVersion: v1
+description: Docker Image Scanner by AppsCode
+name: scanner
+version: v2022.06.14
+appVersion: v0.0.1
+home: https://github.com/kubeops/scanner
+icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
+sources:
+- https://github.com/kubeops/scanner
+maintainers:
+- name: appscode
+  email: support@appscode.com

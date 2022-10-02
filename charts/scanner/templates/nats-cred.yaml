@@ -1,0 +1,13 @@
+{{- if and .Values.nats.auth.username .Values.nats.auth.password }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "scanner.fullname" . }}-nats-cred
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "scanner.labels" . | nindent 4 }}
+type: Opaque
+stringData:
+  username: {{ .Values.nats.auth.username | quote}}
+  password: {{ .Values.nats.auth.password | quote}}
+{{- end }}
