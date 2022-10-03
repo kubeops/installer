@@ -33,7 +33,9 @@ spec:
             - run
             - --link-id={{ .Values.linkID | quote }}
             - --nats-addr={{ .Values.nats.address | quote }}
+            {{- if .Values.nats.creds }}
             - --nats-credential-file=/var/run/secrets/nats/creds
+            {{- end }}
           ports:
             - name: metrics
               containerPort: 8080
@@ -49,16 +51,20 @@ spec:
             httpGet:
               path: /readyz
               port: http
+          {{- if .Values.nats.creds }}
           volumeMounts:
             - mountPath: /var/run/secrets/nats
               name: nats-creds
+          {{- end }}
           resources:
             {{- toYaml .Values.image.resources | nindent 12 }}
+      {{- if .Values.nats.creds }}
       volumes:
         - name: nats-creds
           secret:
             defaultMode: 420
             secretName: {{ include "cluster-connector.fullname" . }}-creds
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

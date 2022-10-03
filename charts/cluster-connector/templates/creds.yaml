@@ -1,3 +1,4 @@
+{{- if .Values.nats.creds }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -8,3 +9,4 @@ metadata:
 type: Opaque
 stringData:
   creds: {{ .Values.nats.creds | quote }}
+{{- end }}
