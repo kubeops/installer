@@ -29,21 +29,11 @@ spec:
             {{- toYaml .Values.image.securityContext | nindent 12 }}
           image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-          {{- if .Values.platform.token }}
-          env:
-            - name: PLATFORM_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "cluster-connector.fullname" . }}-token
-                  key: token
-          {{- end }}
           args:
             - run
             - --link-id={{ .Values.linkID | quote }}
-            - --baseURL={{ .Values.platform.baseURL | quote }}
-            - --token=$(PLATFORM_API_TOKEN)
             - --nats-addr={{ .Values.nats.address | quote }}
-            - --license-file=/var/run/secrets/appscode/license/key.txt
+            - --nats-credential-file=/var/run/secrets/nats/creds
           ports:
             - name: metrics
               containerPort: 8080
@@ -60,13 +50,15 @@ spec:
               path: /readyz
               port: http
           volumeMounts:
-            - mountPath: /var/run/secrets/appscode/license
-              name: license
+            - mountPath: /var/run/secrets/nats
+              name: nats-creds
           resources:
             {{- toYaml .Values.image.resources | nindent 12 }}
       volumes:
-        - name: license
-          emptyDir: {}
+        - name: nats-creds
+          secret:
+            defaultMode: 420
+            secretName: {{ include "cluster-connector.fullname" . }}-creds
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -954,22 +954,15 @@ properties:
     properties:
       address:
         type: string
+      creds:
+        type: string
     required:
     - address
+    - creds
     type: object
   nodeSelector:
     additionalProperties:
       type: string
-    type: object
-  platform:
-    properties:
-      baseURL:
-        type: string
-      token:
-        type: string
-    required:
-    - baseURL
-    - token
     type: object
   podAnnotations:
     additionalProperties:
@@ -1183,7 +1176,6 @@ required:
 - imagePullPolicy
 - linkID
 - nats
-- platform
 - registryFQDN
 - replicaCount
 - serviceAccount

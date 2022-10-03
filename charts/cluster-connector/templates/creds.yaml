@@ -1,12 +1,10 @@
-{{- if .Values.platform.token }}
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "cluster-connector.fullname" . }}-token
+  name: {{ include "cluster-connector.fullname" . }}-creds
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cluster-connector.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  token: {{ .Values.platform.token | quote }}
-{{- end }}
+  creds: {{ .Values.nats.creds | quote }}
