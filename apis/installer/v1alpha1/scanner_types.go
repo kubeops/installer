@@ -79,17 +79,17 @@ type ScannerSpec struct {
 	Monitoring         Monitoring               `json:"monitoring"`
 	// +optional
 	Licenses map[string]string `json:"licenses"`
-	Nats     Nats              `json:"nats"`
+	Nats     ScannerNATS       `json:"nats"`
 }
 
-type NatsCredentials struct {
+type NatsAuth struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type Nats struct {
-	Addr string          `json:"addr"`
-	Auth NatsCredentials `json:"auth"`
+type ScannerNATS struct {
+	Addr string   `json:"addr"`
+	Auth NatsAuth `json:"auth"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
