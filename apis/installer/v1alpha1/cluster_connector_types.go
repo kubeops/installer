@@ -74,7 +74,7 @@ type ClusterConnectorSpec struct {
 }
 
 type ClusterConnectorNats struct {
-	Address string `json:"address"`
+	Address string `json:"addr"`
 	Creds   string `json:"creds"`
 }
 

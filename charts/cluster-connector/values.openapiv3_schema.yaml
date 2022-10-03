@@ -952,12 +952,12 @@ properties:
     type: string
   nats:
     properties:
-      address:
+      addr:
         type: string
       creds:
         type: string
     required:
-    - address
+    - addr
     - creds
     type: object
   nodeSelector:
