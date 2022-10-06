@@ -7,6 +7,6 @@ metadata:
   labels:
     {{- include "cluster-connector.labels" . | nindent 4 }}
 type: Opaque
-stringData:
-  creds: {{ .Values.nats.creds | quote }}
+data:
+  creds: {{ .Values.nats.creds }}
 {{- end }}

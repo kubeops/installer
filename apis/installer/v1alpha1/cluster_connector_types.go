@@ -75,7 +75,7 @@ type ClusterConnectorSpec struct {
 
 type ClusterConnectorNats struct {
 	Address string `json:"addr"`
-	Creds   string `json:"creds"`
+	Creds   []byte `json:"creds"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
