@@ -955,6 +955,7 @@ properties:
       addr:
         type: string
       creds:
+        format: byte
         type: string
     required:
     - addr
