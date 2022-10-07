@@ -32,8 +32,8 @@ spec:
           args:
             - run
             - --link-id={{ .Values.linkID | quote }}
-            - --nats-addr={{ .Values.nats.address | quote }}
-            {{- if .Values.nats.creds }}
+            {{- if and .Values.nats.addr .Values.nats.encodedCreds }}
+            - --nats-addr={{ .Values.nats.addr }}
             - --nats-credential-file=/var/run/secrets/nats/creds
             {{- end }}
           ports:
@@ -51,14 +51,14 @@ spec:
             httpGet:
               path: /readyz
               port: http
-          {{- if .Values.nats.creds }}
+          {{- if .Values.nats.encodedCreds }}
           volumeMounts:
             - mountPath: /var/run/secrets/nats
               name: nats-creds
           {{- end }}
           resources:
             {{- toYaml .Values.image.resources | nindent 12 }}
-      {{- if .Values.nats.creds }}
+      {{- if .Values.nats.encodedCreds }}
       volumes:
         - name: nats-creds
           secret:

@@ -65,4 +65,4 @@ linkID: ""
 
 nats:
   addr: ""
-  creds: ""
+  encodedCreds: ""

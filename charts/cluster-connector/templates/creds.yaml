@@ -1,4 +1,4 @@
-{{- if .Values.nats.creds }}
+{{- if .Values.nats.encodedCreds }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -7,6 +7,6 @@ metadata:
   labels:
     {{- include "cluster-connector.labels" . | nindent 4 }}
 type: Opaque
-stringData:
-  creds: {{ .Values.nats.creds | quote }}
+data:
+  creds: {{ .Values.nats.encodedCreds | quote }}
 {{- end }}

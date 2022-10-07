@@ -954,11 +954,11 @@ properties:
     properties:
       addr:
         type: string
-      creds:
+      encodedCreds:
         type: string
     required:
     - addr
-    - creds
+    - encodedCreds
     type: object
   nodeSelector:
     additionalProperties:
