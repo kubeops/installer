@@ -11,3 +11,21 @@ rules:
   resources:
   - namespaces
   verbs: ["get"]
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - statefulsets
+  verbs: ["get", "list"]
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs: ["get", "list", "create", "delete"]
+- apiGroups:
+  - batch
+  resources:
+  - cronjobs
+  - jobs
+  verbs: ["get", "list", "create", "patch", "delete"]
