@@ -68,7 +68,7 @@ The following table lists the configurable parameters of the `cluster-connector`
 | affinity                   |                                                                                                                                                                                                                                    | <code>{}</code>                |
 | linkID                     |                                                                                                                                                                                                                                    | <code>""</code>                |
 | nats.addr                  |                                                                                                                                                                                                                                    | <code>""</code>                |
-| nats.creds                 |                                                                                                                                                                                                                                    | <code>""</code>                |
+| nats.encodedCreds          |                                                                                                                                                                                                                                    | <code>""</code>                |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
