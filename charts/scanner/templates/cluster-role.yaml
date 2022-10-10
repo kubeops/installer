@@ -17,15 +17,20 @@ rules:
   - daemonsets
   - deployments
   - statefulsets
-  verbs: ["get", "list"]
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - replicationcontrollers
+  verbs: ["get", "list", "watch"]
 - apiGroups:
   - ""
   resources:
   - pods
-  verbs: ["get", "list", "create", "delete"]
+  verbs: ["get", "list", "watch", "create", "delete"]
 - apiGroups:
   - batch
   resources:
   - cronjobs
   - jobs
-  verbs: ["get", "list", "create", "patch", "delete"]
+  verbs: ["get", "list", "watch", "create", "patch", "delete"]
