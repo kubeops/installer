@@ -69,8 +69,13 @@ type ClusterConnectorSpec struct {
 	// If specified, the pod's scheduling constraints
 	// +optional
 	Affinity *core.Affinity       `json:"affinity"`
+	Platform PlatformSpec         `json:"platform"`
 	LinkID   string               `json:"linkID"`
 	Nats     ClusterConnectorNats `json:"nats"`
+}
+
+type PlatformSpec struct {
+	BaseURL string `json:"baseURL"`
 }
 
 type ClusterConnectorNats struct {
