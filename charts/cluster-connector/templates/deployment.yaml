@@ -31,6 +31,7 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           args:
             - run
+            - --baseURL={{ .Values.platform.baseURL }}
             - --link-id={{ .Values.linkID | quote }}
             {{- if and .Values.nats.addr .Values.nats.encodedCreds }}
             - --nats-addr={{ .Values.nats.addr }}

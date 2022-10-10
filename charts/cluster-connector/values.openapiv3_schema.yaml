@@ -964,6 +964,13 @@ properties:
     additionalProperties:
       type: string
     type: object
+  platform:
+    properties:
+      baseURL:
+        type: string
+    required:
+    - baseURL
+    type: object
   podAnnotations:
     additionalProperties:
       type: string
@@ -1176,6 +1183,7 @@ required:
 - imagePullPolicy
 - linkID
 - nats
+- platform
 - registryFQDN
 - replicaCount
 - serviceAccount
