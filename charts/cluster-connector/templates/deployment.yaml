@@ -32,7 +32,7 @@ spec:
           args:
             - run
             - --baseURL={{ .Values.platform.baseURL }}
-            - --link-id={{ .Values.linkID | quote }}
+            - --link-id={{ .Values.linkID }}
             {{- if and .Values.nats.addr .Values.nats.encodedCreds }}
             - --nats-addr={{ .Values.nats.addr }}
             - --nats-credential-file=/var/run/secrets/nats/creds
