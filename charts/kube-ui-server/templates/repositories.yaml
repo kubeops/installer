@@ -1,0 +1,17 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: appscode
+  namespace: {{ .Release.Namespace }}
+spec:
+  interval: 30m
+  url: https://charts.appscode.com/stable/
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: bytebuilders-ui
+  namespace: {{ .Release.Namespace }}
+spec:
+  interval: 30m
+  url: https://bundles.byte.builders/ui/
