@@ -15,6 +15,26 @@ rules:
   - "*"
   verbs: ["*"]
 - apiGroups:
+  - source.toolkit.fluxcd.io
+  resources:
+  - helmrepositories
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs: ["*"]
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs: ["create"]
+- apiGroups:
   - '*'
   resources:
   - '*'
@@ -28,13 +48,3 @@ rules:
   - '*'
   verbs:
   - get
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs: ["*"]
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs: ["create"]
