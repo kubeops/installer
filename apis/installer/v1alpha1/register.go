@@ -66,6 +66,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ScannerList{},
 		&Supervisor{},
 		&SupervisorList{},
+		&ExternalDnsOperator{},
+		&ExternalDnsOperatorList{},
 	)
 
 	scheme.AddKnownTypes(SchemeGroupVersion,

@@ -1,0 +1,18 @@
+project:
+  name: Supervisor by AppsCode
+  shortName: Supervisor
+  url: https://github.com/kubeops/external-dns-operator
+  description: Supervisor for Kubernetes
+  app: a Supervisor
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: external-dns-operator
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: external-dns-operator
+  namespace: kubeops

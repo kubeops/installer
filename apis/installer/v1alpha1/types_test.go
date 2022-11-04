@@ -29,6 +29,7 @@ func TestDefaultValues(t *testing.T) {
 	checker := schemachecker.New(os.DirFS("../../.."),
 		schemachecker.TestCase{Obj: v1alpha1.AuditorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ClusterConnectorSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.ExternalDnsOperatorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.KubeUiServerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PanopticonSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
