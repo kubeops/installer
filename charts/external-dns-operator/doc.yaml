@@ -1,9 +1,9 @@
 project:
-  name: Supervisor by AppsCode
-  shortName: Supervisor
+  name: External DNS Operator by AppsCode
+  shortName: External DNS Operator
   url: https://github.com/kubeops/external-dns-operator
-  description: Supervisor for Kubernetes
-  app: a Supervisor
+  description: External DNS Operator for Kubernetes
+  app: an External DNS Operator
 repository:
   url: https://charts.appscode.com/stable/
   name: appscode

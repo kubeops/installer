@@ -1,6 +1,6 @@
-# Supervisor
+# External DNS Operator
 
-[Supervisor by AppsCode](https://github.com/kubeops/external-dns-operator) - Supervisor for Kubernetes
+[External DNS Operator by AppsCode](https://github.com/kubeops/external-dns-operator) - External DNS Operator for Kubernetes
 
 ## TL;DR;
 
@@ -13,7 +13,7 @@ $ helm upgrade -i external-dns-operator appscode/external-dns-operator -n kubeop
 
 ## Introduction
 
-This chart deploys a Supervisor on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart deploys an External DNS Operator on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ To install/upgrade the chart with the release name `external-dns-operator`:
 $ helm upgrade -i external-dns-operator appscode/external-dns-operator -n kubeops --create-namespace --version=v2022.06.14
 ```
 
-The command deploys a Supervisor on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys an External DNS Operator on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
