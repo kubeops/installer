@@ -21,26 +21,60 @@ rules:
   - mutatingwebhookconfigurations
   - validatingwebhookconfigurations
   verbs: ["*"]
-- apiGroups:
-  - external-dns-operator.appscode.com
-  resources:
-  - "*"
+
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list","watch"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get","watch","list"]
+- apiGroups: [""]
+  resources: ["services","endpoints"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["extensions","networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["networking.istio.io"]
+  resources: ["gateways"]
+  verbs: ["get","watch","list"]
+- apiGroups: [ "networking.istio.io" ]
+  resources: [ "virtualservices" ]
+  verbs: [ "get","watch","list" ]
+- apiGroups: ["getambassador.io"]
+  resources: ["hosts","ingresses"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["projectcontour.io"]
+  resources: ["httpproxies"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["contour.heptio.com"]
+  resources: ["ingressroutes"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["externaldns.k8s.io"]
+  resources: ["dnsendpoints"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["externaldns.k8s.io"]
+  resources: ["dnsendpoints/status"]
   verbs: ["*"]
-- apiGroups:
-  - ops.kubedb.com
-  resources:
-    - "*"
-  verbs: ["*"]
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  verbs: ["create","get", "update", "patch"]
+- apiGroups: ["gloo.solo.io","gateway.solo.io"]
+  resources: ["proxies","virtualservices"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["configuration.konghq.com"]
+  resources: ["tcpingresses"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["route.openshift.io"]
+  resources: ["routes"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["zalando.org"]
+  resources: ["routegroups"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["zalando.org"]
+  resources: ["routegroups/status"]
+  verbs: ["patch","update"]
+
 - apiGroups:
   - ""
   resources:
   - secrets
-  - services
   - serviceaccounts
   verbs: ["create", "get", "patch", "list", "watch"]
 - apiGroups:
@@ -48,11 +82,6 @@ rules:
   resources:
   - configmaps
   verbs: ["create", "get", "list", "watch", "patch"]
-- apiGroups:
-  - ""
-  resources:
-  - nodes
-  verbs: ["list","get","watch"]
 - apiGroups:
   - ""
   resources:
