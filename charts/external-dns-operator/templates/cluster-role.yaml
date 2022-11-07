@@ -42,7 +42,7 @@ rules:
   - secrets
   - services
   - serviceaccounts
-  verbs: ["create", "get", "patch"]
+  verbs: ["create", "get", "patch", "list", "watch"]
 - apiGroups:
   - ""
   resources:
@@ -52,7 +52,7 @@ rules:
   - ""
   resources:
   - nodes
-  verbs: ["list"]
+  verbs: ["list","get","watch"]
 - apiGroups:
   - ""
   resources:
@@ -81,3 +81,12 @@ rules:
     - ops.kubevault.com
   resources: ["*"]
   verbs: ["get", "create", "list"]
+- apiGroups:
+    - external-dns.appscode.com
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups:
+    - networking.k8s.io
+  resources:
+    - ingresses
+  verbs: ["get","list", "watch"]
