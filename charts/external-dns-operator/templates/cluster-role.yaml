@@ -6,53 +6,43 @@ metadata:
     {{- include "external-dns-operator.labels" . | nindent 4 }}
 rules:
 - apiGroups:
+    - external-dns.appscode.com
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups:
   - apiextensions.k8s.io
   resources:
   - customresourcedefinitions
   verbs: ["*"]
-- apiGroups:
-  - apiregistration.k8s.io
-  resources:
-  - apiservices
-  verbs: ["delete", "get", "patch"]
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - mutatingwebhookconfigurations
-  - validatingwebhookconfigurations
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list","watch"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get","watch","list"]
+- apiGroups: [""]
+  resources: ["services","endpoints"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["extensions","networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["externaldns.k8s.io"]
+  resources: ["dnsendpoints"]
+  verbs: ["get","watch","list"]
+- apiGroups: ["externaldns.k8s.io"]
+  resources: ["dnsendpoints/status"]
   verbs: ["*"]
-- apiGroups:
-  - external-dns-operator.appscode.com
-  resources:
-  - "*"
-  verbs: ["*"]
-- apiGroups:
-  - ops.kubedb.com
-  resources:
-    - "*"
-  verbs: ["*"]
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  verbs: ["create","get", "update", "patch"]
 - apiGroups:
   - ""
   resources:
   - secrets
-  - services
   - serviceaccounts
-  verbs: ["create", "get", "patch"]
+  verbs: ["create", "get", "patch", "list", "watch"]
 - apiGroups:
   - ""
   resources:
   - configmaps
   verbs: ["create", "get", "list", "watch", "patch"]
-- apiGroups:
-  - ""
-  resources:
-  - nodes
-  verbs: ["list"]
 - apiGroups:
   - ""
   resources:
@@ -67,7 +57,6 @@ rules:
   - ""
   resources:
   - pods
-  - pods/exec
   verbs: ["get", "create", "list"]
 - apiGroups:
   - rbac.authorization.k8s.io
@@ -77,7 +66,3 @@ rules:
   - roles
   - rolebindings
   verbs: ["get", "update", "create", "patch"]
-- apiGroups:
-    - ops.kubevault.com
-  resources: ["*"]
-  verbs: ["get", "create", "list"]
