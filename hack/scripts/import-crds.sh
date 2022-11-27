@@ -23,6 +23,10 @@ crd-importer \
     --out=./charts/external-dns-operator/crds
 
 crd-importer \
+    --input=https://github.com/kubeops/sidekick/raw/v0.0.1/crds/apps.k8s.appscode.com_sidekicks.yaml \
+    --out=./charts/sidekick/crds
+
+crd-importer \
     --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/fluxcd/source-controller/raw/v0.30.1/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
     --input=https://github.com/fluxcd/helm-operator/raw/v1.4.4/deploy/crds.yaml \

@@ -22,12 +22,12 @@ import (
 )
 
 const (
-	ResourceKindExternalDnsOperator = "ExternalDnsOperator"
-	ResourceExternalDnsOperator     = "externaldnsoperator"
-	ResourceExternalDnsOperators    = "externaldnsoperators"
+	ResourceKindSidekick = "Sidekick"
+	ResourceSidekick     = "sidekick"
+	ResourceSidekicks    = "sidekicks"
 )
 
-// ExternalDnsOperator defines the schama for External DNS operator installer.
+// Sidekick defines the schama for Sidekick operator installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -35,15 +35,15 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=externaldnsoperators,singular=externaldnsoperator,categories={kubeops,appscode}
-type ExternalDnsOperator struct {
+// +kubebuilder:resource:path=sidekicks,singular=sidekick,categories={kubeops,appscode}
+type Sidekick struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ExternalDnsOperatorSpec `json:"spec,omitempty"`
+	Spec              SidekickSpec `json:"spec,omitempty"`
 }
 
-// ExternalDnsOperatorSpec is the schema for Identity Server values file
-type ExternalDnsOperatorSpec struct {
+// SidekickSpec is the schema for Identity Server values file
+type SidekickSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
@@ -74,10 +74,10 @@ type ExternalDnsOperatorSpec struct {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// ExternalDnsOperatorList is a list of ExternalDnsOperators
-type ExternalDnsOperatorList struct {
+// SidekickList is a list of Sidekicks
+type SidekickList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of ExternalDnsOperator CRD objects
-	Items []ExternalDnsOperator `json:"items,omitempty"`
+	// Items is a list of Sidekick CRD objects
+	Items []Sidekick `json:"items,omitempty"`
 }
