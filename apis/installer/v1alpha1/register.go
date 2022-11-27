@@ -68,6 +68,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&SupervisorList{},
 		&ExternalDnsOperator{},
 		&ExternalDnsOperatorList{},
+		&Sidekick{},
+		&SidekickList{},
 	)
 
 	scheme.AddKnownTypes(SchemeGroupVersion,
