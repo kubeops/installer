@@ -119,3 +119,21 @@ Returns the ServiceMonitor labels
 {{ $key }}: {{ $val }}
 {{- end }}
 {{- end }}
+
+{{/*
+Returns the allowed namespaces flags
+*/}}
+{{- define "allow-namespaces" -}}
+{{- range .Values.allowedNamespaces }}
+- --allowed-namespaces={{ . }}
+{{- end }}
+{{- end }}
+
+{{/*
+Returns the allowed namespaces flags
+*/}}
+{{- define "deny-namespaces" -}}
+{{- range .Values.deniedNamespaces }}
+- --denied-namespaces={{ . }}
+{{- end }}
+{{- end }}

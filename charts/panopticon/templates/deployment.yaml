@@ -54,6 +54,12 @@ spec:
         {{- if include "appscode.license" . }}
         - --license-file=/var/run/secrets/appscode/license/key.txt
         {{- end }}
+        {{- if len .Values.allowedNamespaces }}
+        {{- include "allow-namespaces" . | indent 8 }}
+        {{- end }}
+        {{- if len .Values.deniedNamespaces }}
+        {{- include "deny-namespaces" . | indent 8 }}
+        {{- end }}
         ports:
         - containerPort: 8443
         - containerPort: 8081
