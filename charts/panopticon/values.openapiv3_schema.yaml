@@ -1181,6 +1181,8 @@ properties:
     type: object
   nameOverride:
     type: string
+  namespaceSelector:
+    type: string
   nodeSelector:
     additionalProperties:
       type: string
@@ -1399,6 +1401,7 @@ required:
 - image
 - imagePullPolicy
 - monitoring
+- namespaceSelector
 - registryFQDN
 - replicaCount
 - serviceAccount
