@@ -19,4 +19,4 @@ rules:
   verbs: ["list","watch"]
 - apiGroups: [""]
   resources: ["pods"]
-  verbs: ["get","watch","list"]
+  verbs: ["*"]
