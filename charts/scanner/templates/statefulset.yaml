@@ -2,7 +2,7 @@
 {{- $minor := default "0" .Capabilities.KubeVersion.Minor | trimSuffix "+" | int64 }}
 {{- $criticalAddon := and .Values.criticalAddon (or (eq .Release.Namespace "kube-system") (and (ge $major 1) (ge $minor 17))) -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "scanner.fullname" . }}
   namespace: {{ .Release.Namespace }}
@@ -14,6 +14,7 @@ metadata:
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "scanner.fullname" . }}-pods
   selector:
     matchLabels:
       {{- include "scanner.selectorLabels" . | nindent 6 }}
@@ -33,10 +34,10 @@ spec:
       {{- include "appscode.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "scanner.serviceAccountName" . }}
       containers:
-      - name: server
+      - name: app
         securityContext:
-          {{- toYaml .Values.image.securityContext | nindent 10 }}
-        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          {{- toYaml .Values.app.securityContext | nindent 10 }}
+        image: {{ include "image.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
         - run
@@ -46,6 +47,14 @@ spec:
         - --tls-cert-file=/var/serving-cert/tls.crt
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
+        - --etcd-servers=https://127.0.0.1:2379
+        - --etcd-cafile=/etc/pki/etcd/ca.crt
+        - --etcd-certfile=/etc/pki/etcd/tls.crt
+        - --etcd-keyfile=/etc/pki/etcd/tls.key
+        - --authorization-always-allow-paths=/healthz
+        - --authorization-always-allow-paths=/readyz
+        - --authorization-always-allow-paths=/livez
+        - --authorization-always-allow-paths=/files/*
         - --nats-addr={{ .Values.nats.addr }}
         {{- if .Values.licenses }}
         - --license-dir=/var/run/secrets/appscode/license
@@ -89,19 +98,67 @@ spec:
           initialDelaySeconds: 5
       {{- end }}
         resources:
-          {{- toYaml .Values.image.resources | nindent 10 }}
+          {{- toYaml .Values.app.resources | nindent 10 }}
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
+        - mountPath: /etc/pki/etcd
+          name: etcd-cert
+        - mountPath: /var/data
+          name: storage
         {{- if .Values.licenses }}
         - mountPath: /var/run/secrets/appscode/license
           name: licenses
         {{- end }}
+      - name: etcd
+        securityContext:
+          {{- toYaml .Values.etcd.securityContext | nindent 10 }}
+        image: {{ include "etcd.registry" . }}/{{ .Values.etcd.repository }}:{{ .Values.etcd.tag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy  }}
+        command:
+        - etcd
+        - --data-dir=/var/data/etcd
+        - --experimental-initial-corrupt-check=true
+        - --experimental-watch-progress-notify-interval=5s
+        - --listen-metrics-urls=http://127.0.0.1:2381
+        - --snapshot-count=10000
+        - --advertise-client-urls=https://127.0.0.1:2379
+        - --cert-file=/etc/pki/etcd/tls.crt
+        - --client-cert-auth=true
+        - --key-file=/etc/pki/etcd/tls.key
+        - --listen-client-urls=https://127.0.0.1:2379
+        - --trusted-ca-file=/etc/pki/etcd/ca.crt
+        ports:
+        - containerPort: 2379
+        - containerPort: 2380
+        - containerPort: 2381
+        livenessProbe:
+          failureThreshold: 8
+          httpGet:
+            host: 127.0.0.1
+            path: /health?exclude=NOSPACE&serializable=true
+            port: 2381
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        resources:
+          {{- toYaml .Values.etcd.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/pki/etcd
+          name: etcd-cert
+        - mountPath: /var/data
+          name: storage
       volumes:
       - name: serving-cert
         secret:
           defaultMode: 420
           secretName: {{ include "scanner.fullname" . }}-apiserver-cert
+      - name: etcd-cert
+        secret:
+          defaultMode: 420
+          secretName: {{ include "scanner.fullname" . }}-etcd-cert
       {{- if .Values.licenses }}
       - name: licenses
         secret:
@@ -130,4 +187,15 @@ spec:
     {{- end }}
     {{- if $criticalAddon }}
       priorityClassName: system-cluster-critical
-    {{- end -}}
+    {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- with .Values.storageClass.name }}
+      storageClassName: {{ . }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}

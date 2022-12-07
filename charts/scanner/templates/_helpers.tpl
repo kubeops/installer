@@ -66,7 +66,14 @@ Create the name of the service account to use
 Returns the registry used for operator docker image
 */}}
 {{- define "image.registry" -}}
-{{- list .Values.registryFQDN .Values.image.registry | compact | join "/" }}
+{{- list .Values.registryFQDN .Values.app.registry | compact | join "/" }}
+{{- end }}
+
+{{/*
+Returns the registry used for etcd docker image
+*/}}
+{{- define "etcd.registry" -}}
+{{- list .Values.registryFQDN .Values.etcd.registry | compact | join "/" }}
 {{- end }}
 
 {{- define "appscode.imagePullSecrets" -}}
