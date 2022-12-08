@@ -5,6 +5,11 @@ metadata:
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 rules:
+- apiGroups:
+  - cves.scanner.appscode.com
+  resources:
+  - "*"
+  verbs: ["*"]
 # Get cluster id
 - apiGroups:
   - ""
