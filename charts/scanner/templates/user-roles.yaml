@@ -9,8 +9,8 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - cves.scanner.appscode.com
-  - ui.scanner.appscode.com
+  - scanner.appscode.com
+  - reports.scanner.appscode.com
   resources:
   - "*"
   verbs: ["*"]
@@ -26,8 +26,8 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - cves.scanner.appscode.com
-  - ui.scanner.appscode.com
+  - scanner.appscode.com
+  - reports.scanner.appscode.com
   resources:
   - "*"
   verbs: ["create", "get", "list", "watch", "update", "patch"]
@@ -43,8 +43,8 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - cves.scanner.appscode.com
-  - ui.scanner.appscode.com
+  - scanner.appscode.com
+  - reports.scanner.appscode.com
   resources:
   - "*"
   verbs: ["get", "list", "watch"]

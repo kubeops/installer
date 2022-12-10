@@ -6,7 +6,7 @@ metadata:
     {{- include "scanner.labels" . | nindent 4 }}
 rules:
 - apiGroups:
-  - cves.scanner.appscode.com
+  - scanner.appscode.com
   resources:
   - "*"
   verbs: ["*"]
