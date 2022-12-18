@@ -61,11 +61,11 @@ cacher:
   # '* */6 * * *'
   schedule: '*/3 * * * *'
   # Docker registry used to cache trivydb image
-  registry: arnobkumarsaha
+  registry: appscode
   # Name of cacher container image
-  repository: natscli
+  repository: trivydb
   # Operator container image tag
-  tag: latest
+  tag: 0.0.1
   # Compute Resources required by the cacher container
   resources: {}
   # Security options the cacher container should run with

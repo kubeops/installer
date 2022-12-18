@@ -52,6 +52,7 @@ type ScannerSpec struct {
 	RegistryFQDN     string    `json:"registryFQDN"`
 	App              Container `json:"app"`
 	Etcd             Container `json:"etcd"`
+	Cacher           Container `json:"cacher"`
 	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
@@ -83,6 +84,12 @@ type ScannerSpec struct {
 	// +optional
 	Licenses map[string]string `json:"licenses"`
 	Nats     ScannerNATS       `json:"nats"`
+}
+
+type CacherContainer struct {
+	Container `json:",inline,omitempty"`
+	Enable    bool   `json:"enable"`
+	Schedule  string `json:"schedule"`
 }
 
 type Persistence struct {
