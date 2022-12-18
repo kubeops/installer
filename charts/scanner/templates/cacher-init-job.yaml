@@ -1,0 +1,37 @@
+{{- if .Values.cacher.enable }}
+
+{{- if .Capabilities.APIVersions.Has "batch/v1/Job" }}
+apiVersion: batch/v1
+{{ else }}
+apiVersion: batch/v1beta1
+{{ end -}}
+kind: Job
+metadata:
+  name: {{ include "scanner.fullname" . }}-init-trivydb-cache
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "scanner.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 120
+  # ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "scanner.serviceAccountName" . }}
+      automountServiceAccountToken: true
+      containers:
+      - name: starter
+        image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
+        command:
+          - kubectl
+          - create
+          - job
+          - --from=cronjob/{{ include "scanner.fullname" . }}-trivydb-cacher
+          - {{ include "scanner.fullname" . }}-trivydb-cacher-{{ randAlphaNum 8 | lower }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+      restartPolicy: Never
+{{ end }}

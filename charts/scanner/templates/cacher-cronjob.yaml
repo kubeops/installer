@@ -20,6 +20,7 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 2
+      ttlSecondsAfterFinished: 120
       template:
         spec:
           {{- include "appscode.imagePullSecrets" . | nindent 10 }}
@@ -48,7 +49,7 @@ spec:
               defaultMode: 420
               secretName: {{ include "scanner.fullname" . }}-apiserver-cert
   schedule: {{ .Values.cacher.schedule | quote }}
-  successfulJobsHistoryLimit: 2
-  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
   suspend: false
 {{- end }}

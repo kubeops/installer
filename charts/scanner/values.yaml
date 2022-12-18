@@ -58,8 +58,7 @@ etcd:
     serverKey: ""
 cacher:
   enable: true
-  # '* */6 * * *'
-  schedule: '* */6 * * *'
+  schedule: '0 */6 * * *'
   # Docker registry used to cache trivydb image
   registry: appscode
   # Name of cacher container image
