@@ -39,3 +39,6 @@ rules:
   - cronjobs
   - jobs
   verbs: ["get", "list", "watch", "create", "patch", "delete"]
+# allow file server paths
+- nonResourceURLs: ["/files", "/files/*"]
+  verbs: ["get", "post"]

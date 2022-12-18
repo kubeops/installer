@@ -51,10 +51,6 @@ spec:
         - --etcd-cafile=/etc/pki/etcd/ca.crt
         - --etcd-certfile=/etc/pki/etcd/tls.crt
         - --etcd-keyfile=/etc/pki/etcd/tls.key
-        - --authorization-always-allow-paths=/healthz
-        - --authorization-always-allow-paths=/readyz
-        - --authorization-always-allow-paths=/livez
-        - --authorization-always-allow-paths=/files/*
         - --nats-addr={{ .Values.nats.addr }}
         {{- if .Values.licenses }}
         - --license-dir=/var/run/secrets/appscode/license

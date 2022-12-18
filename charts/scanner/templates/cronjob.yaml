@@ -16,8 +16,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  concurrencyPolicy: Allow
-  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       backoffLimit: 2
@@ -34,10 +33,22 @@ spec:
             imagePullPolicy: {{ .Values.imagePullPolicy  }}
             command:
             - /scripts/update-trivydb.sh
+            env:
+            - name: FILESERVER_ADDR
+              value: https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
             resources:
               {{- toYaml .Values.cacher.resources | nindent 14 }}
-          restartPolicy: Never
+            volumeMounts:
+            - mountPath: /var/serving-cert
+              name: serving-cert
+          restartPolicy: Never # OnFailure
+          volumes:
+          - name: serving-cert
+            secret:
+              defaultMode: 420
+              secretName: {{ include "scanner.fullname" . }}-apiserver-cert
   schedule: {{ .Values.cacher.schedule | quote }}
-  successfulJobsHistoryLimit: 4
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
   suspend: false
 {{- end }}
