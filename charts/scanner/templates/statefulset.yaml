@@ -37,7 +37,7 @@ spec:
       - name: app
         securityContext:
           {{- toYaml .Values.app.securityContext | nindent 10 }}
-        image: {{ include "image.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
+        image: {{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
         - run

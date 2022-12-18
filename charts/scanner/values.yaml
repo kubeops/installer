@@ -56,6 +56,26 @@ etcd:
     serverCrt: ""
     # Private key for the serving certificate used by webhook server.
     serverKey: ""
+cacher:
+  enable: true
+  # '* */6 * * *'
+  schedule: '*/3 * * * *'
+  # Docker registry used to cache trivydb image
+  registry: arnobkumarsaha
+  # Name of cacher container image
+  repository: natscli
+  # Operator container image tag
+  tag: latest
+  # Compute Resources required by the cacher container
+  resources: {}
+  # Security options the cacher container should run with
+  securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
