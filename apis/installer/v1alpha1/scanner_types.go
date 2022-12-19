@@ -50,7 +50,9 @@ type ScannerSpec struct {
 	FullnameOverride string    `json:"fullnameOverride"`
 	ReplicaCount     int32     `json:"replicaCount"`
 	RegistryFQDN     string    `json:"registryFQDN"`
-	Image            Container `json:"image"`
+	App              Container `json:"app"`
+	Etcd             Container `json:"etcd"`
+	Cacher           Container `json:"cacher"`
 	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
@@ -73,13 +75,25 @@ type ScannerSpec struct {
 	// PodSecurityContext holds pod-level security attributes and common container settings.
 	// Optional: Defaults to empty.  See type description for default values of each field.
 	// +optional
-	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
-	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	Apiserver          ApiserverSpec            `json:"apiserver"`
-	Monitoring         Monitoring               `json:"monitoring"`
+	PodSecurityContext *core.PodSecurityContext  `json:"podSecurityContext"`
+	StorageClass       core.LocalObjectReference `json:"storageClass"`
+	Persistence        Persistence               `json:"persistence"`
+	ServiceAccount     ServiceAccountSpec        `json:"serviceAccount"`
+	Apiserver          ApiserverSpec             `json:"apiserver"`
+	Monitoring         Monitoring                `json:"monitoring"`
 	// +optional
 	Licenses map[string]string `json:"licenses"`
 	Nats     ScannerNATS       `json:"nats"`
+}
+
+type CacherContainer struct {
+	Container `json:",inline,omitempty"`
+	Enable    bool   `json:"enable"`
+	Schedule  string `json:"schedule"`
+}
+
+type Persistence struct {
+	Size string `json:"size"`
 }
 
 type NatsAuth struct {

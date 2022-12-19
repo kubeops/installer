@@ -1,0 +1,55 @@
+{{- if .Values.cacher.enable }}
+
+{{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
+apiVersion: batch/v1
+{{ else }}
+apiVersion: batch/v1beta1
+{{ end -}}
+kind: CronJob
+metadata:
+  name: {{ include "scanner.fullname" . }}-trivydb-cacher
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "scanner.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 120
+      template:
+        spec:
+          {{- include "appscode.imagePullSecrets" . | nindent 10 }}
+          serviceAccountName: {{ include "scanner.serviceAccountName" . }}
+          automountServiceAccountToken: true
+          containers:
+          - name: cacher
+            securityContext:
+              {{- toYaml .Values.cacher.securityContext | nindent 14 }}
+            image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
+            imagePullPolicy: {{ .Values.imagePullPolicy  }}
+            command:
+            - /scripts/update-trivydb.sh
+            env:
+            - name: FILESERVER_ADDR
+              value: https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
+            resources:
+              {{- toYaml .Values.cacher.resources | nindent 14 }}
+            volumeMounts:
+            - mountPath: /var/serving-cert
+              name: serving-cert
+          restartPolicy: Never # OnFailure
+          volumes:
+          - name: serving-cert
+            secret:
+              defaultMode: 420
+              secretName: {{ include "scanner.fullname" . }}-apiserver-cert
+  schedule: {{ .Values.cacher.schedule | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  suspend: false
+{{- end }}

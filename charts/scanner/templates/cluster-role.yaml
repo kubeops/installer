@@ -5,6 +5,11 @@ metadata:
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 rules:
+- apiGroups:
+  - scanner.appscode.com
+  resources:
+  - "*"
+  verbs: ["*"]
 # Get cluster id
 - apiGroups:
   - ""
@@ -34,3 +39,6 @@ rules:
   - cronjobs
   - jobs
   verbs: ["get", "list", "watch", "create", "patch", "delete"]
+# allow file server paths
+- nonResourceURLs: ["/files", "/files/*"]
+  verbs: ["get", "post"]
