@@ -1,10 +1,29 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeops:ui:viewer
+  name: kubeops:ui:editor
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+rules:
+  - apiGroups:
+      - auditor.appscode.com
+      - identity.k8s.appscode.com
+      - core.k8s.appscode.com
+      - meta.k8s.appscode.com
+      - ui.k8s.appscode.com
+    resources:
+      - "*"
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kubeops:ui:viewer
+  labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -27,6 +46,12 @@ rules:
   - genericresourceservices
   - podviews
   - resourcesummaries
+  verbs: ["get", "list"]
+- apiGroups:
+    - ui.k8s.appscode.com
+  resources:
+    - features
+    - featuresets
   verbs: ["get", "list"]
 - apiGroups:
   - meta.k8s.appscode.com
