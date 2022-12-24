@@ -51,15 +51,16 @@ spec:
         - --etcd-cafile=/etc/pki/etcd/ca.crt
         - --etcd-certfile=/etc/pki/etcd/tls.crt
         - --etcd-keyfile=/etc/pki/etcd/tls.key
+        {{- if include "appscode.license" . }}
+        - --license-file=/var/run/secrets/appscode/license/key.txt
+        {{- else }}
         - --nats-addr={{ .Values.nats.addr }}
-        {{- if .Values.licenses }}
-        - --license-dir=/var/run/secrets/appscode/license
         {{- end }}
         ports:
         - containerPort: 8443
         - containerPort: 8081
         env:
-        {{- if and .Values.nats.auth.username .Values.nats.auth.password }}
+        {{- if and (not (include "appscode.license" .)) .Values.nats.auth.username .Values.nats.auth.password }}
         - name: NATS_USERNAME
           valueFrom:
             secretKeyRef:
@@ -102,9 +103,9 @@ spec:
           name: etcd-cert
         - mountPath: /var/data
           name: storage
-        {{- if .Values.licenses }}
+        {{- if include "appscode.license" . }}
         - mountPath: /var/run/secrets/appscode/license
-          name: licenses
+          name: license
         {{- end }}
       - name: etcd
         securityContext:
@@ -155,11 +156,11 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "scanner.fullname" . }}-etcd-cert
-      {{- if .Values.licenses }}
-      - name: licenses
+      {{- if include "appscode.license" . }}
+      - name: license
         secret:
           defaultMode: 420
-          secretName: {{ include "scanner.fullname" . }}-licenses
+          secretName: {{ include "scanner.fullname" . }}-license
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}

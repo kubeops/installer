@@ -1363,10 +1363,8 @@ properties:
     items:
       type: string
     type: array
-  licenses:
-    additionalProperties:
-      type: string
-    type: object
+  license:
+    type: string
   logLevel:
     format: int32
     type: integer

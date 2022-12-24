@@ -959,13 +959,6 @@ func (in *ScannerSpec) DeepCopyInto(out *ScannerSpec) {
 	in.ServiceAccount.DeepCopyInto(&out.ServiceAccount)
 	out.Apiserver = in.Apiserver
 	in.Monitoring.DeepCopyInto(&out.Monitoring)
-	if in.Licenses != nil {
-		in, out := &in.Licenses, &out.Licenses
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	out.Nats = in.Nats
 }
 
