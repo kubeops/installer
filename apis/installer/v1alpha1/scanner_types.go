@@ -81,9 +81,9 @@ type ScannerSpec struct {
 	ServiceAccount     ServiceAccountSpec        `json:"serviceAccount"`
 	Apiserver          ApiserverSpec             `json:"apiserver"`
 	Monitoring         Monitoring                `json:"monitoring"`
+	Nats               ScannerNATS               `json:"nats"`
 	// +optional
-	Licenses map[string]string `json:"licenses"`
-	Nats     ScannerNATS       `json:"nats"`
+	License string `json:"license"`
 }
 
 type CacherContainer struct {
