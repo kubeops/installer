@@ -45,6 +45,10 @@ spec:
         - --audit-log-path=-
         - --tls-cert-file=/var/serving-cert/tls.crt
         - --tls-private-key-file=/var/serving-cert/tls.key
+        - --authorization-always-allow-paths=/healthz
+        - --authorization-always-allow-paths=/readyz
+        - --authorization-always-allow-paths=/livez
+        - --authorization-always-allow-paths=/metrics
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
     {{- with .Values.prometheus }}
       {{- with .address }}
@@ -80,6 +84,7 @@ spec:
     {{- end }}
         ports:
         - containerPort: 8443
+        - containerPort: 8081
         env:
         - name: POD_NAME
           valueFrom:

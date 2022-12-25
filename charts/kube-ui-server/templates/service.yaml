@@ -18,5 +18,8 @@ spec:
   - name: api
     port: 443
     targetPort: 8443
+  - name: telemetry
+    port: 8081
+    targetPort: 8081
   selector:
     {{- include "kube-ui-server.selectorLabels" . | nindent 4 }}

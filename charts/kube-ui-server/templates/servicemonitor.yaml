@@ -21,10 +21,18 @@ spec:
   - port: api
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     scheme: https
+    interval: 10s
+    relabelings:
+      - action: labeldrop
+        regex: (pod|service|endpoint)
     tlsConfig:
       ca:
         secret:
           name: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
           key: tls.crt
       serverName: "{{ include "kube-ui-server.fullname" . }}.{{ .Release.Namespace }}.svc"
+  - port: telemetry
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    scheme: http
+    interval: 10s
 {{- end }}
