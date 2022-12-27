@@ -90,7 +90,7 @@ apiserver:
     serverKey: ""
 monitoring:
   # Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")
-  agent: ""
+  agent: prometheus.io/operator
   serviceMonitor:
     # Specify the labels for ServiceMonitor.
     # Prometheus crd will select ServiceMonitor using these labels.
