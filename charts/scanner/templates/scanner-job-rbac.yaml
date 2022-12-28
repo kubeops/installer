@@ -1,25 +1,31 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "scanner.fullname" . }}-trivydb-reader
+  name: {{ include "scanner.fullname" . }}-job
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 rules:
 - nonResourceURLs: ["/files/db.tar.gz"]
   verbs: ["get"]
+- apiGroups:
+  - scanner.appscode.com
+  resources:
+  - imagescanreports
+  - cves
+  verbs: ["get", "list", "create", "patch", "update"]
 
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "scanner.fullname" . }}-trivydb-reader
+  name: {{ include "scanner.fullname" . }}-job
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "scanner.fullname" . }}-trivydb-reader
+  name: {{ include "scanner.fullname" . }}-job
 subjects:
 - kind: Group
   name: system:authenticated
