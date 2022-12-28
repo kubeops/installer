@@ -11,8 +11,13 @@ rules:
   - scanner.appscode.com
   resources:
   - imagescanreports
-  - cves
-  verbs: ["get", "list", "create", "patch", "update"]
+  - vulnerabilities
+  verbs: ["get", "create", "patch"]
+- apiGroups:
+  - scanner.appscode.com
+  resources:
+  - imagescanreports/status
+  verbs: ["patch"]
 
 ---
 
@@ -28,5 +33,5 @@ roleRef:
   name: {{ include "scanner.fullname" . }}-job
 subjects:
 - kind: Group
-  name: system:authenticated
+  name: system:serviceaccounts
   apiGroup: rbac.authorization.k8s.io
