@@ -133,6 +133,7 @@ spec:
         - containerPort: 2379
         - containerPort: 2380
         - containerPort: 2381
+      {{- if .Values.apiserver.healthcheck.enabled }}
         livenessProbe:
           failureThreshold: 8
           httpGet:
@@ -144,6 +145,7 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 15
+      {{- end }}
         resources:
           {{- toYaml .Values.etcd.resources | nindent 10 }}
         volumeMounts:
