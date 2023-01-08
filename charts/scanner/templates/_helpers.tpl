@@ -80,7 +80,7 @@ Returns the registry used for operator docker image
 Returns the registry used for etcd docker image
 */}}
 {{- define "etcd.registry" -}}
-{{- list .Values.registryFQDN .Values.etcd.registry | compact | join "/" }}
+{{- .Values.etcd.registry }}
 {{- end }}
 
 {{/*
