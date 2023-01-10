@@ -41,6 +41,10 @@ crd-importer \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.54.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
+crd-importer \
+    --input=https://github.com/open-viz/grafana-tools/raw/v0.0.1/crds/openviz.dev_grafanadashboards.yaml \
+    --out=./charts/scanner/crds
+
 {
     supervisor_dir=${1:-}/supervisor/crds
 

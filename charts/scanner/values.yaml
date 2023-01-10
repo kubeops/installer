@@ -159,6 +159,24 @@ monitoring:
     # Only usable when monitoring agent is `prometheus.io/operator`.
     labels: {}
 
+dashboard:
+  enabled: true
+  # ID of Grafana folder where these dashboards will be applied
+  folderID: 0
+  # If true, dashboard with matching uid will be overwritten
+  overwrite: true
+  templatize:
+    # If true, datasource will be prefixed to dashboard name
+    title: false
+    # If true, datasource will be hardcoded in the dashboard
+    datasource: true
+
+grafana:
+  # Name of Grafana Appbinding where these dashboards are applied
+  name: ""
+  # Namespace of Grafana Appbinding where these dashboards are applied
+  namespace: ""
+
 nats:
   addr: ""
   auth:

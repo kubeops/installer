@@ -81,9 +81,28 @@ type ScannerSpec struct {
 	ServiceAccount     ServiceAccountSpec        `json:"serviceAccount"`
 	Apiserver          ApiserverSpec             `json:"apiserver"`
 	Monitoring         Monitoring                `json:"monitoring"`
+	Dashboard          GrafanaDashboard          `json:"dashboard"`
+	Grafana            ObjectReference           `json:"grafana"`
 	Nats               ScannerNATS               `json:"nats"`
 	// +optional
 	License string `json:"license"`
+}
+
+type GrafanaDashboard struct {
+	Enabled    bool                `json:"enabled"`
+	FolderID   int                 `json:"folderID"`
+	Overwrite  bool                `json:"overwrite"`
+	Templatize DashboardTemplatize `json:"templatize"`
+}
+
+type DashboardTemplatize struct {
+	Title      bool `json:"title"`
+	Datasource bool `json:"datasource"`
+}
+
+type ObjectReference struct {
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
 }
 
 type CacherContainer struct {
