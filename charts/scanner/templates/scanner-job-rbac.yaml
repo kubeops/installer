@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 rules:
-- nonResourceURLs: ["/files/db.tar.gz"]
+- nonResourceURLs: ["/files/trivy/db.tar.gz"]
   verbs: ["get"]
 - apiGroups:
   - scanner.appscode.com
