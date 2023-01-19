@@ -19,7 +19,7 @@ crd-importer \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
-    --input=https://github.com/kubeops/external-dns-operator/raw/v0.0.1/crds/external-dns.appscode.com_externaldns.yaml \
+    --input=https://github.com/kubeops/external-dns-operator/raw/v0.0.4/crds/external-dns.appscode.com_externaldns.yaml \
     --out=./charts/external-dns-operator/crds
 
 crd-importer \
@@ -27,7 +27,8 @@ crd-importer \
     --out=./charts/sidekick/crds
 
 crd-importer \
-    --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/appcatalog.appscode.com_appbindings.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/appcatalog.appscode.com_appbindings.yaml \
+    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --input=https://github.com/fluxcd/source-controller/raw/v0.30.1/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
     --input=https://github.com/fluxcd/helm-controller/raw/v0.28.1/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_features.yaml \
@@ -37,8 +38,8 @@ crd-importer \
     --out=./charts/kube-ui-server/crds
 
 crd-importer \
-    --input=https://github.com/kmodules/custom-resources/raw/kubernetes-1.21.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.54.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
+    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
 crd-importer \
