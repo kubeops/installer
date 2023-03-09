@@ -1,0 +1,59 @@
+name: update-charts
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare Host
+        run: |
+          # install helm
+          curl -LO https://github.com/kubepack/helm/releases/download/ac-1.21.0/helm
+          chmod +x ./helm
+          sudo mv ./helm /usr/local/bin/helm
+          # install yq
+          curl -fsSL -o yqq https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_amd64
+          chmod +x yqq
+          sudo mv yqq /usr/local/bin/yqq
+          pip3 install yq
+
+      - name: Install uibuilder-tools
+        run: |
+          curl -fsSL -o uibuilder-tools https://github.com/kmodules/uibuilder-tools/releases/download/v0.0.1/uibuilder-tools-linux-amd64
+          chmod +x uibuilder-tools
+          sudo mv ./uibuilder-tools /usr/local/bin/uibuilder-tools
+
+      - name: Install GitHub CLI
+        run: |
+          curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
+          sudo mv bin/hub /usr/local/bin
+
+      - name: Prepare git
+        env:
+          GITHUB_USER: 1gtm
+          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+        run: |
+          echo $GITHUB_SERVER_URL
+          git config user.name "${GITHUB_USER}"
+          git config user.email "${GITHUB_USER}@appscode.com"
+          git remote set-url origin "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git remote -v
+
+      - name: Update charts
+        env:
+          GITHUB_USER: 1gtm
+          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+        run: |
+          ./hack/scripts/trigger.sh

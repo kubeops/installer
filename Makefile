@@ -229,6 +229,10 @@ update-charts: $(shell find $$(pwd)/charts -maxdepth 1 -mindepth 1 -type d -prin
 chart-%:
 	@$(MAKE) contents-$* gen-chart-doc-$* --no-print-directory
 
+.PHONY: update-chart-repo
+update-chart-repo:
+	GIT_BRANCH=$(git_branch) ./hack/scripts/update-repo.sh
+
 contents-%:
 	@yq -y --indentless -i '.repository.name="$(CHART_REGISTRY)"' ./charts/$*/doc.yaml
 	@yq -y --indentless -i '.repository.url="$(CHART_REGISTRY_URL)"' ./charts/$*/doc.yaml
