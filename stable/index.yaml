@@ -3,9 +3,9 @@ entries:
   auditor:
   - apiVersion: v1
     appVersion: v0.0.1
-    created: "2023-03-09T20:20:27.690863-08:00"
+    created: "2023-03-10T04:22:02.375327963Z"
     description: Kubernetes Auditor by AppsCode
-    digest: 355b2a69f6e815c47ce44d3ef5d4e7b291d19192b7fb17bfc6203fb4317145c4
+    digest: a0adc2b23494e7ec5ee3ecee317c8b6fe7a582fb1f86724b3856857c00e5094c
     home: https://github.com/kubeops/auditor
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -20,9 +20,9 @@ entries:
   cert-manager-csi-driver-cacerts:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-03-09T20:20:27.691202-08:00"
+    created: "2023-03-10T04:22:02.375986059Z"
     description: A Helm chart for cert-manager-csi-driver-cacerts
-    digest: 6f06d9eb284426ee3525a09e601254868abe804c8e1ccfa3eb59889e96ac83e6
+    digest: 5ba908c5e828d22074c656143ba2a53aca8c1397b8c9b89cf8a651cd69c83190
     home: https://github.com/kubeops/csi-driver-cacerts
     icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
     maintainers:
@@ -38,9 +38,9 @@ entries:
   cluster-connector:
   - apiVersion: v2
     appVersion: v0.0.3
-    created: "2023-03-09T20:20:27.691596-08:00"
+    created: "2023-03-10T04:22:02.376789954Z"
     description: A Helm chart for cluster-connector
-    digest: 3900c91896eea06ff00ea972616e76a28477f518c9083d1f21c7aa7b292ca452
+    digest: e11b90029c821b2aa52927c17e1a80a14723869d536eec49248fd6191ff4ed07
     home: https://github.com/kubeops/cluster-connector
     icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
     maintainers:
@@ -56,9 +56,9 @@ entries:
   external-dns-operator:
   - apiVersion: v2
     appVersion: v0.0.4
-    created: "2023-03-09T20:20:27.69206-08:00"
+    created: "2023-03-10T04:22:02.377767548Z"
     description: A Helm chart for External DNS Operator by AppsCode
-    digest: a28170cba78b0e4812645d2aed0fd3bd3fd3fd9d7e3a5f72f20cc3a2aca1f5db
+    digest: 1f12361446fc6d369ffb2766f1b7b4007fa31b36637700e7207ec109011f9916
     home: https://github.com/kubeops/external-dns-operator
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -74,9 +74,9 @@ entries:
   kube-ui-server:
   - apiVersion: v2
     appVersion: v0.0.13
-    created: "2023-03-09T20:20:27.692781-08:00"
+    created: "2023-03-10T04:22:02.380478732Z"
     description: A Helm chart for kube-ui-server by AppsCode
-    digest: 9379a65de9832592b09059cb7f1fe3c75cfb4851ecac5b5309b3d56b656fddc9
+    digest: 7db27686d834f6f0dd8a1053ce141e0ca5691578e8cf9b7db539d47c2d5ffbd5
     home: https://github.com/kubeops/kube-ui-server
     icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
     maintainers:
@@ -92,9 +92,9 @@ entries:
   panopticon:
   - apiVersion: v1
     appVersion: v0.0.7
-    created: "2023-03-09T20:20:27.693582-08:00"
+    created: "2023-03-10T04:22:02.382163722Z"
     description: Kubernetes Panopticon by AppsCode
-    digest: b349ab7acb8f70510c8204fd241959d560965f2d5a1fd26b41b79f34f4608ec2
+    digest: 0682f8a0939568678d6d6f7828eb18bef003b04d6c861373ff1d2f084a2dbc3c
     home: https://github.com/kubeops/panopticon
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -109,9 +109,9 @@ entries:
   scanner:
   - apiVersion: v1
     appVersion: v0.0.5
-    created: "2023-03-09T20:20:27.694733-08:00"
+    created: "2023-03-10T04:22:02.38418941Z"
     description: Docker Image Scanner by AppsCode
-    digest: 19cb53945f1e15ffe9bc3258ff3d5b1dcf15bbb0ff896596f3dd0ee923a36718
+    digest: c5b44b050f52e48db8e3c47c23848ca2891f9d0b09e77b0be7e2882d7ce75118
     home: https://github.com/kubeops/scanner
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -126,9 +126,9 @@ entries:
   sidekick:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-03-09T20:20:27.696143-08:00"
+    created: "2023-03-10T04:22:02.386566896Z"
     description: A Helm chart for Sidekick Operator by AppsCode
-    digest: a8fe9d26a429416dc389be206dbcfe4586c190274ccdb873f5b3dcb892338691
+    digest: 74bebcbd0615bbedbd82bdb9dd1cdf05d86fb3f2dbeb194ceb8137e570c1e951
     home: https://github.com/kubeops/sidekick
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -144,9 +144,9 @@ entries:
   supervisor:
   - apiVersion: v2
     appVersion: v0.0.2
-    created: "2023-03-09T20:20:27.696755-08:00"
+    created: "2023-03-10T04:22:02.388249186Z"
     description: A Helm chart for Supervisor by AppsCode
-    digest: f55df232a1bbbe4e53f30dfdc25262a19d3cf526140d1922f9136eadd5a304f5
+    digest: e1935a3efda58f845293e7e15f3ca2bc2daf5163c8692eb27682a32cbc737937
     home: https://github.com/kubeops/supervisor
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -159,4 +159,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/kubeops/installer/master/stable/supervisor/supervisor-v2022.06.14.tgz
     version: v2022.06.14
-generated: "2023-03-09T20:20:27.689118-08:00"
+generated: "2023-03-10T04:22:02.373974171Z"
