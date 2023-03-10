@@ -239,6 +239,10 @@ contents-%:
 		yq -y --indentless -i '.appVersion="$(APP_VERSION)"' ./charts/$*/Chart.yaml; \
 	fi
 
+.PHONY: update-local-repo
+update-local-repo:
+	GIT_BRANCH=$(git_branch) ./hack/scripts/update-local-repo.sh
+
 fmt: $(BUILD_DIRS)
 	@docker run                                                 \
 	    -i                                                      \
