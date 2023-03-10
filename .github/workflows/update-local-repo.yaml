@@ -1,4 +1,4 @@
-name: update-charts
+name: update-local-repo
 
 on:
   push:
