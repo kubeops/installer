@@ -29,6 +29,7 @@ trap cleanup EXIT
 
 CHARTS_DIR=charts
 TMP_DIR="${SCRIPT_ROOT}/tmp"
+GIT_BRANCH=${GIT_BRANCH:-master}
 
 REPO_DIR=${REPO_DIR:-stable}
 REPO_URL=https://raw.githubusercontent.com/kubeops/installer/${GIT_BRANCH}/${REPO_DIR}/

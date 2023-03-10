@@ -3,9 +3,9 @@ entries:
   auditor:
   - apiVersion: v1
     appVersion: v0.0.1
-    created: "2023-03-09T10:47:25.291158693+06:00"
+    created: "2023-03-09T20:20:27.690863-08:00"
     description: Kubernetes Auditor by AppsCode
-    digest: c0330e8ff78816330aa29c28f60ca6111331736994cdff118f08e2e25438e44f
+    digest: 355b2a69f6e815c47ce44d3ef5d4e7b291d19192b7fb17bfc6203fb4317145c4
     home: https://github.com/kubeops/auditor
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -15,14 +15,14 @@ entries:
     sources:
     - https://github.com/kubeops/auditor
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/auditor/auditor-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/auditor/auditor-v2022.06.14.tgz
     version: v2022.06.14
   cert-manager-csi-driver-cacerts:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-03-09T10:47:25.292121805+06:00"
+    created: "2023-03-09T20:20:27.691202-08:00"
     description: A Helm chart for cert-manager-csi-driver-cacerts
-    digest: 9cdd9c59b6b32c46967e6138a08357bda330bcb32dad43575d6fdcf33e92f217
+    digest: 6f06d9eb284426ee3525a09e601254868abe804c8e1ccfa3eb59889e96ac83e6
     home: https://github.com/kubeops/csi-driver-cacerts
     icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
     maintainers:
@@ -33,14 +33,14 @@ entries:
     - https://github.com/kubeops/csi-driver-cacerts
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/cert-manager-csi-driver-cacerts/cert-manager-csi-driver-cacerts-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cert-manager-csi-driver-cacerts/cert-manager-csi-driver-cacerts-v2022.06.14.tgz
     version: v2022.06.14
   cluster-connector:
   - apiVersion: v2
     appVersion: v0.0.3
-    created: "2023-03-09T10:47:25.29264328+06:00"
+    created: "2023-03-09T20:20:27.691596-08:00"
     description: A Helm chart for cluster-connector
-    digest: 37f3cefd6686b60212078ce6b032d64586d66adba3daba9680f06185d9ac943a
+    digest: 3900c91896eea06ff00ea972616e76a28477f518c9083d1f21c7aa7b292ca452
     home: https://github.com/kubeops/cluster-connector
     icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
     maintainers:
@@ -51,14 +51,14 @@ entries:
     - https://github.com/kubeops/cluster-connector
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/cluster-connector/cluster-connector-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cluster-connector/cluster-connector-v2022.06.14.tgz
     version: v2022.06.14
   external-dns-operator:
   - apiVersion: v2
-    appVersion: v0.0.3
-    created: "2023-03-09T10:47:25.293198549+06:00"
+    appVersion: v0.0.4
+    created: "2023-03-09T20:20:27.69206-08:00"
     description: A Helm chart for External DNS Operator by AppsCode
-    digest: 2d16e559ff6a31c113238d477f02858a3b9a708102a4cd71042801bdfc03817f
+    digest: a28170cba78b0e4812645d2aed0fd3bd3fd3fd9d7e3a5f72f20cc3a2aca1f5db
     home: https://github.com/kubeops/external-dns-operator
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -69,14 +69,14 @@ entries:
     - https://github.com/kubeops/external-dns-operator
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/external-dns-operator/external-dns-operator-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/external-dns-operator/external-dns-operator-v2022.06.14.tgz
     version: v2022.06.14
   kube-ui-server:
   - apiVersion: v2
     appVersion: v0.0.13
-    created: "2023-03-09T10:47:25.294051516+06:00"
+    created: "2023-03-09T20:20:27.692781-08:00"
     description: A Helm chart for kube-ui-server by AppsCode
-    digest: e63d9c2e636251bd81bfee0b769cdda423ceb5f0e07473241b9b8d3d453042da
+    digest: 9379a65de9832592b09059cb7f1fe3c75cfb4851ecac5b5309b3d56b656fddc9
     home: https://github.com/kubeops/kube-ui-server
     icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
     maintainers:
@@ -87,14 +87,14 @@ entries:
     - https://github.com/kubeops/kube-ui-server
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/kube-ui-server/kube-ui-server-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/kube-ui-server/kube-ui-server-v2022.06.14.tgz
     version: v2022.06.14
   panopticon:
   - apiVersion: v1
-    appVersion: v0.0.6
-    created: "2023-03-09T10:47:25.294953097+06:00"
+    appVersion: v0.0.7
+    created: "2023-03-09T20:20:27.693582-08:00"
     description: Kubernetes Panopticon by AppsCode
-    digest: 832fdb28563819b8f438033425cd11bacc3204d09de18735cdb325bca61d0a6d
+    digest: b349ab7acb8f70510c8204fd241959d560965f2d5a1fd26b41b79f34f4608ec2
     home: https://github.com/kubeops/panopticon
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -104,14 +104,14 @@ entries:
     sources:
     - https://github.com/kubeops/panopticon
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/panopticon/panopticon-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/panopticon/panopticon-v2022.06.14.tgz
     version: v2022.06.14
   scanner:
   - apiVersion: v1
     appVersion: v0.0.5
-    created: "2023-03-09T10:47:25.296149317+06:00"
+    created: "2023-03-09T20:20:27.694733-08:00"
     description: Docker Image Scanner by AppsCode
-    digest: 937fdab1073b3ff61a5f07c1911e384b5abe9bdcf4ef30288e34fe83b908e8ad
+    digest: 19cb53945f1e15ffe9bc3258ff3d5b1dcf15bbb0ff896596f3dd0ee923a36718
     home: https://github.com/kubeops/scanner
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -121,14 +121,14 @@ entries:
     sources:
     - https://github.com/kubeops/scanner
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/scanner/scanner-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/scanner/scanner-v2022.06.14.tgz
     version: v2022.06.14
   sidekick:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-03-09T10:47:25.297873249+06:00"
+    created: "2023-03-09T20:20:27.696143-08:00"
     description: A Helm chart for Sidekick Operator by AppsCode
-    digest: 4a14ba15c49c77a9004408f2a56b2d18b729f1d43d56f82123249c32f6955d01
+    digest: a8fe9d26a429416dc389be206dbcfe4586c190274ccdb873f5b3dcb892338691
     home: https://github.com/kubeops/sidekick
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -139,14 +139,14 @@ entries:
     - https://github.com/kubeops/sidekick
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/sidekick/sidekick-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/sidekick/sidekick-v2022.06.14.tgz
     version: v2022.06.14
   supervisor:
   - apiVersion: v2
     appVersion: v0.0.2
-    created: "2023-03-09T10:47:25.298626642+06:00"
+    created: "2023-03-09T20:20:27.696755-08:00"
     description: A Helm chart for Supervisor by AppsCode
-    digest: e34d60d5ccee9bdee3d0d5a53ba707f19d9a54a1675e3f6dacf8cd6942703038
+    digest: f55df232a1bbbe4e53f30dfdc25262a19d3cf526140d1922f9136eadd5a304f5
     home: https://github.com/kubeops/supervisor
     icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
     maintainers:
@@ -157,6 +157,6 @@ entries:
     - https://github.com/kubeops/supervisor
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/update-charts/stable/supervisor/supervisor-v2022.06.14.tgz
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/supervisor/supervisor-v2022.06.14.tgz
     version: v2022.06.14
-generated: "2023-03-09T10:47:25.290441565+06:00"
+generated: "2023-03-09T20:20:27.689118-08:00"
