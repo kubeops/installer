@@ -7,11 +7,12 @@ on:
   push:
     branches:
       - master
-
   workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
+
 jobs:
   build:
     name: Build
@@ -36,7 +37,7 @@ jobs:
           sudo mv yqq /usr/local/bin/yqq
           pip3 install yq
           # install kubectl
-          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.21.1/bin/linux/amd64/kubectl
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.24.0/bin/linux/amd64/kubectl
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
@@ -99,8 +100,7 @@ jobs:
 
       - name: Install cert-manager
         run: |
-          kubectl create namespace cert-manager
-          kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
+          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
 
       - name: Test charts
         run: |
