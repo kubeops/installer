@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/cert-manager-csi-driver-cacerts --version=v2022.06.14
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2022.06.14
+$ helm search repo appscode/cert-manager-csi-driver-cacerts --version=v2023.03.23
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2023.03.23
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a CSI driver on a [Kubernetes](http://kubernetes.io) cluster 
 To install/upgrade the chart with the release name `cert-manager-csi-driver-cacerts`:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2022.06.14
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2023.03.23
 ```
 
 The command deploys a CSI driver on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -80,12 +80,12 @@ The following table lists the configurable parameters of the `cert-manager-csi-d
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2022.06.14 --set app.logLevel=2 # 1-5
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2023.03.23 --set app.logLevel=2 # 1-5
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2022.06.14 --values values.yaml
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2023.03.23 --values values.yaml
 ```
