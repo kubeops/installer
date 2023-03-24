@@ -51,7 +51,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        k8s: [v1.20.15, v1.21.14, v1.22.15, v1.23.13, v1.24.7, v1.25.3, v1.26.0]
+        k8s: [v1.21.14, v1.22.15, v1.23.13, v1.24.7, v1.25.3, v1.26.0]
     steps:
       - uses: actions/checkout@v1
 
@@ -85,17 +85,18 @@ jobs:
       - name: Issue License
         env:
           BYTEBUILDERS_LICENSE_TOKEN: ${{ secrets.BYTEBUILDERS_LICENSE_TOKEN }}
+          THIS_IS_NATS_PASSWORD: ${{ secrets.THIS_IS_NATS_PASSWORD }}
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
           CLUSTER_UID=$(kubectl get ns kube-system -o=jsonpath='{.metadata.uid}')
-          echo "issuing auditor license"
-          LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=auditor-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
+          echo "issuing license"
+          LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=platform-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
           # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
           yqq w -i ./charts/auditor/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
-          echo "issuing panopticon license"
-          LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=panopticon-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
-          # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
           yqq w -i ./charts/panopticon/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
+          yqq w -i ./charts/scanner/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
+          yqq w -i ./charts/scanner/ci/ci-values.yaml nats.auth.password --tag '!!str' -- "${THIS_IS_NATS_PASSWORD}"
+          # configure cluster-connector
           yqq w -i ./charts/cluster-connector/ci/ci-values.yaml user.token --tag '!!str' -- "${BYTEBUILDERS_LICENSE_TOKEN}"
 
       - name: Install cert-manager
