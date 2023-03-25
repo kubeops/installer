@@ -17,7 +17,7 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 
 ## Prerequisites
 
-- Kubernetes 1.16+
+- Kubernetes 1.21+
 
 ## Installing the Chart
 

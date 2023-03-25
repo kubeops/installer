@@ -17,7 +17,7 @@ This chart deploys a Supervisor on a [Kubernetes](http://kubernetes.io) cluster 
 
 ## Prerequisites
 
-- Kubernetes 1.16+
+- Kubernetes 1.21+
 
 ## Installing the Chart
 
