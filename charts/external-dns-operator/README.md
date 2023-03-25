@@ -17,7 +17,7 @@ This chart deploys an External DNS Operator on a [Kubernetes](http://kubernetes.
 
 ## Prerequisites
 
-- Kubernetes 1.16+
+- Kubernetes 1.21+
 
 ## Installing the Chart
 

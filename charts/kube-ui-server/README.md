@@ -17,7 +17,7 @@ This chart deploys a Kubernetes UI Server on a [Kubernetes](http://kubernetes.io
 
 ## Prerequisites
 
-- Kubernetes 1.16+
+- Kubernetes 1.21+
 
 ## Installing the Chart
 

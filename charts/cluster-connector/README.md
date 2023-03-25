@@ -17,7 +17,7 @@ This chart deploys a Kubernetes Cluster Connector on a [Kubernetes](http://kuber
 
 ## Prerequisites
 
-- Kubernetes 1.16+
+- Kubernetes 1.21+
 
 ## Installing the Chart
 
