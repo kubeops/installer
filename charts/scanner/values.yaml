@@ -73,7 +73,7 @@ cacher:
   # Name of cacher container image
   repository: trivydb
   # Operator container image tag
-  tag: 0.0.1
+  tag: 0.0.2
   # Compute Resources required by the cacher container
   resources: {}
   # Security options the cacher container should run with
