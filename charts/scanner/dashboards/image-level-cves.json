@@ -249,7 +249,7 @@
           "query": "label_values(scanner_appscode_com_image_cve_occurrence_total{},image)",
           "refId": "StandardVariableQuery"
         },
-        "refresh": 0,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
