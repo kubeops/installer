@@ -78,6 +78,11 @@ type KubeUiServerSpec struct {
 	Apiserver          ApiserverSpec            `json:"apiserver"`
 	Monitoring         Monitoring               `json:"monitoring"`
 	Prometheus         PrometheusConfig         `json:"prometheus"`
+	HelmRepositories   HelmRepositories         `json:"helmRepositories"`
+}
+
+type HelmRepositories struct {
+	Create bool `json:"create"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

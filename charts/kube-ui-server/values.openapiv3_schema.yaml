@@ -793,6 +793,13 @@ properties:
     type: boolean
   fullnameOverride:
     type: string
+  helmRepositories:
+    properties:
+      create:
+        type: boolean
+    required:
+    - create
+    type: object
   image:
     properties:
       registry:
@@ -1269,6 +1276,7 @@ properties:
     type: array
 required:
 - apiserver
+- helmRepositories
 - image
 - imagePullPolicy
 - monitoring
