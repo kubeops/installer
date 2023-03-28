@@ -38,12 +38,16 @@ crd-importer \
     --out=./charts/kube-ui-server/crds
 
 crd-importer \
+    --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
+    --out=./charts/policy-grafana-dashboards/crds
+
+crd-importer \
     --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
 crd-importer \
-    --input=https://github.com/open-viz/apimachinery/raw/v0.0.4/crds/openviz.dev_grafanadashboards.yaml \
+    --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
     --out=./charts/scanner/crds
 
 {
