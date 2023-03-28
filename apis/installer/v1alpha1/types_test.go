@@ -32,6 +32,7 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.ExternalDnsOperatorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.KubeUiServerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PanopticonSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.PolicyGrafanaDashboardsSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SidekickSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
 	)
