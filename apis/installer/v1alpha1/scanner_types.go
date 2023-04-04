@@ -47,13 +47,13 @@ type ScannerSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
-	FullnameOverride string    `json:"fullnameOverride"`
-	ReplicaCount     int32     `json:"replicaCount"`
-	RegistryFQDN     string    `json:"registryFQDN"`
-	App              Container `json:"app"`
-	Etcd             Container `json:"etcd"`
-	Cacher           Container `json:"cacher"`
-	ImagePullPolicy  string    `json:"imagePullPolicy"`
+	FullnameOverride string          `json:"fullnameOverride"`
+	ReplicaCount     int32           `json:"replicaCount"`
+	RegistryFQDN     string          `json:"registryFQDN"`
+	App              Container       `json:"app"`
+	Etcd             Container       `json:"etcd"`
+	Cacher           CacherContainer `json:"cacher"`
+	ImagePullPolicy  string          `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional

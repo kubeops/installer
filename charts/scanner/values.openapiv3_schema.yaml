@@ -979,6 +979,8 @@ properties:
     type: object
   cacher:
     properties:
+      enable:
+        type: boolean
       registry:
         type: string
       repository:
@@ -1009,6 +1011,8 @@ properties:
               value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
             type: object
         type: object
+      schedule:
+        type: string
       securityContext:
         description: Security options the pod should run with.
         properties:
@@ -1161,8 +1165,10 @@ properties:
       tag:
         type: string
     required:
+    - enable
     - registry
     - repository
+    - schedule
     - tag
     type: object
   criticalAddon:
