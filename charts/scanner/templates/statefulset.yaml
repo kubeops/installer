@@ -52,6 +52,7 @@ spec:
         - --etcd-certfile=/etc/pki/etcd/tls.crt
         - --etcd-keyfile=/etc/pki/etcd/tls.key
         - --scanner-image={{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
+        - --garbage-collection-period={{ .Values.garbageCollectionPeriod }}
         - --trivydb-cacher-image={{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
         - --file-server-addr=https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
         - --scan-public-image-incluster={{ ternary "false" "true" .Values.cacher.enable }}

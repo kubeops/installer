@@ -26,7 +26,7 @@ spec:
           {{- include "appscode.imagePullSecrets" . | nindent 10 }}
           serviceAccountName: {{ include "scanner.serviceAccountName" . }}
           automountServiceAccountToken: true
-          containers:
+          initContainers:
           - name: cacher
             securityContext:
               {{- toYaml .Values.cacher.securityContext | nindent 14 }}
@@ -42,6 +42,19 @@ spec:
             volumeMounts:
             - mountPath: /var/serving-cert
               name: serving-cert
+          containers:
+          - name: extractor
+            securityContext:
+              {{- toYaml .Values.cacher.extractor.securityContext | nindent 14 }}
+            image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
+            imagePullPolicy: {{ .Values.imagePullPolicy  }}
+            command:
+            - /scripts/extract.sh
+            env:
+            - name: FILESERVER_ADDR
+              value: https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
+            resources:
+              {{- toYaml .Values.cacher.extractor.resources | nindent 14 }}
           restartPolicy: Never # OnFailure
           volumes:
           - name: serving-cert
