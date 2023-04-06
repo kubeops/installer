@@ -979,6 +979,8 @@ properties:
     type: object
   cacher:
     properties:
+      enable:
+        type: boolean
       registry:
         type: string
       repository:
@@ -1009,6 +1011,8 @@ properties:
               value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
             type: object
         type: object
+      schedule:
+        type: string
       securityContext:
         description: Security options the pod should run with.
         properties:
@@ -1161,8 +1165,10 @@ properties:
       tag:
         type: string
     required:
+    - enable
     - registry
     - repository
+    - schedule
     - tag
     type: object
   criticalAddon:
@@ -1372,11 +1378,25 @@ properties:
                 type: string
             type: object
         type: object
+      servingCerts:
+        properties:
+          caCrt:
+            type: string
+          generate:
+            type: boolean
+          serverCrt:
+            type: string
+          serverKey:
+            type: string
+        required:
+        - generate
+        type: object
       tag:
         type: string
     required:
     - registry
     - repository
+    - servingCerts
     - tag
     type: object
   fullnameOverride:
@@ -1624,15 +1644,12 @@ properties:
     - create
     type: object
   storageClass:
-    description: LocalObjectReference contains enough information to let you locate
-      the referenced object inside the same namespace.
     properties:
       name:
-        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-          TODO: Add other useful fields. apiVersion, kind, uid?'
         type: string
+    required:
+    - name
     type: object
-    x-kubernetes-map-type: atomic
   tolerations:
     description: If specified, the pod's tolerations.
     items:
