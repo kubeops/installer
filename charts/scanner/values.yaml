@@ -186,4 +186,4 @@ nats:
     username: ""
     password: ""
 
-garbageCollectionPeriod: 24h
+garbageCollectionPeriod: 12h0m0s

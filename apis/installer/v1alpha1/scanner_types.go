@@ -86,6 +86,9 @@ type ScannerSpec struct {
 	Nats               ScannerNATS              `json:"nats"`
 	// +optional
 	License string `json:"license"`
+
+	// +optional
+	GarbageCollectionPeriod metav1.Duration `json:"garbageCollectionPeriod"`
 }
 
 type GrafanaDashboard struct {
@@ -118,6 +121,14 @@ type CacherContainer struct {
 	Container `json:",inline,omitempty"`
 	Enable    bool   `json:"enable"`
 	Schedule  string `json:"schedule"`
+	Extractor `json:"extractor,omitempty"`
+}
+
+type Extractor struct {
+	// +optional
+	Resources core.ResourceRequirements `json:"resources"`
+	// +optional
+	SecurityContext *core.SecurityContext `json:"securityContext"`
 }
 
 type Persistence struct {
