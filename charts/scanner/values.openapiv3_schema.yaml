@@ -1630,6 +1630,8 @@ properties:
   replicaCount:
     format: int32
     type: integer
+  scanRequestTTLAfterFinished:
+    type: string
   serviceAccount:
     properties:
       annotations:

@@ -182,3 +182,5 @@ nats:
   auth:
     username: ""
     password: ""
+
+scanRequestTTLAfterFinished: 2h0m0s
