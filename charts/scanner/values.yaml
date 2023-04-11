@@ -84,9 +84,6 @@ cacher:
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-  extractor:
-    resources: {}
-    securityContext: {}
 
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
@@ -186,4 +183,4 @@ nats:
     username: ""
     password: ""
 
-garbageCollectionPeriod: 12h0m0s
+scanRequestTTLAfterFinished: 12h0m0s
