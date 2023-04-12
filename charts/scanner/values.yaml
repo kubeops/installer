@@ -184,3 +184,4 @@ nats:
     password: ""
 
 scanRequestTTLAfterFinished: 2h0m0s
+scanReportTTLAfterOutdated: 168h0m0s

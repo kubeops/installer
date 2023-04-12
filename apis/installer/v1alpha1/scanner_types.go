@@ -89,6 +89,7 @@ type ScannerSpec struct {
 
 	// +optional
 	ScanRequestTTLAfterFinished metav1.Duration `json:"scanRequestTTLAfterFinished"`
+	ScanReportTTLAfterOutdated  metav1.Duration `json:"scanReportTTLAfterOutdated"`
 }
 
 type GrafanaDashboard struct {
