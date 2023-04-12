@@ -1630,6 +1630,8 @@ properties:
   replicaCount:
     format: int32
     type: integer
+  scanReportTTLAfterOutdated:
+    type: string
   scanRequestTTLAfterFinished:
     type: string
   serviceAccount:
@@ -1702,6 +1704,7 @@ required:
 - persistence
 - registryFQDN
 - replicaCount
+- scanReportTTLAfterOutdated
 - serviceAccount
 - storageClass
 type: object
