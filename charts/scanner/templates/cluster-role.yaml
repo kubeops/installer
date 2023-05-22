@@ -34,6 +34,11 @@ rules:
   - pods
   verbs: ["get", "list", "watch", "create", "delete"]
 - apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs: ["get", "list", "watch"]
+- apiGroups:
   - batch
   resources:
   - cronjobs
