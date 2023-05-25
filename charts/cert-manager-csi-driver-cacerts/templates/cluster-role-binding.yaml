@@ -11,5 +11,5 @@ roleRef:
   name: {{ include "cert-manager-csi-driver-cacerts.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "cert-manager-csi-driver-cacerts.fullname" . }}
+  name: {{ include "cert-manager-csi-driver-cacerts.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}

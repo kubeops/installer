@@ -23,7 +23,7 @@ spec:
         {{- include "cert-manager-csi-driver-cacerts.selectorLabels" . | nindent 8 }}
     spec:
       {{- include "appscode.imagePullSecrets" . | nindent 6 }}
-      serviceAccountName: {{ include "cert-manager-csi-driver-cacerts.name" . }}
+      serviceAccountName: {{ include "cert-manager-csi-driver-cacerts.serviceAccountName" . }}
       containers:
 
         - name: node-driver-registrar
