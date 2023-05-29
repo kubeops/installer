@@ -42,7 +42,7 @@ if [ -n "$TARGETS" ]; then
 fi
 
 echo "Running shfmt:"
-cmd="find . -path ./vendor -prune -o -name '*.sh' -exec shfmt -l -w -ci -i 4 {} \;"
+cmd="find . -type d \( -path ./vendor -o -path ./charts/gatekeeper-library/library \) -prune -o -name '*.sh' -exec shfmt -l -w -ci -i 4 {} \;"
 echo "$cmd"
 eval "$cmd" # xref: https://stackoverflow.com/a/5615748/244009
 echo

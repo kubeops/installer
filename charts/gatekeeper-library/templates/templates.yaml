@@ -1,0 +1,10 @@
+{{- if eq .Values.enable "templates" -}}
+{{- range $path, $content :=  .Files.Glob "library/**/**.yaml" -}}
+{{- $obj := toString $content | fromYaml -}}
+{{- if eq (dig "kind" "" $obj) "ConstraintTemplate" -}}
+# {{ $path }}
+{{ toString $content }}
+---
+{{ end -}}
+{{- end -}}
+{{- end -}}

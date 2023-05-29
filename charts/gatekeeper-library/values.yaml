@@ -1,0 +1,13 @@
+# Default values for gatekeeper-library.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+enable: "templates" # "constraints"
+
+enableConstraints: {}
+  # VerifyDeprecatedAPI:
+  #   verify-1.27: false
+  #   verify-1.29: false

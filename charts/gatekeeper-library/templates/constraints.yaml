@@ -1,0 +1,12 @@
+{{- if eq .Values.enable "constraints" -}}
+{{- range $path, $content :=  .Files.Glob "library/**/**.yaml" -}}
+{{- $obj := toString $content | fromYaml -}}
+{{- $kind := dig "kind" "" $obj -}}
+{{- $name := dig "metadata" "name" "" $obj -}}
+{{- if and (eq (dig "apiVersion" "" $obj) "constraints.gatekeeper.sh/v1beta1") (dig $kind $name true $.Values.enableConstraints) -}}
+# {{ $path }}
+{{ toString $content }}
+---
+{{ end -}}
+{{- end -}}
+{{- end -}}
