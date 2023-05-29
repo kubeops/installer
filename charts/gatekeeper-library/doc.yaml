@@ -1,0 +1,18 @@
+project:
+  name: OPA Gatekeeper Library
+  shortName: Gatekeeper Library
+  url: https://github.com/open-policy-agent/gatekeeper-library
+  description: OPA Gatekeeper Library for ByteBuilders
+  app: OPA Gatekeeper Library
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: gatekeeper-library
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.21+
+release:
+  name: gatekeeper-library
+  namespace: kubeops

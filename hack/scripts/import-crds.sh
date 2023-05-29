@@ -23,6 +23,10 @@ crd-importer \
     --out=./charts/external-dns-operator/crds
 
 crd-importer \
+    --input=https://github.com/open-policy-agent/gatekeeper/raw/master/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
+    --out=./charts/gatekeeper-library/crds
+
+crd-importer \
     --input=https://github.com/kubeops/sidekick/raw/v0.0.1/crds/apps.k8s.appscode.com_sidekicks.yaml \
     --out=./charts/sidekick/crds
 
