@@ -1,18 +1,18 @@
 project:
-  name: Kubernetes UI Server by AppsCode
-  shortName: Kubernetes UI Server
+  name: Gatekeeper Grafana Dashboards by AppsCode
+  shortName: Gatekeeper Grafana Dashboards
   url: https://github.com/kubeops/ui-server
-  description: Kubernetes UI Server for ByteBuilders
-  app: a Kubernetes UI Server
+  description: Gatekeeper Grafana Dashboards for ByteBuilders
+  app: Gatekeeper Grafana Dashboards
 repository:
   url: https://charts.appscode.com/stable/
   name: appscode
 chart:
-  name: policy-grafana-dashboards
+  name: gatekeeper-grafana-dashboards
   values: -- generate from values file --
   valuesExample: -- generate from values file --
 prerequisites:
 - Kubernetes 1.21+
 release:
-  name: policy-grafana-dashboards
+  name: gatekeeper-grafana-dashboards
   namespace: kubeops

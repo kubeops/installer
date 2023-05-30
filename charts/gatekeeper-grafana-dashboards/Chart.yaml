@@ -1,13 +1,13 @@
 apiVersion: v2
-name: policy-grafana-dashboards
-description: A Helm chart for policy-grafana-dashboards by AppsCode
+name: gatekeeper-grafana-dashboards
+description: A Helm chart for Gatekeeper Grafana Dashboards
 type: application
 version: v2023.03.23
 appVersion: v2023.03.23
-home: https://github.com/kubeops/policy-grafana-dashboards
+home: https://github.com/appscode/grafana-dashboards
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
 sources:
-- https://github.com/kubeops/policy-grafana-dashboards
+- https://github.com/kubeops/installer
 maintainers:
 - name: appscode
   email: support@appscode.com

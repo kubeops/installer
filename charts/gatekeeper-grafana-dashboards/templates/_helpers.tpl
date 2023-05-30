@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "policy-grafana-dashboards.name" -}}
+{{- define "gatekeeper-grafana-dashboards.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "policy-grafana-dashboards.fullname" -}}
+{{- define "gatekeeper-grafana-dashboards.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "policy-grafana-dashboards.chart" -}}
+{{- define "gatekeeper-grafana-dashboards.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "policy-grafana-dashboards.labels" -}}
-helm.sh/chart: {{ include "policy-grafana-dashboards.chart" . }}
-{{ include "policy-grafana-dashboards.selectorLabels" . }}
+{{- define "gatekeeper-grafana-dashboards.labels" -}}
+helm.sh/chart: {{ include "gatekeeper-grafana-dashboards.chart" . }}
+{{ include "gatekeeper-grafana-dashboards.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "policy-grafana-dashboards.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "policy-grafana-dashboards.name" . }}
+{{- define "gatekeeper-grafana-dashboards.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "gatekeeper-grafana-dashboards.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "policy-grafana-dashboards.serviceAccountName" -}}
+{{- define "gatekeeper-grafana-dashboards.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "policy-grafana-dashboards.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "gatekeeper-grafana-dashboards.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

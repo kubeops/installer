@@ -21,12 +21,12 @@ import (
 )
 
 const (
-	ResourceKindPolicyGrafanaDashboards = "PolicyGrafanaDashboards"
-	ResourcePolicyGrafanaDashboards     = "policygrafanadashboards"
-	ResourcePolicyGrafanaDashboardss    = "policygrafanadashboardss"
+	ResourceKindGatekeeperGrafanaDashboards = "GatekeeperGrafanaDashboards"
+	ResourceGatekeeperGrafanaDashboards     = "gatekeepergrafanadashboards"
+	ResourceGatekeeperGrafanaDashboardss    = "gatekeepergrafanadashboardss"
 )
 
-// PolicyGrafanaDashboards defines the schama for ui server installer.
+// GatekeeperGrafanaDashboards defines the schama for ui server installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -34,15 +34,15 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=policygrafanadashboardss,singular=policygrafanadashboards,categories={kubeops,appscode}
-type PolicyGrafanaDashboards struct {
+// +kubebuilder:resource:path=gatekeepergrafanadashboardss,singular=gatekeepergrafanadashboards,categories={kubeops,appscode}
+type GatekeeperGrafanaDashboards struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicyGrafanaDashboardsSpec `json:"spec,omitempty"`
+	Spec              GatekeeperGrafanaDashboardsSpec `json:"spec,omitempty"`
 }
 
-// PolicyGrafanaDashboardsSpec is the schema for Identity Server values file
-type PolicyGrafanaDashboardsSpec struct {
+// GatekeeperGrafanaDashboardsSpec is the schema for Identity Server values file
+type GatekeeperGrafanaDashboardsSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
@@ -53,10 +53,10 @@ type PolicyGrafanaDashboardsSpec struct {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// PolicyGrafanaDashboardsList is a list of PolicyGrafanaDashboardss
-type PolicyGrafanaDashboardsList struct {
+// GatekeeperGrafanaDashboardsList is a list of GatekeeperGrafanaDashboardss
+type GatekeeperGrafanaDashboardsList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of PolicyGrafanaDashboards CRD objects
-	Items []PolicyGrafanaDashboards `json:"items,omitempty"`
+	// Items is a list of GatekeeperGrafanaDashboards CRD objects
+	Items []GatekeeperGrafanaDashboards `json:"items,omitempty"`
 }

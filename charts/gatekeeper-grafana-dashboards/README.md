@@ -1,19 +1,19 @@
-# Kubernetes UI Server
+# Gatekeeper Grafana Dashboards
 
-[Kubernetes UI Server by AppsCode](https://github.com/kubeops/ui-server) - Kubernetes UI Server for ByteBuilders
+[Gatekeeper Grafana Dashboards by AppsCode](https://github.com/kubeops/ui-server) - Gatekeeper Grafana Dashboards for ByteBuilders
 
 ## TL;DR;
 
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/policy-grafana-dashboards --version=v2023.03.23
-$ helm upgrade -i policy-grafana-dashboards appscode/policy-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23
+$ helm search repo appscode/gatekeeper-grafana-dashboards --version=v2023.03.23
+$ helm upgrade -i gatekeeper-grafana-dashboards appscode/gatekeeper-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23
 ```
 
 ## Introduction
 
-This chart deploys a Kubernetes UI Server on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart deploys Gatekeeper Grafana Dashboards on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
@@ -21,29 +21,29 @@ This chart deploys a Kubernetes UI Server on a [Kubernetes](http://kubernetes.io
 
 ## Installing the Chart
 
-To install/upgrade the chart with the release name `policy-grafana-dashboards`:
+To install/upgrade the chart with the release name `gatekeeper-grafana-dashboards`:
 
 ```bash
-$ helm upgrade -i policy-grafana-dashboards appscode/policy-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23
+$ helm upgrade -i gatekeeper-grafana-dashboards appscode/gatekeeper-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23
 ```
 
-The command deploys a Kubernetes UI Server on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys Gatekeeper Grafana Dashboards on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
-To uninstall the `policy-grafana-dashboards`:
+To uninstall the `gatekeeper-grafana-dashboards`:
 
 ```bash
-$ helm uninstall policy-grafana-dashboards -n kubeops
+$ helm uninstall gatekeeper-grafana-dashboards -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Configuration
 
-The following table lists the configurable parameters of the `policy-grafana-dashboards` chart and their default values.
+The following table lists the configurable parameters of the `gatekeeper-grafana-dashboards` chart and their default values.
 
 |            Parameter            |                            Description                             |      Default       |
 |---------------------------------|--------------------------------------------------------------------|--------------------|
@@ -61,12 +61,12 @@ The following table lists the configurable parameters of the `policy-grafana-das
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i policy-grafana-dashboards appscode/policy-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23 --set dashboard.folderID=0
+$ helm upgrade -i gatekeeper-grafana-dashboards appscode/gatekeeper-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23 --set dashboard.folderID=0
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i policy-grafana-dashboards appscode/policy-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23 --values values.yaml
+$ helm upgrade -i gatekeeper-grafana-dashboards appscode/gatekeeper-grafana-dashboards -n kubeops --create-namespace --version=v2023.03.23 --values values.yaml
 ```

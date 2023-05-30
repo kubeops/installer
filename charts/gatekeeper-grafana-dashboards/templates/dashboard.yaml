@@ -7,7 +7,7 @@ metadata:
   labels:
     k8s.io/group: policy.k8s.appscode.com
     k8s.io/kind: PolicyReport
-    {{- include "policy-grafana-dashboards.labels" $ | nindent 4 }}
+    {{- include "gatekeeper-grafana-dashboards.labels" $ | nindent 4 }}
 spec:
 {{- if or $.Values.grafana.name $.Values.grafana.namespace }}
   grafanaRef:
