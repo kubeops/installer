@@ -51,6 +51,7 @@ The following table lists the configurable parameters of the `gatekeeper-library
 | fullnameOverride  |             | <code>""</code>                          |
 | enable            |             | <code>"templates" # "constraints"</code> |
 | enableConstraints |             | <code>{}</code>                          |
+| enforcementAction |             | <code>"warn" # "deny" "dryrun"</code>    |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
