@@ -11,3 +11,5 @@ enableConstraints: {}
   # VerifyDeprecatedAPI:
   #   verify-1.27: false
   #   verify-1.29: false
+
+enforcementAction: "warn" # "deny" "dryrun"
