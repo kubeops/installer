@@ -1,0 +1,29 @@
+properties:
+  enable:
+    default: templates
+    enum:
+    - templates
+    - constraints
+    type: string
+  enableConstraints:
+    additionalProperties:
+      additionalProperties:
+        type: boolean
+      type: object
+    type: object
+  enforcementAction:
+    default: warn
+    enum:
+    - warn
+    - deny
+    - dryrun
+    type: string
+  fullnameOverride:
+    type: string
+  nameOverride:
+    type: string
+required:
+- enable
+- enableConstraints
+- enforcementAction
+type: object
