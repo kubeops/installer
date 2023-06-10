@@ -1,18 +1,18 @@
 project:
-  name: AppsCode Scanner
-  shortName: AppsCode Scanner
-  url: https://github.com/kubeops/scanner
-  description: AppsCode Scanner
-  app: a Docker Image Scanner
+  name: Falco UI Server
+  shortName: Falco UI Server
+  url: https://github.com/kubeops/falco-ui-server
+  description: Falco UI Server
+  app: a Falco UI Server
 repository:
   url: https://charts.appscode.com/stable/
   name: appscode
 chart:
-  name: scanner
+  name: falco-ui-server
   values: -- generate from values file --
   valuesExample: -- generate from values file --
 prerequisites:
 - Kubernetes 1.21+
 release:
-  name: scanner
+  name: falco-ui-server
   namespace: kubeops

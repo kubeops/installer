@@ -1,0 +1,174 @@
+{{- $major := default "0" .Capabilities.KubeVersion.Major | trimSuffix "+" | int64 }}
+{{- $minor := default "0" .Capabilities.KubeVersion.Minor | trimSuffix "+" | int64 }}
+{{- $criticalAddon := and .Values.criticalAddon (or (eq .Release.Namespace "kube-system") (and (ge $major 1) (ge $minor 17))) -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "falco-ui-server.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "falco-ui-server.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "falco-ui-server.fullname" . }}-pods
+  selector:
+    matchLabels:
+      {{- include "falco-ui-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "falco-ui-server.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/apiregistration.yaml") . | sha256sum }}
+      {{- if $criticalAddon }}
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+      {{- end }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "falco-ui-server.serviceAccountName" . }}
+      containers:
+      - name: app
+        securityContext:
+          {{- toYaml .Values.app.securityContext | nindent 10 }}
+        image: {{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.imagePullPolicy  }}
+        args:
+        - run
+        - --v={{ .Values.logLevel }}
+        - --secure-port=8443
+        - --audit-log-path=-
+        - --tls-cert-file=/var/serving-cert/tls.crt
+        - --tls-private-key-file=/var/serving-cert/tls.key
+        - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
+        - --etcd-servers=https://127.0.0.1:2379
+        - --etcd-cafile=/etc/pki/etcd/ca.crt
+        - --etcd-certfile=/etc/pki/etcd/tls.crt
+        - --etcd-keyfile=/etc/pki/etcd/tls.key
+        - --event-ttl={{ .Values.eventTTL }}
+        ports:
+        - containerPort: 8443
+        - containerPort: 8081
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      {{- if .Values.apiserver.healthcheck.enabled }}
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+      {{- end }}
+        resources:
+          {{- toYaml .Values.app.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /var/serving-cert
+          name: serving-cert
+        - mountPath: /etc/pki/etcd
+          name: etcd-cert
+        - mountPath: /var/data
+          name: storage
+      - name: etcd
+        securityContext:
+          {{- toYaml .Values.etcd.securityContext | nindent 10 }}
+        image: {{ include "etcd.registry" . }}/{{ .Values.etcd.repository }}:{{ .Values.etcd.tag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy  }}
+        command:
+        - etcd
+        - --data-dir=/var/data/etcd
+        - --experimental-initial-corrupt-check=true
+        - --experimental-watch-progress-notify-interval=5s
+        - --listen-metrics-urls=http://127.0.0.1:2381
+        - --snapshot-count=10000
+        - --advertise-client-urls=https://127.0.0.1:2379
+        - --cert-file=/etc/pki/etcd/tls.crt
+        - --client-cert-auth=true
+        - --key-file=/etc/pki/etcd/tls.key
+        - --listen-client-urls=https://127.0.0.1:2379
+        - --trusted-ca-file=/etc/pki/etcd/ca.crt
+        ports:
+        - containerPort: 2379
+        - containerPort: 2380
+        - containerPort: 2381
+      {{- if .Values.apiserver.healthcheck.enabled }}
+        livenessProbe:
+          failureThreshold: 8
+          httpGet:
+            host: 127.0.0.1
+            path: /health?exclude=NOSPACE&serializable=true
+            port: 2381
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+      {{- end }}
+        resources:
+          {{- toYaml .Values.etcd.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/pki/etcd
+          name: etcd-cert
+        - mountPath: /var/data
+          name: storage
+      volumes:
+      - name: serving-cert
+        secret:
+          defaultMode: 420
+          secretName: {{ include "falco-ui-server.fullname" . }}-apiserver-cert
+      - name: etcd-cert
+        secret:
+          defaultMode: 420
+          secretName: {{ include "falco-ui-server.fullname" . }}-etcd-cert
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+    {{- if or .Values.tolerations $criticalAddon }}
+      tolerations:
+      {{- with .Values.tolerations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $criticalAddon }}
+        - key: CriticalAddonsOnly
+          operator: Exists
+      {{- end -}}
+    {{- end -}}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if $criticalAddon }}
+      priorityClassName: system-cluster-critical
+    {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      {{- with .Values.storageClass.name }}
+      storageClassName: {{ . }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.size }}

@@ -1,0 +1,31 @@
+{{ range $path, $_ :=  $.Files.Glob "dashboards/**.json" }}
+apiVersion: openviz.dev/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: {{ prepend ((get ($.Files.Get $path | mustFromJson) "title") | lower | nospace | splitList "/" ) $.Values.grafana.name | compact | join "-" | trunc 63 | trimSuffix "-" }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    k8s.io/group: reports.falco.appscode.com
+    k8s.io/kind: RuntimeEvent
+    {{- include "falco-ui-server.labels" $ | nindent 4 }}
+spec:
+{{- if or $.Values.grafana.name $.Values.grafana.namespace }}
+  grafanaRef:
+  {{- with $.Values.grafana.name }}
+    name: {{ . }}
+  {{- end }}
+  {{- with $.Values.grafana.namespace }}
+    namespace: {{ . }}
+  {{- end }}
+{{- end }}
+  model:
+    {{- omit ($.Files.Get $path | mustFromJson) "id" "uid" | toYaml | nindent 4 }}
+{{- with $.Values.dashboard.folderID }}
+  folderID: {{ . }}
+{{- end }}
+  overwrite: {{ $.Values.dashboard.overwrite }}
+  templatize:
+    title: {{ $.Values.dashboard.templatize.title }}
+    datasource: {{ $.Values.dashboard.templatize.datasource }}
+---
+{{ end }}
