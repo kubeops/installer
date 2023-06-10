@@ -20,7 +20,5 @@ rules:
   - ""
   resources:
   - nodes
+  - pods
   verbs: ["get", "list", "watch"]
-# allow file server paths
-- nonResourceURLs: ["/files", "/files/*"]
-  verbs: ["get", "post"]

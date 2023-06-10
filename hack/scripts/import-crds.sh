@@ -43,7 +43,7 @@ crd-importer \
 
 crd-importer \
     --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
-    --out=./charts/policy-grafana-dashboards/crds
+    --out=./charts/gatekeeper-grafana-dashboards/crds
 
 crd-importer \
     --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
