@@ -19,8 +19,8 @@ spec:
     port: 443
     targetPort: 8443
   - name: telemetry
-    port: 8081
-    targetPort: 8081
+    port: 8080
+    targetPort: 8080
   selector:
     {{- include "scanner.selectorLabels" . | nindent 4 }}
 ---

@@ -54,7 +54,7 @@ spec:
         - --event-ttl={{ .Values.eventTTL }}
         ports:
         - containerPort: 8443
-        - containerPort: 8081
+        - containerPort: 8080
         env:
         - name: POD_NAME
           valueFrom:
