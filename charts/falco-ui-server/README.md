@@ -1,19 +1,19 @@
-# AppsCode Scanner
+# Falco UI Server
 
-[AppsCode Scanner](https://github.com/kubeops/scanner) - AppsCode Scanner
+[Falco UI Server](https://github.com/kubeops/falco-ui-server) - Falco UI Server
 
 ## TL;DR;
 
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/scanner --version=v2023.03.23
-$ helm upgrade -i scanner appscode/scanner -n kubeops --create-namespace --version=v2023.03.23
+$ helm search repo appscode/falco-ui-server --version=v2023.03.23
+$ helm upgrade -i falco-ui-server appscode/falco-ui-server -n kubeops --create-namespace --version=v2023.03.23
 ```
 
 ## Introduction
 
-This chart deploys a Docker Image Scanner on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart deploys a Falco UI Server on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
@@ -21,39 +21,38 @@ This chart deploys a Docker Image Scanner on a [Kubernetes](http://kubernetes.io
 
 ## Installing the Chart
 
-To install/upgrade the chart with the release name `scanner`:
+To install/upgrade the chart with the release name `falco-ui-server`:
 
 ```bash
-$ helm upgrade -i scanner appscode/scanner -n kubeops --create-namespace --version=v2023.03.23
+$ helm upgrade -i falco-ui-server appscode/falco-ui-server -n kubeops --create-namespace --version=v2023.03.23
 ```
 
-The command deploys a Docker Image Scanner on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys a Falco UI Server on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
-To uninstall the `scanner`:
+To uninstall the `falco-ui-server`:
 
 ```bash
-$ helm uninstall scanner -n kubeops
+$ helm uninstall falco-ui-server -n kubeops
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Configuration
 
-The following table lists the configurable parameters of the `scanner` chart and their default values.
+The following table lists the configurable parameters of the `falco-ui-server` chart and their default values.
 
 |              Parameter               |                                                                                                                                                                          Description                                                                                                                                                                          |                  Default                  |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
 | nameOverride                         | Overrides name template                                                                                                                                                                                                                                                                                                                                       | <code>""</code>                           |
 | fullnameOverride                     | Overrides fullname template                                                                                                                                                                                                                                                                                                                                   | <code>""</code>                           |
-| replicaCount                         | Number of scanner operator replicas to create (only 1 is supported)                                                                                                                                                                                                                                                                                           | <code>1</code>                            |
-| license                              | License for the product. Get a license by following the steps from [here](https://license-issuer.appscode.com/). <br> Example: <br> `helm install appscode/panopticon \` <br> `--set-file license=/path/to/license/file` <br> `or` <br> `helm install appscode/panopticon \` <br> `--set license=<license file content>`                                      | <code>""</code>                           |
+| replicaCount                         | Number of falco-ui-server operator replicas to create (only 1 is supported)                                                                                                                                                                                                                                                                                   | <code>1</code>                            |
 | registryFQDN                         | Docker registry fqdn used to pull docker images Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}                                                                                                                                                                                                                                | <code>ghcr.io</code>                      |
 | app.registry                         | Docker registry used to pull operator image                                                                                                                                                                                                                                                                                                                   | <code>appscode</code>                     |
-| app.repository                       | Name of operator container image                                                                                                                                                                                                                                                                                                                              | <code>scanner</code>                      |
+| app.repository                       | Name of operator container image                                                                                                                                                                                                                                                                                                                              | <code>falco-ui-server</code>              |
 | app.tag                              | Operator container image tag                                                                                                                                                                                                                                                                                                                                  | <code>""</code>                           |
 | app.resources                        | Compute Resources required by the operator container                                                                                                                                                                                                                                                                                                          | <code>{}</code>                           |
 | app.securityContext                  | Security options the operator container should run with                                                                                                                                                                                                                                                                                                       | <code>{}</code>                           |
@@ -66,16 +65,9 @@ The following table lists the configurable parameters of the `scanner` chart and
 | etcd.servingCerts.caCrt              | CA certficate used by serving certificate of webhook server.                                                                                                                                                                                                                                                                                                  | <code>""</code>                           |
 | etcd.servingCerts.serverCrt          | Serving certficate used by webhook server.                                                                                                                                                                                                                                                                                                                    | <code>""</code>                           |
 | etcd.servingCerts.serverKey          | Private key for the serving certificate used by webhook server.                                                                                                                                                                                                                                                                                               | <code>""</code>                           |
-| cacher.enable                        |                                                                                                                                                                                                                                                                                                                                                               | <code>true</code>                         |
-| cacher.schedule                      |                                                                                                                                                                                                                                                                                                                                                               | <code>'0 */6 * * *'</code>                |
-| cacher.registry                      | Docker registry used to cache trivydb image                                                                                                                                                                                                                                                                                                                   | <code>appscode</code>                     |
-| cacher.repository                    | Name of cacher container image                                                                                                                                                                                                                                                                                                                                | <code>trivydb</code>                      |
-| cacher.tag                           | Operator container image tag                                                                                                                                                                                                                                                                                                                                  | <code>0.0.2</code>                        |
-| cacher.resources                     | Compute Resources required by the cacher container                                                                                                                                                                                                                                                                                                            | <code>{}</code>                           |
-| cacher.securityContext               | Security options the cacher container should run with                                                                                                                                                                                                                                                                                                         | <code>{}</code>                           |
-| imagePullSecrets                     | Specify an array of imagePullSecrets. Secrets must be manually created in the namespace. <br> Example: <br> `helm template charts/scanner \` <br> `--set imagePullSecrets[0].name=sec0 \` <br> `--set imagePullSecrets[1].name=sec1`                                                                                                                          | <code>[]</code>                           |
+| imagePullSecrets                     | Specify an array of imagePullSecrets. Secrets must be manually created in the namespace. <br> Example: <br> `helm template charts/falco-ui-server \` <br> `--set imagePullSecrets[0].name=sec0 \` <br> `--set imagePullSecrets[1].name=sec1`                                                                                                                  | <code>[]</code>                           |
 | imagePullPolicy                      | Container image pull policy                                                                                                                                                                                                                                                                                                                                   | <code>IfNotPresent</code>                 |
-| criticalAddon                        | If true, installs scanner operator as critical addon                                                                                                                                                                                                                                                                                                          | <code>false</code>                        |
+| criticalAddon                        | If true, installs falco-ui-server operator as critical addon                                                                                                                                                                                                                                                                                                  | <code>false</code>                        |
 | logLevel                             | Log level for operator                                                                                                                                                                                                                                                                                                                                        | <code>3</code>                            |
 | annotations                          | Annotations applied to operator deployment                                                                                                                                                                                                                                                                                                                    | <code>{}</code>                           |
 | podAnnotations                       | Annotations passed to operator pod(s).                                                                                                                                                                                                                                                                                                                        | <code>{}</code>                           |
@@ -105,22 +97,18 @@ The following table lists the configurable parameters of the `scanner` chart and
 | dashboard.templatize.datasource      | If true, datasource will be hardcoded in the dashboard                                                                                                                                                                                                                                                                                                        | <code>true</code>                         |
 | grafana.name                         | Name of Grafana Appbinding where these dashboards are applied                                                                                                                                                                                                                                                                                                 | <code>""</code>                           |
 | grafana.namespace                    | Namespace of Grafana Appbinding where these dashboards are applied                                                                                                                                                                                                                                                                                            | <code>""</code>                           |
-| nats.addr                            |                                                                                                                                                                                                                                                                                                                                                               | <code>""</code>                           |
-| nats.auth.username                   |                                                                                                                                                                                                                                                                                                                                                               | <code>""</code>                           |
-| nats.auth.password                   |                                                                                                                                                                                                                                                                                                                                                               | <code>""</code>                           |
-| scanRequestTTLAfterFinished          |                                                                                                                                                                                                                                                                                                                                                               | <code>2h0m0s</code>                       |
-| scanReportTTLAfterOutdated           |                                                                                                                                                                                                                                                                                                                                                               | <code>168h0m0s</code>                     |
+| eventTTL                             |                                                                                                                                                                                                                                                                                                                                                               | <code>168h0m0s</code>                     |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i scanner appscode/scanner -n kubeops --create-namespace --version=v2023.03.23 --set replicaCount=1
+$ helm upgrade -i falco-ui-server appscode/falco-ui-server -n kubeops --create-namespace --version=v2023.03.23 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i scanner appscode/scanner -n kubeops --create-namespace --version=v2023.03.23 --values values.yaml
+$ helm upgrade -i falco-ui-server appscode/falco-ui-server -n kubeops --create-namespace --version=v2023.03.23 --values values.yaml
 ```

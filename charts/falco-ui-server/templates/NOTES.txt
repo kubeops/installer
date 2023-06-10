@@ -1,0 +1,3 @@
+To verify that scanner operator has started, run:
+
+  kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "falco-ui-server.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"

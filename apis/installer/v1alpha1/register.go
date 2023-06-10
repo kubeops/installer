@@ -60,6 +60,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ClusterConnectorList{},
 		&ExternalDnsOperator{},
 		&ExternalDnsOperatorList{},
+		&FalcoUiServer{},
+		&FalcoUiServerList{},
 		&KubeUiServer{},
 		&KubeUiServerList{},
 		&Panopticon{},

@@ -1,0 +1,7 @@
+# https://github.com/helm/charts/blob/master/test/README.md#providing-custom-test-values
+license: ""
+nats:
+  addr: this-is-nats.appscode.ninja:4222
+  auth:
+    username: admin
+    password: ""
