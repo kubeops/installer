@@ -34,14 +34,16 @@ image:
   tag: ""
   # Compute Resources required by the operator container
   resources: {}
-  # Security options the operator container should run with
-  securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  # Security options this container should run with
+  securityContext: # +doc-gen:break
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: ["ALL"]
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
 cleaner:
   # Docker registry used to pull Webhook cleaner image
   registry: appscode
@@ -51,8 +53,17 @@ cleaner:
   tag: v1.22
   # Skip generating cleaner YAML
   skip: false
-  # Security options the cleaner pod container should run with
-  securityContext: {}
+  # Security options this container should run with
+  securityContext: # +doc-gen:break
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: ["ALL"]
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
 #
