@@ -33,5 +33,7 @@ spec:
           - --from=cronjob/{{ include "scanner.fullname" . }}-trivydb-cacher
           - {{ include "scanner.fullname" . }}-trivydb-cacher-{{ randAlphaNum 8 | lower }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
+        securityContext:
+          {{- toYaml .Values.cacher.securityContext | nindent 10 }}
       restartPolicy: Never
 {{ end }}

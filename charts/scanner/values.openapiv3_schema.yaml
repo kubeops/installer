@@ -1691,6 +1691,13 @@ properties:
           type: string
       type: object
     type: array
+  workspace:
+    properties:
+      namespace:
+        type: string
+    required:
+    - namespace
+    type: object
 required:
 - apiserver
 - app
@@ -1707,4 +1714,5 @@ required:
 - scanReportTTLAfterOutdated
 - serviceAccount
 - storageClass
+- workspace
 type: object
