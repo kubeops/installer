@@ -71,6 +71,7 @@ spec:
         - --scanner-image={{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
         - --scan-request-ttl-after-finished={{ .Values.scanRequestTTLAfterFinished }}
         - --scan-report-ttl-after-outdated={{ .Values.scanReportTTLAfterOutdated }}
+        - --workspace-namespace={{ .Values.workspace.namespace }}
         - --trivydb-cacher-image={{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
         - --file-server-addr=https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
         - --scan-public-image-incluster={{ ternary "false" "true" .Values.cacher.enable }}
