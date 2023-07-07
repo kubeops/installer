@@ -109,6 +109,8 @@ spec:
           name: etcd-cert
         - mountPath: /var/data
           name: storage
+        - mountPath: /tmp
+          name: tmp
         {{- if include "appscode.license" . }}
         - mountPath: /var/run/secrets/appscode/license
           name: license
@@ -164,6 +166,8 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "scanner.fullname" . }}-etcd-cert
+      - name: tmp
+        emptyDir: {}
       {{- if include "appscode.license" . }}
       - name: license
         secret:

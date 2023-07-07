@@ -32,6 +32,7 @@ spec:
               {{- toYaml .Values.cacher.securityContext | nindent 14 }}
             image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
             imagePullPolicy: {{ .Values.imagePullPolicy  }}
+            workingDir: /tmp
             command:
             - /scripts/update-trivydb.sh
             env:
@@ -42,12 +43,16 @@ spec:
             volumeMounts:
             - mountPath: /var/serving-cert
               name: serving-cert
+            - mountPath: /tmp
+              name: tmp
           restartPolicy: Never # OnFailure
           volumes:
           - name: serving-cert
             secret:
               defaultMode: 420
               secretName: {{ include "scanner.fullname" . }}-apiserver-cert
+          - name: tmp
+            emptyDir: {}
   schedule: {{ .Values.cacher.schedule | quote }}
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1

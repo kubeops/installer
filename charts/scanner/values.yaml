@@ -191,3 +191,6 @@ nats:
 
 scanRequestTTLAfterFinished: 2h0m0s
 scanReportTTLAfterOutdated: 168h0m0s
+
+workspace:
+  namespace: scanner-workspace
