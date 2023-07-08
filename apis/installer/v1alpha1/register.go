@@ -58,6 +58,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&AuditorList{},
 		&ClusterConnector{},
 		&ClusterConnectorList{},
+		&ConfigSyncer{},
+		&ConfigSyncerList{},
 		&ExternalDnsOperator{},
 		&ExternalDnsOperatorList{},
 		&FalcoUiServer{},
