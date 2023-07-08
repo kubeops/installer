@@ -98,6 +98,9 @@ jobs:
           yqq w -i ./charts/scanner/ci/ci-values.yaml nats.auth.password --tag '!!str' -- "${THIS_IS_NATS_PASSWORD}"
           # configure cluster-connector
           yqq w -i ./charts/cluster-connector/ci/ci-values.yaml user.token --tag '!!str' -- "${BYTEBUILDERS_LICENSE_TOKEN}"
+          # config-syncer
+          LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=config-syncer-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
+          yqq w -i ./charts/config-syncer/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
 
       - name: Install cert-manager
         run: |

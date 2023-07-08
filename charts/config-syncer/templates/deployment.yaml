@@ -38,8 +38,8 @@ spec:
       containers:
       - name: app
         securityContext:
-          {{- toYaml .Values.app.securityContext | nindent 10 }}
-        image: {{ .Values.app.registry }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
+          {{- toYaml .Values.image.securityContext | nindent 10 }}
+        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{if include "appscode.license" .}}-ent{{end}}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
         - run
@@ -49,6 +49,9 @@ spec:
         - --tls-cert-file=/var/serving-cert/tls.crt
         - --tls-private-key-file=/var/serving-cert/tls.key
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
+      {{- if include "appscode.license" . }}
+        - --license-file=/var/run/secrets/appscode/license/key.txt
+      {{- end }}
       {{- with .Values.config.clusterName }}
         - --cluster-name={{ . }}
       {{- end }}
@@ -78,7 +81,7 @@ spec:
           initialDelaySeconds: 5
       {{- end }}
         resources:
-          {{- toYaml .Values.app.resources | nindent 10 }}
+          {{- toYaml .Values.image.resources | nindent 10 }}
         volumeMounts:
         - name: config
           mountPath: /srv/config-syncer
@@ -86,6 +89,10 @@ spec:
           mountPath: /tmp
         - mountPath: /var/serving-cert
           name: serving-cert
+        {{- if include "appscode.license" . }}
+        - mountPath: /var/run/secrets/appscode/license
+          name: license
+        {{- end }}
       volumes:
       - name: config
         secret:
@@ -96,6 +103,12 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ template "config-syncer.fullname" . }}-apiserver-cert
+      {{- if include "appscode.license" . }}
+      - name: license
+        secret:
+          defaultMode: 420
+          secretName: {{ include "config-syncer.fullname" . }}-license
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or .Values.tolerations $criticalAddon }}
