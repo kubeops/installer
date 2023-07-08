@@ -784,8 +784,29 @@ properties:
     - servingCerts
     - useKubeapiserverFqdnForAks
     type: object
-  app:
-    description: RegistryFQDN     string          `json:"registryFQDN"`
+  config:
+    properties:
+      additionalOptions:
+        items:
+          type: string
+        type: array
+      clusterName:
+        type: string
+      configSourceNamespace:
+        type: string
+      kubeconfigContent:
+        type: string
+    required:
+    - additionalOptions
+    - clusterName
+    - configSourceNamespace
+    - kubeconfigContent
+    type: object
+  criticalAddon:
+    type: boolean
+  fullnameOverride:
+    type: string
+  image:
     properties:
       registry:
         type: string
@@ -973,34 +994,14 @@ properties:
     - repository
     - tag
     type: object
-  config:
-    properties:
-      additionalOptions:
-        items:
-          type: string
-        type: array
-      clusterName:
-        type: string
-      configSourceNamespace:
-        type: string
-      kubeconfigContent:
-        type: string
-    required:
-    - additionalOptions
-    - clusterName
-    - configSourceNamespace
-    - kubeconfigContent
-    type: object
-  criticalAddon:
-    type: boolean
-  fullnameOverride:
-    type: string
   imagePullPolicy:
     type: string
   imagePullSecrets:
     items:
       type: string
     type: array
+  license:
+    type: string
   logLevel:
     format: int32
     type: integer
@@ -1163,6 +1164,8 @@ properties:
             type: string
         type: object
     type: object
+  registryFQDN:
+    type: string
   replicaCount:
     format: int32
     type: integer
@@ -1218,9 +1221,10 @@ properties:
     type: array
 required:
 - apiserver
-- app
 - config
+- image
 - imagePullPolicy
+- registryFQDN
 - replicaCount
 - serviceAccount
 type: object

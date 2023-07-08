@@ -61,3 +61,17 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Returns the appscode license
+*/}}
+{{- define "appscode.license" -}}
+{{- .Values.license }}
+{{- end }}
+
+{{/*
+Returns the registry used for operator docker image
+*/}}
+{{- define "image.registry" -}}
+{{- list .Values.registryFQDN .Values.image.registry | compact | join "/" }}
+{{- end }}

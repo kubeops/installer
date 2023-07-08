@@ -1,0 +1,13 @@
+# if license file is provided, then create a secret for license
+{{- if include "appscode.license" . }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "config-syncer.fullname" . }}-license
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "config-syncer.labels" . | nindent 4 }}
+type: Opaque
+data:
+  key.txt: {{ include "appscode.license" . | b64enc }}
+{{- end }}
