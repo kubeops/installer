@@ -5,10 +5,10 @@
 {{- $name := dig "metadata" "name" "" $obj -}}
 {{- if and (eq (dig "apiVersion" "" $obj) "constraints.gatekeeper.sh/v1beta1") (dig $kind $name true $.Values.enableConstraints) -}}
 # {{ $path }}
-{{ toString $content | trim }}
 {{- with $.Values.enforcementAction }}
-  enforcementAction: {{ . }}
+  {{ $obj = mergeOverwrite $obj (dict "spec" (dict "enforcementAction" . )) }}
 {{ end -}}
+{{ toYaml $obj }}
 ---
 {{ end -}}
 {{- end -}}
