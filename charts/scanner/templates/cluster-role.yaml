@@ -39,6 +39,12 @@ rules:
   - nodes
   verbs: ["get", "list", "watch"]
 - apiGroups:
+  - ""
+  resources:
+  - secrets
+  - serviceaccounts
+  verbs: ["get", "list", "watch"]
+- apiGroups:
   - batch
   resources:
   - cronjobs
