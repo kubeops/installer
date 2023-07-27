@@ -80,6 +80,9 @@ type ServiceMonitorLabels struct {
 	Labels map[string]string `json:"labels"`
 }
 
+// +kubebuilder:validation:Enum=etcd;kine
+type ApiserverDB string
+
 type ApiserverSpec struct {
 	GroupPriorityMinimum       int32           `json:"groupPriorityMinimum"`
 	VersionPriority            int32           `json:"versionPriority"`

@@ -45,9 +45,12 @@ etcd:
   # Name of operator container image
   repository: etcd
   # Operator container image tag
-  tag: 3.5.6-0
+  tag: 3.5.7-0
   # Compute Resources required by the operator container
-  resources: {}
+  resources: # +doc-gen:break
+    requests:
+      cpu: 100m
+      memory: 100Mi
   # Security options this container should run with
   securityContext: # +doc-gen:break
     allowPrivilegeEscalation: false
@@ -69,6 +72,28 @@ etcd:
     serverCrt: ""
     # Private key for the serving certificate used by webhook server.
     serverKey: ""
+kine:
+  # Docker registry used to pull operator image
+  registry: rancher
+  # Name of operator container image
+  repository: kine
+  # Operator container image tag
+  tag: v0.9.8
+  # Compute Resources required by the operator container
+  resources: # +doc-gen:break
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  # Security options this container should run with
+  securityContext: # +doc-gen:break
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: ["ALL"]
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
 cacher:
   enable: true
   schedule: '0 */6 * * *'
@@ -132,6 +157,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 apiserver:
+  # etcd or kine
+  db: kine
   # The minimum priority the webhook api group should have at least. Please see
   # https://github.com/kubernetes/kube-aggregator/blob/release-1.9/pkg/apis/apiregistration/v1beta1/types.go#L58-L64
   # for more information on proper values of this field.

@@ -84,6 +84,13 @@ Returns the registry used for etcd docker image
 {{- end }}
 
 {{/*
+Returns the registry used for kine docker image
+*/}}
+{{- define "kine.registry" -}}
+{{- .Values.kine.registry }}
+{{- end }}
+
+{{/*
 Returns the registry used for operator docker image
 */}}
 {{- define "cacher.registry" -}}

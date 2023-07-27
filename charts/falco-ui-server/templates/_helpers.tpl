@@ -76,6 +76,13 @@ Returns the registry used for etcd docker image
 {{- .Values.etcd.registry }}
 {{- end }}
 
+{{/*
+Returns the registry used for kine docker image
+*/}}
+{{- define "kine.registry" -}}
+{{- .Values.kine.registry }}
+{{- end }}
+
 {{- define "appscode.imagePullSecrets" -}}
 {{- with .Values.imagePullSecrets -}}
 imagePullSecrets:
