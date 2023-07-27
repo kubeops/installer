@@ -52,6 +52,7 @@ type FalcoUiServerSpec struct {
 	RegistryFQDN     string        `json:"registryFQDN"`
 	App              Container     `json:"app"`
 	Etcd             EtcdContainer `json:"etcd"`
+	Kine             Container     `json:"kine"`
 	ImagePullPolicy  string        `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
@@ -78,11 +79,16 @@ type FalcoUiServerSpec struct {
 	StorageClass       LocalObjectReference     `json:"storageClass"`
 	Persistence        Persistence              `json:"persistence"`
 	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	Apiserver          ApiserverSpec            `json:"apiserver"`
+	Apiserver          FalcoUiserverSpec        `json:"apiserver"`
 	Monitoring         Monitoring               `json:"monitoring"`
 	Dashboard          GrafanaDashboard         `json:"dashboard"`
 	Grafana            ObjectReference          `json:"grafana"`
 	EventTTL           metav1.Duration          `json:"eventTTL"`
+}
+
+type FalcoUiserverSpec struct {
+	ApiserverSpec `json:",inline"`
+	DB            ApiserverDB `json:"db"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

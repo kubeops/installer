@@ -33,6 +33,23 @@ spec:
     spec:
       {{- include "appscode.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "scanner.serviceAccountName" . }}
+    {{- if eq .Values.apiserver.db "kine" }}
+      initContainers:
+      - name: init-db
+        securityContext:
+          {{- toYaml .Values.kine.securityContext | nindent 10 }}
+        image: {{ include "kine.registry" . }}/{{ .Values.kine.repository }}:{{ .Values.kine.tag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy  }}
+        command:
+        - sh
+        - -c
+        - 'test ! -f /var/data/db.sqlite && touch /var/data/db.sqlite'
+        resources:
+          {{- toYaml .Values.kine.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /var/data
+          name: storage
+    {{- end }}
       containers:
       - name: app
         securityContext:
@@ -115,6 +132,7 @@ spec:
         - mountPath: /var/run/secrets/appscode/license
           name: license
         {{- end }}
+    {{- if eq .Values.apiserver.db "etcd" }}
       - name: etcd
         securityContext:
           {{- toYaml .Values.etcd.securityContext | nindent 10 }}
@@ -149,6 +167,17 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 15
+        startupProbe:
+          failureThreshold: 24
+          httpGet:
+            host: 127.0.0.1
+            path: /health?serializable=false
+            port: 2381
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
       {{- end }}
         resources:
           {{- toYaml .Values.etcd.resources | nindent 10 }}
@@ -157,6 +186,29 @@ spec:
           name: etcd-cert
         - mountPath: /var/data
           name: storage
+    {{- end }}
+    {{- if eq .Values.apiserver.db "kine" }}
+      - name: kine
+        securityContext:
+          {{- toYaml .Values.kine.securityContext | nindent 10 }}
+        image: {{ include "kine.registry" . }}/{{ .Values.kine.repository }}:{{ .Values.kine.tag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy  }}
+        args:
+        - --endpoint=sqlite:///var/data/db.sqlite
+        - --metrics-bind-address=:2381
+        - --server-cert-file=/etc/pki/etcd/tls.crt
+        - --server-key-file=/etc/pki/etcd/tls.key
+        ports:
+        - containerPort: 2379
+        - containerPort: 2381
+        resources:
+          {{- toYaml .Values.kine.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/pki/etcd
+          name: etcd-cert
+        - mountPath: /var/data
+          name: storage
+    {{- end }}
       volumes:
       - name: serving-cert
         secret:
