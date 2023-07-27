@@ -43,7 +43,7 @@ spec:
         command:
         - sh
         - -c
-        - 'test -f /var/data/db.sqlite || (test ! -f /var/data/db.sqlite && mkdir -p /var/data && touch /var/data/db.sqlite)'
+        - 'test -f /var/data/db.sqlite || touch /var/data/db.sqlite'
         resources:
           {{- toYaml .Values.kine.resources | nindent 10 }}
         volumeMounts:
