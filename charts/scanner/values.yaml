@@ -44,7 +44,7 @@ etcd:
   registry: registry.k8s.io
   # Name of operator container image
   repository: etcd
-  # Operator container image tag
+  # Etcd container image tag
   tag: 3.5.7-0
   # Compute Resources required by the operator container
   resources: # +doc-gen:break
@@ -77,8 +77,8 @@ kine:
   registry: rancher
   # Name of operator container image
   repository: kine
-  # Operator container image tag
-  tag: v0.9.8
+  # Kine container image tag
+  tag: v0.10.2
   # Compute Resources required by the operator container
   resources: # +doc-gen:break
     requests:
