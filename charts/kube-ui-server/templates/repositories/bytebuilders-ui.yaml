@@ -5,6 +5,7 @@ metadata:
   name: bytebuilders-ui
   namespace: {{ .Release.Namespace }}
 spec:
+  type: oci
   interval: 30m
-  url: https://bundles.byte.builders/ui/
+  url: oci://r.byte.builders/charts/
 {{- end }}
