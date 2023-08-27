@@ -1,0 +1,18 @@
+project:
+  name: Kmodules CRDs
+  shortName: Kmodules CRDs
+  url: https://github.com/Kmodules
+  description: Shared Kubernetes Custom Resource Definitions for AppsCode Projects
+  app: Kmodules crds
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: kmodules-crds
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: kmodules-crds
+  namespace: kube-system

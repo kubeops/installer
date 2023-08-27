@@ -1,0 +1,110 @@
+# Default values for prepare-kubernetes-cluster.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Overrides name template
+nameOverride: ""
+# Overrides fullname template
+fullnameOverride: ""
+
+preparer:
+  # Docker image used to run kernel configuration commands
+  repository: tianon/toybox
+  # Image pull policy of Docker image used for node preparation
+  pullPolicy: IfNotPresent
+  # Image tag of Docker image used for node preparation
+  tag: 0.8.4
+  # Security options the node preparer container should run with
+  securityContext: # +doc-gen:break
+    privileged: true
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+cleaner:
+  # Docker image used to uninstall this helm release
+  repository: appscode/helm
+  # Image pull policy of Docker image used for helm command
+  pullPolicy: IfNotPresent
+  # Image tag of Docker image used for helm command
+  tag: 3.4.2
+  # Skip generating cleaner YAML
+  skip: true
+  # Security options the helm cleaner container should run with
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+# Specify an array of imagePullSecrets.
+# Secrets must be manually created in the namespace.
+#
+# Example:
+# helm template charts/prepare-kubernetes-cluster \
+#   --set imagePullSecrets[0].name=sec0 \
+#   --set imagePullSecrets[1].name=sec1
+imagePullSecrets: []
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# Annotations passed to operator pod(s).
+podAnnotations: {}
+
+# Security options the operator pod should run with.
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# Compute Resources required by the node preparer and helm cleaner container
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Node labels for pod assignment
+nodeSelector: # +doc-gen:break
+  beta.kubernetes.io/os: linux
+
+# Tolerations for pod assignment
+tolerations: []
+
+# Affinity rules for pod assignment
+affinity: {}
+
+node:
+  # Specify an array of features to be enabled in a Kubernetes node.
+  # Available features:
+  # - DISABLE_THP: Disable Transparent Huge Page
+  #
+  # Example:
+  # helm template charts/prepare-kubernetes-cluster \
+  #   --set node.features[0]=DISABLE_THP
+  features: []
+  # Specify an array of sysctl parameters.
+  #
+  # Example:
+  # helm template charts/prepare-kubernetes-cluster \
+  #   --set node.sysctls[0].name=vm.max_map_count \
+  #   --set node.sysctls[0].value=300000
+  sysctls: # +doc-gen:break
+    - name: vm.max_map_count
+      value: "262144"

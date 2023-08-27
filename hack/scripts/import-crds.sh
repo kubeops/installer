@@ -60,6 +60,23 @@ crd-importer \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/scanner/crds
 
+# import cert-manager crds
+crd-importer \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml \
+    --out=./charts/cert-manager-crds/crds
+
+# import prometheus-operator crds
+crd-importer \
+    --input=https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.60.1/stripped-down-crds.yaml \
+    --out=./charts/prometheus-operator-crds/crds
+
+crd-importer \
+    --input=https://github.com/kmodules/custom-resources/raw/release-1.25/crds/appcatalog.appscode.com_appbindings.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/release-1.25/crds/metrics.appscode.com_metricsconfigurations.yaml \
+    --out=./charts/kmodules-crds/crds
+rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfoes.yaml
+rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
+
 {
     supervisor_dir=${1:-}/supervisor/crds
 

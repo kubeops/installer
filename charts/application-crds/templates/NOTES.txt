@@ -1,0 +1,3 @@
+Get the crds by running the following command:
+
+  kubectl get crds | grep app.k8s.io

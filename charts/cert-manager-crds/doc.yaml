@@ -1,0 +1,18 @@
+project:
+  name: cert-manager CRDs
+  shortName: cert-manager CRDs
+  url: https://cert-manager.io
+  description: Jetstack cert-manager CRDs
+  app: cert-manager crds
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: cert-manager-crds
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: cert-manager-crds
+  namespace: kube-system

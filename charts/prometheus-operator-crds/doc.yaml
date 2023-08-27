@@ -1,0 +1,18 @@
+project:
+  name: Prometheus Operator CRDs
+  shortName: Prometheus Operator CRDs
+  url: https://github.com/prometheus-operator/prometheus-operator
+  description: Prometheus Operator CRDs
+  app: Prometheus Operator crds
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: prometheus-operator-crds
+  values: "-- generate from values file --"
+  valuesExample: "-- generate from values file --"
+prerequisites:
+- Kubernetes 1.16+
+release:
+  name: prometheus-operator-crds
+  namespace: kube-system
