@@ -2,7 +2,7 @@
 
 {{ range $x := .Values.node.features }}
   {{ if eq $x "DISABLE_THP" }}
-    {{ $cmds = append $cmds "echo never | tee /host/sys/kernel/mm/transparent_hugepage/enabled > /dev/null" }}
+    {{ $cmds = append $cmds "echo never > /host/sys/kernel/mm/transparent_hugepage/enabled" }}
   {{ end }}
 {{ end }}
 
