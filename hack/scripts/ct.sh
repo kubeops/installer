@@ -25,7 +25,8 @@ for dir in charts/*/; do
         [[ "$dir" = "auditor" ]] ||
         [[ "$dir" = "cluster-connector" ]]; then
         make ct CT_COMMAND=lint TEST_CHARTS=charts/$dir
-    elif [[ "$dir" = "cert-manager-csi-driver-cacerts" ]]; then
+    elif [[ "$dir" = "cert-manager-csi-driver-cacerts" ]] ||
+        [[ "$dir" = "prepare-kubernetes-cluster" ]]; then
         ns=app-$(date +%s | head -c 6)
         kubectl create ns $ns
         # kubectl label ns $ns pod-security.kubernetes.io/enforce=restricted
