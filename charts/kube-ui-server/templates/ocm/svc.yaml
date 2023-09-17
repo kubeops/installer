@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: kubectl
-        image: ghcr.io/appscode/kubectl:1.23
+        image: {{ include "image.registry" $ }}/kubectl:1.23
         workingDir: /var/run/secrets/ocm
         command:
           - sh
