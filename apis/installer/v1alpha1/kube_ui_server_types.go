@@ -73,12 +73,13 @@ type KubeUiServerSpec struct {
 	// PodSecurityContext holds pod-level security attributes and common container settings.
 	// Optional: Defaults to empty.  See type description for default values of each field.
 	// +optional
-	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
-	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
-	Apiserver          ApiserverSpec            `json:"apiserver"`
-	Monitoring         Monitoring               `json:"monitoring"`
-	Prometheus         PrometheusConfig         `json:"prometheus"`
-	HelmRepositories   HelmRepositories         `json:"helmRepositories"`
+	PodSecurityContext   *core.PodSecurityContext `json:"podSecurityContext"`
+	ServiceAccount       ServiceAccountSpec       `json:"serviceAccount"`
+	Apiserver            ApiserverSpec            `json:"apiserver"`
+	Monitoring           Monitoring               `json:"monitoring"`
+	Prometheus           PrometheusConfig         `json:"prometheus"`
+	HelmRepositories     HelmRepositories         `json:"helmRepositories"`
+	KubeconfigSecretName string                   `json:"kubeconfigSecretName"`
 }
 
 type HelmRepositories struct {

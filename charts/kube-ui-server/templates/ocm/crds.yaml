@@ -1,0 +1,46 @@
+{{- if .Values.kubeconfigSecretName }}
+{{ range $path, $data := .Files.Glob  "crds/**.yaml" }}
+
+{{ $content := toString $data }}
+{{ $crd := dig "spec" "names" "plural" "" ($content | fromYaml) }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "kube-ui-server.fullname" $ }}-regcrd-{{ $crd }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "kube-ui-server.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade,post-rollback
+    # "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+spec:
+  ttlSecondsAfterFinished: 0
+  backoffLimit: 3
+  template:
+    spec:
+      {{- include "appscode.imagePullSecrets" $ | nindent 6 }}
+      automountServiceAccountToken: false
+      containers:
+      - name: kubectl
+        image: ghcr.io/appscode/kubectl:1.23
+        workingDir: /var/run/secrets/ocm
+        command:
+          - sh
+          - -c
+          - "sleep 2; \
+            crd={{ $content | b64enc }}; \
+            echo $crd | base64 -d | kubectl --kubeconfig=auth/kubeconfig apply -f -; \
+            "
+        imagePullPolicy: {{ $.Values.imagePullPolicy }}
+        volumeMounts:
+        - mountPath: /var/run/secrets/ocm/auth
+          name: ocm-auth
+      volumes:
+      - name: ocm-auth
+        secret:
+          defaultMode: 420
+          secretName: {{ $.Values.kubeconfigSecretName }}
+      restartPolicy: Never
+{{- end }}
+{{- end }}
