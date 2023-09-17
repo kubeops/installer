@@ -127,3 +127,5 @@ prometheus:
 
 helmRepositories:
   create: false
+
+kubeconfigSecretName: ""

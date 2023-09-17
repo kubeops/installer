@@ -22,7 +22,7 @@ spec:
       labels:
         {{- include "kube-ui-server.selectorLabels" . | nindent 8 }}
       annotations:
-        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/apiregistration.yaml") . | sha256sum }}
+        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/k8s/apiregistration.yaml") . | sha256sum }}
       {{- if $criticalAddon }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
       {{- end }}
@@ -31,8 +31,12 @@ spec:
       {{- end }}
     spec:
       {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      {{- if .Values.kubeconfigSecretName }}
+      automountServiceAccountToken: false
+      {{- else }}
       serviceAccountName: {{ include "kube-ui-server.serviceAccountName" . }}
       automountServiceAccountToken: true
+      {{- end }}
       containers:
       - name: server
         securityContext:
@@ -51,6 +55,11 @@ spec:
         - --authorization-always-allow-paths=/livez
         - --authorization-always-allow-paths=/metrics
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
+      {{- if .Values.kubeconfigSecretName }}
+        - --kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+        - --authorization-kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+        - --authentication-kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+      {{- end }}
     {{- with .Values.prometheus }}
       {{- with .address }}
         - --prometheus.address={{ . }}
@@ -116,6 +125,10 @@ spec:
           name: serving-cert
         - mountPath: /tmp
           name: tmp-dir
+      {{- if .Values.kubeconfigSecretName }}
+        - mountPath: /var/run/secrets/ocm/auth
+          name: ocm-auth
+      {{- end }}
       {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
         - mountPath: /var/run/secrets/prometheus/auth
           name: prometheus-auth
@@ -131,6 +144,12 @@ spec:
           secretName: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
       - name: tmp-dir
         emptyDir: {}
+      {{- if .Values.kubeconfigSecretName }}
+      - name: ocm-auth
+        secret:
+          defaultMode: 420
+          secretName: {{ .Values.kubeconfigSecretName }}
+      {{- end }}
       {{- if or .Values.prometheus.basicAuth.password .Values.prometheus.bearerToken }}
       - name: prometheus-auth
         secret:
