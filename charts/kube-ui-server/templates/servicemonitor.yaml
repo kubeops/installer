@@ -1,15 +1,16 @@
 {{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+
+{{- $labels := mergeOverwrite (dict) .Values.monitoring.serviceMonitor.labels }}
+{{- $_ := set $labels "app.kubernetes.io/name" (include "kube-ui-server.name" .) }}
+{{- $_ := set $labels "app.kubernetes.io/instance" .Release.Name }}
+
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "kube-ui-server.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-  {{- if eq "true" ( include "monitoring.apply-servicemonitor-label" . ) }}
-    {{- include "monitoring.servicemonitor-label" . | nindent 4 }}
-  {{- else }}
-    {{- include "kube-ui-server.selectorLabels" . | nindent 4 }}
-  {{- end }}
+    {{- $labels | toYaml | nindent 4 }}
 spec:
   namespaceSelector:
     matchNames:
