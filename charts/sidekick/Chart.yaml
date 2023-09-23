@@ -2,7 +2,7 @@ apiVersion: v2
 name: sidekick
 description: A Helm chart for Sidekick Operator by AppsCode
 type: application
-version: v2023.03.23
+version: v2023.10.1
 appVersion: v0.0.2
 home: https://github.com/kubeops/sidekick
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png

@@ -15,8 +15,8 @@ entries:
     sources:
     - https://github.com/kubeops/auditor
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/auditor/auditor-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/auditor/auditor-v2023.10.1.tgz
+    version: v2023.10.1
   cert-manager-csi-driver-cacerts:
   - apiVersion: v2
     appVersion: v0.0.2
@@ -33,8 +33,8 @@ entries:
     - https://github.com/kubeops/csi-driver-cacerts
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cert-manager-csi-driver-cacerts/cert-manager-csi-driver-cacerts-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cert-manager-csi-driver-cacerts/cert-manager-csi-driver-cacerts-v2023.10.1.tgz
+    version: v2023.10.1
   cluster-connector:
   - apiVersion: v2
     appVersion: v0.0.8
@@ -51,8 +51,8 @@ entries:
     - https://github.com/kubeops/cluster-connector
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cluster-connector/cluster-connector-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/cluster-connector/cluster-connector-v2023.10.1.tgz
+    version: v2023.10.1
   external-dns-operator:
   - apiVersion: v2
     appVersion: v0.0.5
@@ -69,11 +69,11 @@ entries:
     - https://github.com/kubeops/external-dns-operator
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/external-dns-operator/external-dns-operator-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/external-dns-operator/external-dns-operator-v2023.10.1.tgz
+    version: v2023.10.1
   gatekeeper-grafana-dashboards:
   - apiVersion: v2
-    appVersion: v2023.03.23
+    appVersion: v2023.10.1
     created: "2023-05-30T04:09:09.626723-07:00"
     description: A Helm chart for Gatekeeper Grafana Dashboards
     digest: e4824da0cebf5af9acbe729fa40c0e63d7485943abb3b92541737bf34335f986
@@ -87,8 +87,8 @@ entries:
     - https://github.com/kubeops/installer
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/gatekeeper-grafana-dashboards/gatekeeper-grafana-dashboards-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/gatekeeper-grafana-dashboards/gatekeeper-grafana-dashboards-v2023.10.1.tgz
+    version: v2023.10.1
   gatekeeper-library:
   - apiVersion: v2
     appVersion: v0.0.1
@@ -105,8 +105,8 @@ entries:
     - https://github.com/kubeops/installer
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/gatekeeper-library/gatekeeper-library-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/gatekeeper-library/gatekeeper-library-v2023.10.1.tgz
+    version: v2023.10.1
   kube-ui-server:
   - apiVersion: v2
     appVersion: v0.0.26
@@ -123,8 +123,8 @@ entries:
     - https://github.com/kubeops/kube-ui-server
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/kube-ui-server/kube-ui-server-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/kube-ui-server/kube-ui-server-v2023.10.1.tgz
+    version: v2023.10.1
   panopticon:
   - apiVersion: v1
     appVersion: v0.0.8
@@ -140,8 +140,8 @@ entries:
     sources:
     - https://github.com/kubeops/panopticon
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/panopticon/panopticon-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/panopticon/panopticon-v2023.10.1.tgz
+    version: v2023.10.1
   scanner:
   - apiVersion: v1
     appVersion: v0.0.12
@@ -157,8 +157,8 @@ entries:
     sources:
     - https://github.com/kubeops/scanner
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/scanner/scanner-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/scanner/scanner-v2023.10.1.tgz
+    version: v2023.10.1
   sidekick:
   - apiVersion: v2
     appVersion: v0.0.2
@@ -175,8 +175,8 @@ entries:
     - https://github.com/kubeops/sidekick
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/sidekick/sidekick-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/sidekick/sidekick-v2023.10.1.tgz
+    version: v2023.10.1
   supervisor:
   - apiVersion: v2
     appVersion: v0.0.3
@@ -193,6 +193,6 @@ entries:
     - https://github.com/kubeops/supervisor
     type: application
     urls:
-    - https://raw.githubusercontent.com/kubeops/installer/master/stable/supervisor/supervisor-v2023.03.23.tgz
-    version: v2023.03.23
+    - https://raw.githubusercontent.com/kubeops/installer/master/stable/supervisor/supervisor-v2023.10.1.tgz
+    version: v2023.10.1
 generated: "2023-05-30T04:09:09.62231-07:00"

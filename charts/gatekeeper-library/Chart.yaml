@@ -2,7 +2,7 @@ apiVersion: v2
 name: gatekeeper-library
 description: A Helm chart for OPA Gatekeeper Library
 type: application
-version: v2023.03.23
+version: v2023.10.1
 appVersion: v0.0.1
 home: https://github.com/kubeops/installer
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
