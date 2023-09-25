@@ -22,9 +22,7 @@ spec:
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     scheme: https
     interval: 10s
-    relabelings:
-      - action: labeldrop
-        regex: (pod|service|endpoint|namespace)
+    honorLabels: true
     tlsConfig:
       ca:
         secret:
@@ -33,6 +31,8 @@ spec:
       serverName: "{{ include "falco-ui-server.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    path: /falcometrics
+    honorLabels: true
     scheme: http
     interval: 10s
 {{- end }}
