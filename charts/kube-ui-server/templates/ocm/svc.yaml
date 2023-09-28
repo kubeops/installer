@@ -38,12 +38,12 @@ spec:
                 name: {{ include "kube-ui-server.fullname" . }}
                 namespace: {{ .Release.Namespace }}
               spec:
-                # clusterIP: $SVC_IP
+                clusterIP: $SVC_IP
                 ports:
                 - name: api
                   port: 443
                   protocol: TCP
-                  targetPort: 443
+                  targetPort: 8443
                 sessionAffinity: None
                 type: ClusterIP
               ---
@@ -57,7 +57,7 @@ spec:
                 - ip: $SVC_IP
                 ports:
                 - name: api
-                  port: 443
+                  port: 8443
                   protocol: TCP
               EOF
         imagePullPolicy: {{ .Values.imagePullPolicy }}
