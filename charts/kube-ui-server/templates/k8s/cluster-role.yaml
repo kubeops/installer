@@ -12,6 +12,7 @@ rules:
   - core.k8s.appscode.com
   - identity.k8s.appscode.com
   - meta.k8s.appscode.com
+  - management.k8s.appscode.com
   - ui.k8s.appscode.com
   resources:
   - "*"
