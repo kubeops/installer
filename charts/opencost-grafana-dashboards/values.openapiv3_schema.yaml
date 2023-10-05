@@ -1,0 +1,43 @@
+properties:
+  dashboard:
+    properties:
+      enabled:
+        type: boolean
+      folderID:
+        type: integer
+      overwrite:
+        type: boolean
+      templatize:
+        properties:
+          datasource:
+            type: boolean
+          title:
+            type: boolean
+        required:
+        - datasource
+        - title
+        type: object
+    required:
+    - enabled
+    - folderID
+    - overwrite
+    - templatize
+    type: object
+  fullnameOverride:
+    type: string
+  grafana:
+    properties:
+      name:
+        type: string
+      namespace:
+        type: string
+    required:
+    - name
+    - namespace
+    type: object
+  nameOverride:
+    type: string
+required:
+- dashboard
+- grafana
+type: object

@@ -1,0 +1,18 @@
+project:
+  name: Opencost Grafana Dashboards by AppsCode
+  shortName: Opencost Grafana Dashboards
+  url: https://github.com/kubeops/ui-server
+  description: Opencost Grafana Dashboards for ByteBuilders
+  app: Opencost Grafana Dashboards
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: opencost-grafana-dashboards
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.21+
+release:
+  name: opencost-grafana-dashboards
+  namespace: kubeops

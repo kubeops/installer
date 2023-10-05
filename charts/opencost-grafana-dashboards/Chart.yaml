@@ -1,0 +1,13 @@
+apiVersion: v2
+name: opencost-grafana-dashboards
+description: A Helm chart for Opencost Grafana Dashboards
+type: application
+version: v2023.10.1
+appVersion: v2023.10.1
+home: https://github.com/appscode/grafana-dashboards
+icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
+sources:
+- https://github.com/kubeops/installer
+maintainers:
+- name: appscode
+  email: support@appscode.com

@@ -1,0 +1,612 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 85,
+  "iteration": 1694001975850,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "${datasource}",
+      "description": "Maximum CPU Core Usage vs Requested",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "max by (namespace, pod, container) (\n  irate(container_cpu_usage_seconds_total{container=\"$container\",namespace=\"$ns\",pod=\"$pod\"}[$__rate_interval])\n)",
+          "interval": "",
+          "legendFormat": "{{pod}}/{{container}} (usage max)",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "avg by (namespace, pod, container) (\n  kube_pod_container_resource_requests{container=\"$container\",namespace=\"$ns\",pod=\"$pod\",resource=\"cpu\"}\n)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": " {{pod}}/{{container}} (avg requested)",
+          "refId": "B"
+        }
+      ],
+      "title": "CPU Core Usage vs Requested",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "description": "Max Memory usage vs avg requested",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "max(max_over_time(\n  container_memory_working_set_bytes\n  {namespace=~\"$ns\",pod=~\"$pod\",container=~\"$container\"}\n  [$__rate_interval])) \nby (namespace,pod,container)",
+          "interval": "",
+          "legendFormat": "{{pod}}/{{container}} (usage max)",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "avg by (cluster_id, namespace, pod, container) (\n  kube_pod_container_resource_requests{container=~\"$container\",namespace=~\"$ns\",pod=~\"$pod\",resource=\"memory\",unit=\"byte\"}\n)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{pod}}/{{container}} (avg requested)",
+          "refId": "B"
+        }
+      ],
+      "title": "Memory Usage vs Requested",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "description": "Network traffic by pod",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(irate(container_network_receive_bytes_total\n  {namespace=~\"$ns\",pod=~\"$pod\"}\n  [$__rate_interval])) \nby (namespace, pod)",
+          "interval": "",
+          "legendFormat": "{{namespace}}/{{pod}}<- in",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "- sum(irate(container_network_transmit_bytes_total\n  {namespace=~\"$ns\",pod=~\"$pod\"}\n  [$__rate_interval])) \nby (namespace, pod)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{namespace}}/{{pod}}-> out",
+          "refId": "B"
+        }
+      ],
+      "title": "Network IO",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "description": "Disk read writes",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(irate(container_fs_writes_bytes_total\n    {pod=~\"$pod\",container=~\"$container\"}\n     [$__rate_interval])) \nby (namespace,pod,container)",
+          "interval": "",
+          "legendFormat": "{{pod}}/{{container}}<- write",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "- sum(irate(container_fs_reads_bytes_total\n     {pod=~\"$pod\",container=~\"$container\"}\n     [$__rate_interval])) \nby (namespace,pod,container)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{pod}}/{{container}}-> read",
+          "refId": "B"
+        }
+      ],
+      "title": "Disk IO",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "${datasource}",
+      "description": "This graph shows the % of periods where a pod is being throttled. Values range from 0-100",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "100\n  * sum by(namespace, pod, container) (increase(container_cpu_cfs_throttled_periods_total{namespace=~\"$ns\", pod=~\"$pod\", container=~\"$container\"}[$__rate_interval]))\n  / sum by(cluster_id, namespace, pod, container) (increase(container_cpu_cfs_periods_total{namespace=~\"$ns\", pod=~\"$pod\", container=~\"$container\"}[$__rate_interval]))",
+          "interval": "",
+          "legendFormat": "__auto",
+          "refId": "A"
+        }
+      ],
+      "title": "CPU throttle percent",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 31,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "monitoring",
+          "value": "monitoring"
+        },
+        "datasource": "${datasource}",
+        "definition": "label_values(kube_namespace_created,namespace)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "ns",
+        "multi": false,
+        "name": "ns",
+        "options": [],
+        "query": {
+          "query": "label_values(kube_namespace_created,namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "prometheus-kube-prometheus-stack-prometheus-0",
+          "value": "prometheus-kube-prometheus-stack-prometheus-0"
+        },
+        "datasource": "${datasource}",
+        "definition": "label_values(kube_pod_info{namespace=~\"$ns\"}, pod) ",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "pod",
+        "multi": false,
+        "name": "pod",
+        "options": [],
+        "query": {
+          "query": "label_values(kube_pod_info{namespace=~\"$ns\"}, pod) ",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "config-reloader",
+          "value": "config-reloader"
+        },
+        "datasource": "${datasource}",
+        "definition": "label_values(container_memory_working_set_bytes{namespace=~\"$ns\",pod=~\"$pod\", container!=\"POD\"}, container) ",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "container",
+        "multi": false,
+        "name": "container",
+        "options": [],
+        "query": {
+          "query": "label_values(container_memory_working_set_bytes{namespace=~\"$ns\",pod=~\"$pod\", container!=\"POD\"}, container) ",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "23.06",
+          "value": "23.06"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "rate_interval",
+        "name": "__rate_interval",
+        "options": [
+          {
+            "selected": true,
+            "text": "10m",
+            "value": "10m"
+          }
+        ],
+        "query": "10m",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "ACE / Pod Utilization",
+  "uid": "WhjpqykIk",
+  "version": 1
+}
