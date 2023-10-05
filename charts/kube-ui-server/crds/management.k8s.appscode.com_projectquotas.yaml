@@ -79,6 +79,8 @@ spec:
                       type: object
                     kind:
                       type: string
+                    reason:
+                      type: string
                     result:
                       enum:
                       - Success
