@@ -1,0 +1,25 @@
+# Default values for opencost-grafana-dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Overrides name template
+nameOverride: ""
+# Overrides fullname template
+fullnameOverride: ""
+
+dashboard:
+  enabled: true
+  # ID of Grafana folder where these dashboards will be applied
+  folderID: 0
+  # If true, dashboard with matching uid will be overwritten
+  overwrite: true
+  templatize:
+    # If true, datasource will be prefixed to dashboard name
+    title: false
+    # If true, datasource will be hardcoded in the dashboard
+    datasource: false
+grafana:
+  # Name of Grafana Appbinding where these dashboards are applied
+  name: ""
+  # Namespace of Grafana Appbinding where these dashboards are applied
+  namespace: ""
