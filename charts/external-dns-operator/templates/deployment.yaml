@@ -48,6 +48,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.image.resources | nindent 12 }}
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp-dir
+      volumes:
+      - name: tmp-dir
+        emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
