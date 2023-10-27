@@ -2,10 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: bytebuilders-ui
+  name: appscode-charts-oci
   namespace: {{ .Release.Namespace }}
 spec:
   type: oci
   interval: 30m
-  url: oci://r.byte.builders/charts/
+  url: oci://r.appscode.com/charts
 {{- end }}
