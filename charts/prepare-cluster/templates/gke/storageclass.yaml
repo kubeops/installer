@@ -1,0 +1,13 @@
+{{- range $old, $nu := .Values.gke.copyStorageClasses }}
+
+{{ $oldObj := lookup "storage.k8s.io/v1" "StorageClass" "" $old }}
+
+{{- if $oldObj }}
+
+{{- $_ := set $oldObj "metadata" (dict "name" $nu) }}
+{{- $_ := set $oldObj "mountOptions" ( list "noatime") }}
+
+{{ toYaml $oldObj }}
+
+{{- end }}
+{{- end }}

@@ -917,6 +917,15 @@ properties:
     type: object
   fullnameOverride:
     type: string
+  gke:
+    properties:
+      copyStorageClasses:
+        additionalProperties:
+          type: string
+        type: object
+    required:
+    - copyStorageClasses
+    type: object
   imagePullSecrets:
     items:
       type: string
@@ -1346,6 +1355,7 @@ required:
 - affinity
 - cleaner
 - fullnameOverride
+- gke
 - imagePullSecrets
 - nameOverride
 - node
