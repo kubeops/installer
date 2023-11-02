@@ -80,7 +80,13 @@ type NodeConfiguration struct {
 }
 
 type GKE struct {
-	CopyStorageClasses map[string]string `json:"copyStorageClasses"`
+	CopyStorageClasses map[string]StorageClassSpec `json:"copyStorageClasses"`
+}
+
+type StorageClassSpec struct {
+	Name string `json:"name"`
+	// +optional
+	FSType string `json:"fsType"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
