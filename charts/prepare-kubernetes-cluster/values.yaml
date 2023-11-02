@@ -98,7 +98,7 @@ node:
   # Example:
   # helm template charts/prepare-kubernetes-cluster \
   #   --set node.features[0]=DISABLE_THP
-  features: []
+  features: ["DISABLE_THP", "SET_READ_AHEAD", "ULIMIT", "ZONE_RECLAIM"]
   # Specify an array of sysctl parameters.
   #
   # Example:
@@ -106,5 +106,14 @@ node:
   #   --set node.sysctls[0].name=vm.max_map_count \
   #   --set node.sysctls[0].value=300000
   sysctls: # +doc-gen:break
+    - name: fs.file-max
+      value: "11111" # 98000
+    - name: kernel.pid_max
+      value: "64000"
+    - name: kernel.threads-max
+      value: "64000"
     - name: vm.max_map_count
-      value: "262144"
+      value: "128000"
+    - name: vm.zone_reclaim_mode
+      value: "0"
+
