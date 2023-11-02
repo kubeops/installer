@@ -4,10 +4,19 @@
 
 {{- if $oldObj }}
 
-{{- $_ := set $oldObj "metadata" (dict "name" $nu) }}
+{{- $_ := set $oldObj "metadata" (dict "name" $nu.name) }}
 {{- $_ := set $oldObj "mountOptions" ( list "noatime") }}
 
-{{- $_ := set $oldObj "parameters" (merge $oldObj.parameters (dict "csi.storage.k8s.io/fstype" "xfs")) }}
+{{- $params := dict }}
+{{- if $oldObj.parameters }}
+{{- $params = $oldObj.parameters }}
+{{- end }}
+
+{{- if $nu.fsType  }}
+{{- $_ := set $params "csi.storage.k8s.io/fstype" $nu.fsType }}
+{{- end }}
+
+{{- $_ := set $oldObj "parameters" $params }}
 
 {{ toYaml $oldObj }}
 

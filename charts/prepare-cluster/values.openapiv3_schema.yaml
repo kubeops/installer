@@ -921,7 +921,14 @@ properties:
     properties:
       copyStorageClasses:
         additionalProperties:
-          type: string
+          properties:
+            fsType:
+              type: string
+            name:
+              type: string
+          required:
+          - name
+          type: object
         type: object
     required:
     - copyStorageClasses

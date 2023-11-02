@@ -120,3 +120,6 @@ node:
 # To test use: helm install prepare-cluster charts/prepare-cluster --dry-run=server
 gke:
   copyStorageClasses: {}
+    # standard:
+    #   name: optimized
+    #   fsType: xfs
