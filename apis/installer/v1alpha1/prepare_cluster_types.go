@@ -22,12 +22,12 @@ import (
 )
 
 const (
-	ResourceKindPrepareKubernetesCluster = "PrepareKubernetesCluster"
-	ResourcePrepareKubernetesCluster     = "preparekubernetescluster"
-	ResourcePrepareKubernetesClusters    = "preparekubernetesclusters"
+	ResourceKindPrepareCluster = "PrepareCluster"
+	ResourcePrepareCluster     = "preparecluster"
+	ResourcePrepareClusters    = "prepareclusters"
 )
 
-// PrepareKubernetesCluster defines the schama for Kubernetes Cluster prepaaration process.
+// PrepareCluster defines the schama for Kubernetes Cluster prepaaration process.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -35,11 +35,11 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:path=preparekubernetesclusters,singular=preparekubernetescluster,categories={appscode}
-type PrepareKubernetesCluster struct {
+// +kubebuilder:resource:path=prepareclusters,singular=preparecluster,categories={appscode}
+type PrepareCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PrepareKubernetesClusterSpec `json:"spec,omitempty"`
+	Spec              PrepareClusterSpec `json:"spec,omitempty"`
 }
 
 type PKCImageRef struct {
@@ -56,8 +56,8 @@ type PKCCleanerRef struct {
 	Skip        bool `json:"skip"`
 }
 
-// PrepareKubernetesClusterSpec is the spec for redis version
-type PrepareKubernetesClusterSpec struct {
+// PrepareClusterSpec is the spec for redis version
+type PrepareClusterSpec struct {
 	Preparer           PKCImageRef               `json:"preparer"`
 	Cleaner            PKCCleanerRef             `json:"cleaner"`
 	ImagePullSecrets   []string                  `json:"imagePullSecrets"`
@@ -71,6 +71,7 @@ type PrepareKubernetesClusterSpec struct {
 	Tolerations        []core.Toleration         `json:"tolerations"`
 	Affinity           *core.Affinity            `json:"affinity"`
 	Node               NodeConfiguration         `json:"node"`
+	GKE                GKE                       `json:"gke"`
 }
 
 type NodeConfiguration struct {
@@ -78,12 +79,16 @@ type NodeConfiguration struct {
 	Sysctls  []core.Sysctl `json:"sysctls"`
 }
 
+type GKE struct {
+	CopyStorageClasses map[string]string `json:"copyStorageClasses"`
+}
+
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// PrepareKubernetesClusterList is a list of PrepareKubernetesClusters
-type PrepareKubernetesClusterList struct {
+// PrepareClusterList is a list of PrepareClusters
+type PrepareClusterList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of PrepareKubernetesCluster CRD objects
-	Items []PrepareKubernetesCluster `json:"items,omitempty"`
+	// Items is a list of PrepareCluster CRD objects
+	Items []PrepareCluster `json:"items,omitempty"`
 }

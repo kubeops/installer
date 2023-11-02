@@ -26,11 +26,11 @@ preparer:
 
 cleaner:
   # Docker image used to uninstall this helm release
-  repository: appscode/helm
+  repository: ghcr.io/appscode/helm
   # Image pull policy of Docker image used for helm command
   pullPolicy: IfNotPresent
   # Image tag of Docker image used for helm command
-  tag: 3.4.2
+  tag: 3.11.3
   # Skip generating cleaner YAML
   skip: true
   # Security options the helm cleaner container should run with
@@ -117,3 +117,6 @@ node:
     - name: vm.zone_reclaim_mode
       value: "0"
 
+# To test use: helm install prepare-cluster charts/prepare-cluster --dry-run=server
+gke:
+  copyStorageClasses: {}
