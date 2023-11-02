@@ -1,4 +1,4 @@
-# Default values for prepare-kubernetes-cluster.
+# Default values for prepare-cluster.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -46,7 +46,7 @@ cleaner:
 # Secrets must be manually created in the namespace.
 #
 # Example:
-# helm template charts/prepare-kubernetes-cluster \
+# helm template charts/prepare-cluster \
 #   --set imagePullSecrets[0].name=sec0 \
 #   --set imagePullSecrets[1].name=sec1
 imagePullSecrets: []
@@ -96,13 +96,13 @@ node:
   # - DISABLE_THP: Disable Transparent Huge Page
   #
   # Example:
-  # helm template charts/prepare-kubernetes-cluster \
+  # helm template charts/prepare-cluster \
   #   --set node.features[0]=DISABLE_THP
   features: ["DISABLE_THP", "SET_READ_AHEAD", "ULIMIT", "ZONE_RECLAIM"]
   # Specify an array of sysctl parameters.
   #
   # Example:
-  # helm template charts/prepare-kubernetes-cluster \
+  # helm template charts/prepare-cluster \
   #   --set node.sysctls[0].name=vm.max_map_count \
   #   --set node.sysctls[0].value=300000
   sysctls: # +doc-gen:break

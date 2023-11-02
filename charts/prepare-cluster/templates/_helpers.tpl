@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "prepare-kubernetes-cluster.name" -}}
+{{- define "prepare-cluster.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "prepare-kubernetes-cluster.fullname" -}}
+{{- define "prepare-cluster.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "prepare-kubernetes-cluster.chart" -}}
+{{- define "prepare-cluster.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "prepare-kubernetes-cluster.labels" -}}
-helm.sh/chart: {{ include "prepare-kubernetes-cluster.chart" . }}
-{{ include "prepare-kubernetes-cluster.selectorLabels" . }}
+{{- define "prepare-cluster.labels" -}}
+helm.sh/chart: {{ include "prepare-cluster.chart" . }}
+{{ include "prepare-cluster.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "prepare-kubernetes-cluster.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "prepare-kubernetes-cluster.name" . }}
+{{- define "prepare-cluster.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "prepare-cluster.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "prepare-kubernetes-cluster.serviceAccountName" -}}
+{{- define "prepare-cluster.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "prepare-kubernetes-cluster.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "prepare-cluster.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

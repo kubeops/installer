@@ -22,18 +22,18 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "prepare-kubernetes-cluster.fullname" . }}
+  name: {{ include "prepare-cluster.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "prepare-kubernetes-cluster.labels" . | nindent 4 }}
+    {{- include "prepare-cluster.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "prepare-kubernetes-cluster.selectorLabels" . | nindent 6 }}
+      {{- include "prepare-cluster.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "prepare-kubernetes-cluster.selectorLabels" . | nindent 8 }}
+        {{- include "prepare-cluster.selectorLabels" . | nindent 8 }}
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -43,7 +43,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "prepare-kubernetes-cluster.serviceAccountName" . }}
+      serviceAccountName: {{ include "prepare-cluster.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

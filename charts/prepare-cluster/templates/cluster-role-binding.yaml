@@ -2,18 +2,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "prepare-kubernetes-cluster.fullname" . }}
+  name: {{ include "prepare-cluster.fullname" . }}
   labels:
-    {{- include "prepare-kubernetes-cluster.labels" . | nindent 4 }}
+    {{- include "prepare-cluster.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "prepare-kubernetes-cluster.fullname" . }}
+  name: {{ include "prepare-cluster.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "prepare-kubernetes-cluster.serviceAccountName" . }}
+  name: {{ include "prepare-cluster.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 {{ end }}
