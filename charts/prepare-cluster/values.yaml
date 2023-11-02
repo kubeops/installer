@@ -107,7 +107,7 @@ node:
   #   --set node.sysctls[0].value=300000
   sysctls: # +doc-gen:break
     - name: fs.file-max
-      value: "11111" # 98000
+      value: "98000"
     - name: kernel.pid_max
       value: "64000"
     - name: kernel.threads-max

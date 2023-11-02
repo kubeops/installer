@@ -7,6 +7,8 @@
 {{- $_ := set $oldObj "metadata" (dict "name" $nu) }}
 {{- $_ := set $oldObj "mountOptions" ( list "noatime") }}
 
+{{- $_ := set $oldObj "parameters" (merge $oldObj.parameters (dict "csi.storage.k8s.io/fstype" "xfs")) }}
+
 {{ toYaml $oldObj }}
 
 {{- end }}

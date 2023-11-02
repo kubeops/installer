@@ -4,9 +4,6 @@
   {{ if eq $x "DISABLE_THP" }}
     {{ $cmds = append $cmds "echo never > /host/sys/kernel/mm/transparent_hugepage/enabled" }}
   {{ end }}
-  {{ if eq $x "SET_READ_AHEAD" }}
-    {{ $cmds = append $cmds `fs=$(df -h | grep -E '\s\/$' | cut -d' ' -f1) && blockdev --setra 32 "$fs"` }}
-  {{ end }}
   {{ if eq $x "ULIMIT" }}
     {{ $cmds = append $cmds "echo -e '\\n* hard nofile 64000 \\n* soft nofile 64000 \\n* hard nproc 64000 \\n* soft nproc 64000' >> /host/etc/security/limits.conf" }}
   {{ end }}
