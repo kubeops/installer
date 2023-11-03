@@ -1,4 +1,4 @@
-{{- if include "appscode.license" . }}
+{{- if include "mode.enterprise" . }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
