@@ -1005,6 +1005,11 @@ properties:
   logLevel:
     format: int32
     type: integer
+  mode:
+    enum:
+    - oss
+    - enterprise
+    type: string
   nameOverride:
     type: string
   nodeSelector:

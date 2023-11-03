@@ -42,6 +42,10 @@ type ConfigSyncer struct {
 	Spec              ConfigSyncerSpec `json:"spec,omitempty"`
 }
 
+// +kubebuilder:validation:Enum=oss;enterprise
+// +kubebuilder:default:=oss
+type LicenseMode string
+
 // ConfigSyncerSpec is the schema for ConfigSyncer Operator values file
 type ConfigSyncerSpec struct {
 	//+optional
@@ -51,9 +55,11 @@ type ConfigSyncerSpec struct {
 	ReplicaCount     int32  `json:"replicaCount"`
 	RegistryFQDN     string `json:"registryFQDN"`
 	// +optional
-	License         string    `json:"license"`
-	Image           Container `json:"image"`
-	ImagePullPolicy string    `json:"imagePullPolicy"`
+	License string `json:"license"`
+	// +optional
+	Mode            LicenseMode `json:"mode"`
+	Image           Container   `json:"image"`
+	ImagePullPolicy string      `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional

@@ -65,8 +65,8 @@ Create the name of the service account to use
 {{/*
 Returns the appscode license
 */}}
-{{- define "appscode.license" -}}
-{{- .Values.license }}
+{{- define "mode.enterprise" -}}
+{{- ternary "enterpise" "" (or .Values.license (eq .Values.mode "enterprise")) -}}
 {{- end }}
 
 {{/*

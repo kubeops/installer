@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/config-syncer --version=v0.14.1
-$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.1
+$ helm search repo appscode/config-syncer --version=v0.14.2
+$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.2
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Config Syncer operator on a [Kubernetes](http://kubernetes.
 To install/upgrade the chart with the release name `config-syncer`:
 
 ```bash
-$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.1
+$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.2
 ```
 
 The command deploys a Config Syncer operator on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -51,6 +51,7 @@ The following table lists the configurable parameters of the `config-syncer` cha
 | fullnameOverride                     | Overrides fullname template                                                                                                                                                                                                                                                                                              | <code>""</code>                                                                                                                                                                                |
 | replicaCount                         | Number of Config Syncer operator replicas to create (only 1 is supported)                                                                                                                                                                                                                                                | <code>1</code>                                                                                                                                                                                 |
 | license                              | License for the product. Get a license by following the steps from [here](https://license-issuer.appscode.com/). <br> Example: <br> `helm install appscode/panopticon \` <br> `--set-file license=/path/to/license/file` <br> `or` <br> `helm install appscode/panopticon \` <br> `--set license=<license file content>` | <code>""</code>                                                                                                                                                                                |
+| mode                                 | oss or enterprise                                                                                                                                                                                                                                                                                                        | <code>oss</code>                                                                                                                                                                               |
 | registryFQDN                         | Docker registry fqdn used to pull docker images Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}                                                                                                                                                                                           | <code>ghcr.io</code>                                                                                                                                                                           |
 | image.registry                       | Docker registry used to pull Config Syncer operator image                                                                                                                                                                                                                                                                | <code>appscode</code>                                                                                                                                                                          |
 | image.repository                     | Config Syncer operator container image                                                                                                                                                                                                                                                                                   | <code>config-syncer</code>                                                                                                                                                                     |
@@ -86,12 +87,12 @@ The following table lists the configurable parameters of the `config-syncer` cha
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.1 --set replicaCount=1
+$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.2 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.1 --values values.yaml
+$ helm upgrade -i config-syncer appscode/config-syncer -n kubeops --create-namespace --version=v0.14.2 --values values.yaml
 ```
