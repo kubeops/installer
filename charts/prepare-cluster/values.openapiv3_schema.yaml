@@ -915,24 +915,25 @@ properties:
     - skip
     - tag
     type: object
+  copyStorageClasses:
+    additionalProperties:
+      properties:
+        mountOptions:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        params:
+          additionalProperties:
+            type: string
+          type: object
+      required:
+      - name
+      type: object
+    type: object
   fullnameOverride:
     type: string
-  gke:
-    properties:
-      copyStorageClasses:
-        additionalProperties:
-          properties:
-            fsType:
-              type: string
-            name:
-              type: string
-          required:
-          - name
-          type: object
-        type: object
-    required:
-    - copyStorageClasses
-    type: object
   imagePullSecrets:
     items:
       type: string
@@ -1361,8 +1362,8 @@ properties:
 required:
 - affinity
 - cleaner
+- copyStorageClasses
 - fullnameOverride
-- gke
 - imagePullSecrets
 - nameOverride
 - node
