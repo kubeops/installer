@@ -58,20 +58,20 @@ type PKCCleanerRef struct {
 
 // PrepareClusterSpec is the spec for redis version
 type PrepareClusterSpec struct {
-	Preparer           PKCImageRef               `json:"preparer"`
-	Cleaner            PKCCleanerRef             `json:"cleaner"`
-	ImagePullSecrets   []string                  `json:"imagePullSecrets"`
-	NameOverride       string                    `json:"nameOverride"`
-	FullnameOverride   string                    `json:"fullnameOverride"`
-	ServiceAccount     ServiceAccountSpec        `json:"serviceAccount"`
-	PodAnnotations     map[string]string         `json:"podAnnotations"`
-	PodSecurityContext *core.PodSecurityContext  `json:"podSecurityContext"`
-	Resources          core.ResourceRequirements `json:"resources"`
-	NodeSelector       map[string]string         `json:"nodeSelector"`
-	Tolerations        []core.Toleration         `json:"tolerations"`
-	Affinity           *core.Affinity            `json:"affinity"`
-	Node               NodeConfiguration         `json:"node"`
-	GKE                GKE                       `json:"gke"`
+	Preparer           PKCImageRef                 `json:"preparer"`
+	Cleaner            PKCCleanerRef               `json:"cleaner"`
+	ImagePullSecrets   []string                    `json:"imagePullSecrets"`
+	NameOverride       string                      `json:"nameOverride"`
+	FullnameOverride   string                      `json:"fullnameOverride"`
+	ServiceAccount     ServiceAccountSpec          `json:"serviceAccount"`
+	PodAnnotations     map[string]string           `json:"podAnnotations"`
+	PodSecurityContext *core.PodSecurityContext    `json:"podSecurityContext"`
+	Resources          core.ResourceRequirements   `json:"resources"`
+	NodeSelector       map[string]string           `json:"nodeSelector"`
+	Tolerations        []core.Toleration           `json:"tolerations"`
+	Affinity           *core.Affinity              `json:"affinity"`
+	Node               NodeConfiguration           `json:"node"`
+	CopyStorageClasses map[string]StorageClassSpec `json:"copyStorageClasses"`
 }
 
 type NodeConfiguration struct {
@@ -79,14 +79,14 @@ type NodeConfiguration struct {
 	Sysctls  []core.Sysctl `json:"sysctls"`
 }
 
-type GKE struct {
-	CopyStorageClasses map[string]StorageClassSpec `json:"copyStorageClasses"`
-}
+type GKE struct{}
 
 type StorageClassSpec struct {
 	Name string `json:"name"`
 	// +optional
-	FSType string `json:"fsType"`
+	Params map[string]string `json:"params"`
+	// +optional
+	MountOptions []string `json:"mountOptions"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

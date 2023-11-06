@@ -117,9 +117,17 @@ node:
     - name: vm.zone_reclaim_mode
       value: "0"
 
-# To test use: helm install prepare-cluster charts/prepare-cluster --dry-run=server
-gke:
-  copyStorageClasses: {}
-    # standard:
-    #   name: optimized
-    #   fsType: xfs
+# Copy existing StorageClass into a new one with additional configuration
+#
+# Example:
+# helm install prepare-cluster charts/prepare-cluster --dry-run=server \
+#   --set copyStorageClasses.standard.name=optimized \
+#   --set copyStorageClasses.standard.mountOptions[0]=noatime \
+#   --set copyStorageClasses.standard.params."csi\.storage\.k8s\.io/fstype=xfs"
+copyStorageClasses: {}
+  # standard:
+  #   name: optimized
+  #   mountOptions:
+  #   - noatime
+  #   params:
+  #     csi.storage.k8s.io/fstype: xfs
