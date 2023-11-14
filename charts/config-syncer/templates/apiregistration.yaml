@@ -9,8 +9,8 @@
 {{- $serverCrt = b64enc $server.Cert }}
 {{- $serverKey = b64enc $server.Key }}
 {{- else }}
-{{- $serverCrt = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverCrt }}
-{{- $serverKey = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverKey }}
+{{- $serverCrt = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverCrt | b64enc }}
+{{- $serverKey = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverKey | b64enc }}
 {{- end }}
 apiVersion: v1
 kind: Secret
