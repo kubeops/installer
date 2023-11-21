@@ -68,8 +68,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&KubeUiServerList{},
 		&Panopticon{},
 		&PanopticonList{},
-		&PrepareClusterList{},
-		&PrepareCluster{},
 		&GatekeeperGrafanaDashboards{},
 		&GatekeeperGrafanaDashboardsList{},
 		&Scanner{},
