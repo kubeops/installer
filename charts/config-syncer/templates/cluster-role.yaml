@@ -22,3 +22,8 @@ rules:
   resources:
   - events
   verbs: ["create"]
+- apiGroups: ["flowcontrol.apiserver.k8s.io"]
+  resources:
+  - flowschemas
+  - prioritylevelconfigurations
+  verbs: ["get", "list", "watch"]
