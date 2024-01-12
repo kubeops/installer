@@ -1,6 +1,56 @@
 {{- if not .Values.kubeconfigSecretName }}
 
-{{- $restpl := $.Files.Get "common/cluster-role.yaml" -}}
-{{ tpl $restpl $ }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "kube-ui-server.fullname" . }}
+  labels:
+    {{- include "kube-ui-server.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - core.k8s.appscode.com
+  - cost.k8s.appscode.com
+  - identity.k8s.appscode.com
+  - management.k8s.appscode.com
+  - meta.k8s.appscode.com
+  - policy.k8s.appscode.com
+  - ui.k8s.appscode.com
+  resources:
+  - "*"
+  verbs: ["*"]
+- apiGroups:
+  - source.toolkit.fluxcd.io
+  resources:
+  - helmrepositories
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs: ["*"]
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs: ["create"]
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  # create used for raw REST query
+  - create
+  - get
+  - list
+  - watch
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - get
 
 {{- end }}

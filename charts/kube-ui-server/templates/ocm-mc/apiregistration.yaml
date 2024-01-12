@@ -38,7 +38,7 @@ metadata:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade,post-rollback
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    # "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
   ttlSecondsAfterFinished: 0
   backoffLimit: 3
