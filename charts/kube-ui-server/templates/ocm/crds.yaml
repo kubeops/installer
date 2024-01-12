@@ -4,6 +4,21 @@
 {{ $content := toString $data }}
 {{ $crd := dig "spec" "names" "plural" "" ($content | fromYaml) }}
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kube-ui-server.fullname" $ }}-regcrd-{{ $crd }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "kube-ui-server.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade,post-rollback
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+data:
+  crd.yaml: |
+    {{- $content | nindent 4 }}
+
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -13,7 +28,7 @@ metadata:
     {{- include "kube-ui-server.labels" $ | nindent 4 }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade,post-rollback
-    # "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 spec:
   ttlSecondsAfterFinished: 0
   backoffLimit: 3
@@ -29,18 +44,22 @@ spec:
           - sh
           - -c
           - "sleep 2; \
-            crd={{ $content | b64enc }}; \
-            echo $crd | base64 -d | kubectl --kubeconfig=auth/kubeconfig apply -f -; \
+            kubectl --kubeconfig=auth/kubeconfig apply -f /etc/crds/crd.yaml; \
             "
         imagePullPolicy: {{ $.Values.imagePullPolicy }}
         volumeMounts:
         - mountPath: /var/run/secrets/ocm/auth
           name: ocm-auth
+        - name: crd-volume
+          mountPath: /etc/crds
       volumes:
       - name: ocm-auth
         secret:
           defaultMode: 420
           secretName: {{ $.Values.kubeconfigSecretName }}
+      - name: crd-volume
+        configMap:
+          name: {{ include "kube-ui-server.fullname" $ }}-regcrd-{{ $crd }}
       restartPolicy: Never
 {{- end }}
 {{- end }}
