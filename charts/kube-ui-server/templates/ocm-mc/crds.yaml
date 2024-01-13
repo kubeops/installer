@@ -12,6 +12,7 @@ metadata:
   labels:
     {{- include "kube-ui-server.labels" $ | nindent 4 }}
   annotations:
+    "helm.sh/hook-weight": "0"
     "helm.sh/hook": post-install,post-upgrade,post-rollback
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 data:
@@ -27,6 +28,7 @@ metadata:
   labels:
     {{- include "kube-ui-server.labels" $ | nindent 4 }}
   annotations:
+    "helm.sh/hook-weight": "1"
     "helm.sh/hook": post-install,post-upgrade,post-rollback
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 spec:
