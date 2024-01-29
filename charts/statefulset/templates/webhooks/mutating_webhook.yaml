@@ -1,0 +1,33 @@
+{{- if .Values.apiserver.enableMutatingWebhook }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "statefulset.fullname" . }}
+  labels:
+    {{- include "statefulset.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ include "statefulset.webhookServiceName" . }}
+        namespace: {{ .Release.Namespace }}
+        path: /mutate-apps-k8s-appscode-com-v1-statefulset
+      caBundle: {{ b64enc .Values.apiserver.ca }}
+    failurePolicy: Fail
+    name: statefulsets.apps.k8s.appscode.com
+    rules:
+      - apiGroups:
+          - apps.k8s.appscode.com
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - statefulsets
+    sideEffects: None
+{{ end }}
