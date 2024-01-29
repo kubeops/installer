@@ -1,0 +1,18 @@
+project:
+  name: StatefulSet Operator by AppsCode
+  shortName: StatefulSet Operator
+  url: https://github.com/kubeops/statefulset
+  description: StatefulSet Operator by AppsCode
+  app: StatefulSet operator
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: statefulset
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.21+
+release:
+  name: statefulset
+  namespace: kubeops

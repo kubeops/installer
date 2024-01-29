@@ -63,6 +63,11 @@ crd-importer \
     --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/scanner/crds
 
+crd-importer \
+    --no-description \
+    --input=https://github.com/kubeops/statefulset/raw/master/crds/apps.k8s.appscode.com_statefulsets.yaml \
+    --out=./charts/statefulset/crds
+
 # import cert-manager crds
 crd-importer \
     --input=https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml \

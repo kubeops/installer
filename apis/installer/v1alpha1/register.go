@@ -74,6 +74,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ScannerList{},
 		&Sidekick{},
 		&SidekickList{},
+		&StatefulSet{},
+		&StatefulSetList{},
 		&Supervisor{},
 		&SupervisorList{},
 	)
