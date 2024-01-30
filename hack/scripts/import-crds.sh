@@ -66,6 +66,7 @@ crd-importer \
 crd-importer \
     --no-description \
     --input=https://github.com/kubeops/statefulset/raw/master/crds/apps.k8s.appscode.com_statefulsets.yaml \
+    --input=https://github.com/kubeops/statefulset/raw/master/crds/apps.k8s.appscode.com_placementpolicies.yaml \
     --out=./charts/statefulset/crds
 
 # import cert-manager crds
