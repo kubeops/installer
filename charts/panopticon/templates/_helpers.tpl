@@ -70,6 +70,17 @@ Returns the appscode license
 {{- end }}
 
 {{/*
+Returns the appscode license secret name
+*/}}
+{{- define "appscode.licenseSecretName" -}}
+{{- if .Values.licenseSecretName }}
+{{- .Values.licenseSecretName -}}
+{{- else if .Values.license }}
+{{- printf "%s-license" (include "panopticon.fullname" .) -}}
+{{- end }}
+{{- end }}
+
+{{/*
 Returns the registry used for operator docker image
 */}}
 {{- define "image.registry" -}}

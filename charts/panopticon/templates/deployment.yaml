@@ -51,7 +51,7 @@ spec:
         - --authorization-always-allow-paths=/metrics
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
         - --enable-validating-webhook={{ .Values.apiserver.enableValidatingWebhook }}
-        {{- if include "appscode.license" . }}
+        {{- if include "appscode.licenseSecretName" . }}
         - --license-file=/var/run/secrets/appscode/license/key.txt
         {{- end }}
         {{- if .Values.namespaceSelector }}
@@ -88,7 +88,7 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
-        {{- if include "appscode.license" . }}
+        {{- if include "appscode.licenseSecretName" . }}
         - mountPath: /var/run/secrets/appscode/license
           name: license
         {{- end }}
@@ -97,11 +97,11 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "panopticon.fullname" . }}-apiserver-cert
-      {{- if include "appscode.license" . }}
+      {{- if include "appscode.licenseSecretName" . }}
       - name: license
         secret:
           defaultMode: 420
-          secretName: {{ include "panopticon.fullname" . }}-license
+          secretName: {{ include "appscode.licenseSecretName" . }}
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
