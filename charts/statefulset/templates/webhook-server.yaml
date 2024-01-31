@@ -43,6 +43,7 @@ spec:
           {{- toYaml .Values.operator.securityContext | nindent 10 }}
         args:
           - webhook
+          - --webhook-name={{ include "statefulset.fullname" . }}
         ports:
         - name: webhook-server
           containerPort: 9443
