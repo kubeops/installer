@@ -14,53 +14,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+FLUXCD_HELM_CONTROLLER_TAG=${FLUXCD_HELM_CONTROLLER_TAG:-v0.37.2}
+FLUXCD_SOURCE_CONTROLLER_TAG=${FLUXCD_SOURCE_CONTROLLER_TAG:-v1.2.3}
+KMODULES_CUSTOM_RESOURCES_TAG=${KMODULES_CUSTOM_RESOURCES_TAG:-v0.29.1}
+KUBEOPS_CSI_DRIVER_CACERTS_TAG=${KUBEOPS_CSI_DRIVER_CACERTS_TAG:-v0.0.2}
+KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG=${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG:-v0.0.6}
+KUBEOPS_SIDEKICK_TAG=${KUBEOPS_SIDEKICK_TAG:-v0.0.4}
+OPEN_POLICY_AGENT_GATEKEEPER_TAG=${OPEN_POLICY_AGENT_GATEKEEPER_TAG:-v3.14.0}
+OPEN_VIZ_APIMACHINERY_TAG=${OPEN_VIZ_APIMACHINERY_TAG:-v0.0.7}
+PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG=${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG:-kube-prometheus-stack-56.4.0}
+X_HELM_APIMACHINERY_TAG=${X_HELM_APIMACHINERY_TAG:-v0.0.16}
+
 crd-importer \
-    --input=https://github.com/kubeops/csi-driver-cacerts/raw/v0.0.1/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
+    --input=https://github.com/kubeops/csi-driver-cacerts/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
-    --input=https://github.com/kubeops/external-dns-operator/raw/v0.0.4/crds/external-dns.appscode.com_externaldns.yaml \
+    --input=https://github.com/kubeops/external-dns-operator/raw/${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG}/crds/external-dns.appscode.com_externaldns.yaml \
     --out=./charts/external-dns-operator/crds
 
 crd-importer \
-    --input=https://github.com/open-policy-agent/gatekeeper/raw/master/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
+    --input=https://github.com/open-policy-agent/gatekeeper/raw/${OPEN_POLICY_AGENT_GATEKEEPER_TAG}/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
     --out=./charts/gatekeeper-library/crds
 
 crd-importer \
-    --input=https://github.com/kubeops/sidekick/raw/v0.0.4/crds/apps.k8s.appscode.com_sidekicks.yaml \
+    --input=https://github.com/kubeops/sidekick/raw/${KUBEOPS_SIDEKICK_TAG}/crds/apps.k8s.appscode.com_sidekicks.yaml \
     --out=./charts/sidekick/crds
 
 crd-importer \
-    --input=https://github.com/fluxcd/helm-controller/raw/v0.37.2/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
-    --input=https://github.com/fluxcd/source-controller/raw/v1.2.3/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
-    --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/appcatalog.appscode.com_appbindings.yaml \
+    --input=https://github.com/fluxcd/helm-controller/raw/${FLUXCD_HELM_CONTROLLER_TAG}/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
+    --input=https://github.com/fluxcd/source-controller/raw/${FLUXCD_SOURCE_CONTROLLER_TAG}/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/management.k8s.appscode.com_projectquotas.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_features.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_featuresets.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_resourcedashboards.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_resourceeditors.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
-    --input=https://github.com/x-helm/apimachinery/raw/master/crds/charts.x-helm.dev_chartpresets.yaml \
-    --input=https://github.com/x-helm/apimachinery/raw/master/crds/charts.x-helm.dev_clusterchartpresets.yaml \
+    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
+    --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_chartpresets.yaml \
+    --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_clusterchartpresets.yaml \
     --out=./charts/kube-ui-server/crds
 
 crd-importer \
-    --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
+    --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
     --out=./charts/gatekeeper-grafana-dashboards/crds
 
 crd-importer \
-    --input=https://github.com/kmodules/custom-resources/raw/v0.25.1/crds/metrics.appscode.com_metricsconfigurations.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
+    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
 crd-importer \
-    --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
+    --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
+    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/falco-ui-server/crds
 
 crd-importer \
-    --input=https://github.com/open-viz/apimachinery/raw/v0.0.5/crds/openviz.dev_grafanadashboards.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/v0.59.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
+    --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
+    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/scanner/crds
 
 crd-importer \
@@ -80,8 +91,8 @@ crd-importer \
     --out=./charts/prometheus-operator-crds/crds
 
 crd-importer \
-    --input=https://github.com/kmodules/custom-resources/raw/release-1.25/crds/appcatalog.appscode.com_appbindings.yaml \
-    --input=https://github.com/kmodules/custom-resources/raw/release-1.25/crds/metrics.appscode.com_metricsconfigurations.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
+    --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --out=./charts/kmodules-crds/crds
 rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfoes.yaml
 rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
