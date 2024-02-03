@@ -1,0 +1,35 @@
+{{- if eq .Values.monitoring.agent "prometheus.io/operator" }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "petset.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- if .Values.monitoring.serviceMonitor.labels }}
+    {{- range $key, $val := .Values.monitoring.serviceMonitor.labels }}
+    {{ $key }}: {{ $val }}
+    {{- end }}
+  {{- else }}
+    {{- include "petset.selectorLabels" . | nindent 4 }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "petset.selectorLabels" . | nindent 6 }}
+  endpoints:
+  {{- if .Values.monitoring.operator }}
+  - port: https
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    path: /metrics
+    scheme: https
+    tlsConfig:
+      ca:
+        secret:
+          name: {{ include "petset.fullname" . }}-apiserver-cert
+          key: tls.crt
+      serverName: "{{ include "petset.fullname" . }}.{{ .Release.Namespace }}.svc"
+  {{- end }}
+{{- end }}

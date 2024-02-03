@@ -1,0 +1,33 @@
+{{- if eq "true" ( include "cleaner.generate" . ) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "petset.fullname" . }}-cleaner
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "petset.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 120
+  template:
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "petset.serviceAccountName" . }}-cleaner
+      containers:
+      - name: busybox
+        image: "{{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}"
+        command:
+          - sh
+          - -c
+          - "sleep 2; \
+           kubectl delete job {{ include "petset.fullname" . }}-crd-installer -n {{ .Release.Namespace }} || true; \
+           kubectl delete functions.stash.appscode.com update-status pvc-backup pvc-restore || true; \
+           kubectl delete tasks.stash.appscode.com pvc-backup pvc-restore || true;"
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        securityContext:
+          {{- toYaml .Values.cleaner.securityContext | nindent 10 }}
+      restartPolicy: Never
+{{ end }}

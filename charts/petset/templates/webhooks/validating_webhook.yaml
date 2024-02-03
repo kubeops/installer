@@ -1,0 +1,33 @@
+{{- if .Values.apiserver.enableValidatingWebhook }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ include "petset.fullname" . }}
+  labels:
+    {{- include "petset.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ include "petset.webhookServiceName" . }}
+        namespace: {{ .Release.Namespace }}
+        path: /validate-apps-k8s-appscode-com-v1-petset
+      caBundle: {{ b64enc .Values.apiserver.ca }}
+    failurePolicy: Fail
+    name: petsets.apps.k8s.appscode.com
+    rules:
+      - apiGroups:
+          - apps.k8s.appscode.com
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - petsets
+    sideEffects: None
+{{ end }}
