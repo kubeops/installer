@@ -27,7 +27,6 @@ import (
 
 func TestDefaultValues(t *testing.T) {
 	checker := schemachecker.New(os.DirFS("../../.."),
-		schemachecker.TestCase{Obj: v1alpha1.AuditorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ClusterConnectorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ConfigSyncerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ExternalDnsOperatorSpec{}},
