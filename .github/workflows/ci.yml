@@ -92,7 +92,6 @@ jobs:
           echo "issuing license"
           LICENSE_KEY=$(curl -X POST -d "name=1gtm&email=1gtm@appscode.com&product=platform-enterprise&cluster=${CLUSTER_UID}&tos=true&token=${BYTEBUILDERS_LICENSE_TOKEN}" https://license-issuer.appscode.com/issue-license)
           # ref: https://github.com/mikefarah/yq/issues/230#issuecomment-487458629
-          yqq w -i ./charts/auditor/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
           yqq w -i ./charts/panopticon/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
           yqq w -i ./charts/scanner/ci/ci-values.yaml license --tag '!!str' -- "${LICENSE_KEY}"
           yqq w -i ./charts/scanner/ci/ci-values.yaml nats.auth.password --tag '!!str' -- "${THIS_IS_NATS_PASSWORD}"
