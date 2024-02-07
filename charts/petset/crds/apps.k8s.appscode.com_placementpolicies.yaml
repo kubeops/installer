@@ -42,20 +42,28 @@ spec:
                       type: array
                     topologyKey:
                       type: string
+                    weight:
+                      default: 50
+                      format: int32
+                      type: integer
                     whenUnsatisfiable:
+                      default: DoNotSchedule
                       type: string
                   required:
                   - domains
                   - topologyKey
+                  - weight
                   - whenUnsatisfiable
                   type: object
                 type: array
               nodeSpreadConstraint:
                 properties:
                   maxSkew:
+                    default: 1
                     format: int32
                     type: integer
                   whenUnsatisfiable:
+                    default: DoNotSchedule
                     type: string
                 required:
                 - maxSkew
@@ -64,9 +72,11 @@ spec:
               zoneSpreadConstraint:
                 properties:
                   maxSkew:
+                    default: 1
                     format: int32
                     type: integer
                   whenUnsatisfiable:
+                    default: DoNotSchedule
                     type: string
                 required:
                 - maxSkew
