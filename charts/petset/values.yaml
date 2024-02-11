@@ -41,26 +41,10 @@ rbacproxy:
   repository: kube-rbac-proxy
   # Operator container image tag
   tag: v0.11.0
-  # Security options this container should run with
-  securityContext: # +doc-gen:break
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop: ["ALL"]
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 65534
-    # seccompProfile:
-    #   type: RuntimeDefault
-
-cleaner:
-  # Docker registry used to pull Webhook cleaner image
-  registry: appscode
-  # Webhook cleaner container image
-  repository: kubectl-nonroot
-  # Webhook cleaner container image tag
-  tag: v1.24
-  # Skip generating cleaner YAML
-  skip: false
+  # Compute Resources required by the operator container
+  resources: # +doc-gen:break
+    requests:
+      cpu: "100m"
   # Security options this container should run with
   securityContext: # +doc-gen:break
     allowPrivilegeEscalation: false
