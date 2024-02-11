@@ -1,3 +1,4 @@
+{{- if or .Values.apiserver.enableMutatingWebhook .Values.apiserver.enableValidatingWebhook }}
 {{- if eq .Values.monitoring.agent "prometheus.io/operator" }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -33,3 +34,4 @@ spec:
       serverName: "{{ include "petset.fullname" . }}.{{ .Release.Namespace }}.svc"
   {{- end }}
 {{- end }}
+{{ end }}

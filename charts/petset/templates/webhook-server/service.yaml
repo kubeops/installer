@@ -1,3 +1,4 @@
+{{- if or .Values.apiserver.enableMutatingWebhook .Values.apiserver.enableValidatingWebhook }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -23,3 +24,4 @@ spec:
     port: 443
     protocol: TCP
     targetPort: 9443
+{{ end }}
