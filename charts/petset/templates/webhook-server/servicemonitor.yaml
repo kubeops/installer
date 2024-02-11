@@ -28,7 +28,7 @@ spec:
     tlsConfig:
       ca:
         secret:
-          name: {{ include "petset.fullname" . }}-apiserver-cert
+          name: {{ include "petset.fullname" . }}-webhook-cert
           key: tls.crt
       serverName: "{{ include "petset.fullname" . }}.{{ .Release.Namespace }}.svc"
   {{- end }}

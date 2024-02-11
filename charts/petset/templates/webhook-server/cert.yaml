@@ -19,7 +19,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "petset.fullname" . }}-apiserver-cert
+  name: {{ include "petset.fullname" . }}-webhook-cert
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "petset.labels" . | nindent 4 }}

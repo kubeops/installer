@@ -22,12 +22,12 @@ import (
 )
 
 const (
-	ResourceKindPetSet = "PetSet"
-	ResourcePetSet     = "petset"
-	ResourcePetSets    = "petsets"
+	ResourceKindPetset = "Petset"
+	ResourcePetset     = "petset"
+	ResourcePetsets    = "petsets"
 )
 
-// PetSet defines the schama for PetSet operator installer.
+// Petset defines the schama for Petset operator installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -35,24 +35,23 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-type PetSet struct {
+type Petset struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PetSetSpec `json:"spec,omitempty"`
+	Spec              PetsetSpec `json:"spec,omitempty"`
 }
 
-// PetSetSpec is the schema for Operator Operator values file
-type PetSetSpec struct {
+// PetsetSpec is the schema for Operator Operator values file
+type PetsetSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
-	FullnameOverride string       `json:"fullnameOverride"`
-	RegistryFQDN     string       `json:"registryFQDN"`
-	ReplicaCount     int32        `json:"replicaCount"`
-	Operator         ContianerRef `json:"operator"`
-	RbacProxy        ImageRef     `json:"rbacproxy"`
-	Cleaner          CleanerRef   `json:"cleaner"`
-	ImagePullPolicy  string       `json:"imagePullPolicy"`
+	FullnameOverride string    `json:"fullnameOverride"`
+	RegistryFQDN     string    `json:"registryFQDN"`
+	ReplicaCount     int32     `json:"replicaCount"`
+	Operator         Container `json:"operator"`
+	RbacProxy        Container `json:"rbacproxy"`
+	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`
 	//+optional
@@ -79,23 +78,28 @@ type PetSetSpec struct {
 	PodSecurityContext *core.PodSecurityContext `json:"podSecurityContext"`
 	ServiceAccount     ServiceAccountSpec       `json:"serviceAccount"`
 	// +optional
-	Apiserver  WebHookSpec `json:"apiserver"`
-	Monitoring Monitoring  `json:"monitoring"`
+	Apiserver  PetsetApiserver `json:"apiserver"`
+	Monitoring Monitoring      `json:"monitoring"`
 }
 
-type ContianerRef struct {
-	ImageRef `json:",inline"`
-	// Compute Resources required by the sidecar container.
-	// +optional
-	Resources core.ResourceRequirements `json:"resources"`
+type PetsetApiserver struct {
+	GroupPriorityMinimum        int             `json:"groupPriorityMinimum"`
+	VersionPriority             int             `json:"versionPriority"`
+	EnableMutatingWebhook       bool            `json:"enableMutatingWebhook"`
+	EnableValidatingWebhook     bool            `json:"enableValidatingWebhook"`
+	Ca                          string          `json:"ca"`
+	BypassValidatingWebhookXray bool            `json:"bypassValidatingWebhookXray"`
+	UseKubeapiserverFqdnForAks  bool            `json:"useKubeapiserverFqdnForAks"`
+	Healthcheck                 HealthcheckSpec `json:"healthcheck"`
+	ServingCerts                ServingCerts    `json:"servingCerts"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// PetSetList is a list of PetSets
-type PetSetList struct {
+// PetsetList is a list of Petsets
+type PetsetList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of PetSet CRD objects
-	Items []PetSet `json:"items,omitempty"`
+	// Items is a list of Petset CRD objects
+	Items []Petset `json:"items,omitempty"`
 }

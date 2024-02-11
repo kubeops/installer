@@ -25,7 +25,7 @@ spec:
         app.kubernetes.io/component: webhook-server
         {{- include "petset.selectorLabels" . | nindent 8 }}
       annotations:
-        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/apiserver_cert.yaml") . | sha256sum }}
+        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/webhook-server/cert.yaml") . | sha256sum }}
       {{- if $criticalAddon }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
       {{- end }}
@@ -90,11 +90,13 @@ spec:
         - containerPort: 8443
           name: https
           protocol: TCP
+        resources:
+          {{- toYaml .Values.rbacproxy.resources | nindent 10 }}
       volumes:
       - name: serving-cert
         secret:
           defaultMode: 420
-          secretName: {{ include "petset.fullname" . }}-apiserver-cert
+          secretName: {{ include "petset.fullname" . }}-webhook-cert
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or .Values.tolerations $criticalAddon }}

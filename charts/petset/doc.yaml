@@ -1,9 +1,9 @@
 project:
-  name: PetSet Operator by AppsCode
-  shortName: PetSet Operator
+  name: Petset Operator by AppsCode
+  shortName: Petset Operator
   url: https://github.com/kubeops/petset
-  description: PetSet Operator by AppsCode
-  app: PetSet operator
+  description: Petset Operator by AppsCode
+  app: Petset operator
 repository:
   url: https://charts.appscode.com/stable/
   name: appscode

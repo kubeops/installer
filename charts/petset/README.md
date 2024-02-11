@@ -1,6 +1,6 @@
-# PetSet Operator
+# Petset Operator
 
-[PetSet Operator by AppsCode](https://github.com/kubeops/petset) - PetSet Operator by AppsCode
+[Petset Operator by AppsCode](https://github.com/kubeops/petset) - Petset Operator by AppsCode
 
 ## TL;DR;
 
@@ -13,7 +13,7 @@ $ helm upgrade -i petset appscode/petset -n kubeops --create-namespace --version
 
 ## Introduction
 
-This chart deploys PetSet operator on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart deploys Petset operator on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ To install/upgrade the chart with the release name `petset`:
 $ helm upgrade -i petset appscode/petset -n kubeops --create-namespace --version=v0.0.1
 ```
 
-The command deploys PetSet operator on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys Petset operator on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -59,12 +59,8 @@ The following table lists the configurable parameters of the `petset` chart and 
 | rbacproxy.registry                    | Docker registry used to pull operator image                                                                                                                                                                                                       | <code>appscode</code>                                                                                                                               |
 | rbacproxy.repository                  | Name of operator container image                                                                                                                                                                                                                  | <code>kube-rbac-proxy</code>                                                                                                                        |
 | rbacproxy.tag                         | Operator container image tag                                                                                                                                                                                                                      | <code>v0.11.0</code>                                                                                                                                |
+| rbacproxy.resources                   | Compute Resources required by the operator container                                                                                                                                                                                              | <code>{"requests":{"cpu":"100m"}}</code>                                                                                                            |
 | rbacproxy.securityContext             | Security options this container should run with                                                                                                                                                                                                   | <code>{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":65534}</code> |
-| cleaner.registry                      | Docker registry used to pull Webhook cleaner image                                                                                                                                                                                                | <code>appscode</code>                                                                                                                               |
-| cleaner.repository                    | Webhook cleaner container image                                                                                                                                                                                                                   | <code>kubectl-nonroot</code>                                                                                                                        |
-| cleaner.tag                           | Webhook cleaner container image tag                                                                                                                                                                                                               | <code>v1.24</code>                                                                                                                                  |
-| cleaner.skip                          | Skip generating cleaner YAML                                                                                                                                                                                                                      | <code>false</code>                                                                                                                                  |
-| cleaner.securityContext               | Security options this container should run with                                                                                                                                                                                                   | <code>{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":65534}</code> |
 | imagePullSecrets                      | Specify an array of imagePullSecrets. Secrets must be manually created in the namespace. <br> Example: <br> `helm template charts/stash \` <br> `--set imagePullSecrets[0].name=sec0 \` <br> `--set imagePullSecrets[1].name=sec1`                | <code>[]</code>                                                                                                                                     |
 | imagePullPolicy                       | Container image pull policy                                                                                                                                                                                                                       | <code>IfNotPresent</code>                                                                                                                           |
 | criticalAddon                         | If true, installs Stash operator as critical addon                                                                                                                                                                                                | <code>false</code>                                                                                                                                  |
