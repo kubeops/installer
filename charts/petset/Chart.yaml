@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Petset Operator by AppsCode
 name: petset
-version: v0.0.1
+version: v2024.2.11
 appVersion: v0.0.1
 home: https://kubedb.com/
 icon: https://cdn.appscode.com/images/products/stash/petset-icon.png
