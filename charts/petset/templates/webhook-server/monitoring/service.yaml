@@ -22,5 +22,6 @@ spec:
     protocol: TCP
     targetPort: https
   selector:
+    app.kubernetes.io/component: webhook-server
     {{- include "petset.selectorLabels" . | nindent 4 }}
 {{ end }}
