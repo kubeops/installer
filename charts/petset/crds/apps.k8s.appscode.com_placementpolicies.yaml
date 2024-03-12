@@ -23,39 +23,42 @@ spec:
             type: object
           spec:
             properties:
-              nodeAffinity:
-                items:
-                  properties:
-                    domains:
-                      items:
-                        properties:
-                          replicas:
-                            type: string
-                          values:
-                            items:
-                              type: string
-                            type: array
-                        required:
-                        - replicas
-                        - values
-                        type: object
-                      type: array
-                    topologyKey:
-                      type: string
-                    weight:
-                      default: 50
-                      format: int32
-                      type: integer
-                    whenUnsatisfiable:
-                      default: DoNotSchedule
-                      type: string
-                  required:
-                  - domains
-                  - topologyKey
-                  - weight
-                  - whenUnsatisfiable
-                  type: object
-                type: array
+              affinity:
+                properties:
+                  nodeAffinity:
+                    items:
+                      properties:
+                        domains:
+                          items:
+                            properties:
+                              replicas:
+                                type: string
+                              values:
+                                items:
+                                  type: string
+                                type: array
+                            required:
+                            - replicas
+                            - values
+                            type: object
+                          type: array
+                        topologyKey:
+                          type: string
+                        weight:
+                          default: 50
+                          format: int32
+                          type: integer
+                        whenUnsatisfiable:
+                          default: DoNotSchedule
+                          type: string
+                      required:
+                      - domains
+                      - topologyKey
+                      - weight
+                      - whenUnsatisfiable
+                      type: object
+                    type: array
+                type: object
               nodeSpreadConstraint:
                 properties:
                   maxSkew:
