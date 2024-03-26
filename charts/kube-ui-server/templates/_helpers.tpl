@@ -82,3 +82,7 @@ Returns the enabled monitoring agent name
 {{- define "monitoring.agent" -}}
 {{- .Values.monitoring.agent }}
 {{- end }}
+
+{{- define "kubectl.image" -}}
+{{ list .Values.registryFQDN "appscode/kubectl-nonroot:1.25" | compact | join "/" }}
+{{- end }}
