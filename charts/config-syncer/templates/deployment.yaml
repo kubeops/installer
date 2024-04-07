@@ -22,7 +22,6 @@ spec:
       labels:
         {{- include "config-syncer.selectorLabels" . | nindent 8 }}
       annotations:
-        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/apiregistration.yaml") . | sha256sum }}
       {{- if $criticalAddon }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
       {{- end }}
@@ -42,43 +41,44 @@ spec:
         image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{if include "mode.enterprise" .}}-ent{{end}}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
-        - run
-        - --v={{ .Values.logLevel }}
-        - --secure-port={{ default "8443" .Values.apiserver.securePort }}
-        - --audit-log-path=-
-        - --tls-cert-file=/var/serving-cert/tls.crt
-        - --tls-private-key-file=/var/serving-cert/tls.key
-        - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
-      {{- if .Values.license }}
-        - --license-file=/var/run/secrets/appscode/license/key.txt
-      {{- end }}
-      {{- with .Values.config.clusterName }}
-        - --cluster-name={{ . }}
-      {{- end }}
-      {{- with .Values.config.configSourceNamespace }}
-        - --config-source-namespace={{ . }}
-      {{- end }}
-      {{- if .Values.config.kubeconfigContent }}
-        - --kubeconfig-file=/srv/config-syncer/kubeconfig
-      {{- end }}
-      {{- range .Values.config.additionalOptions }}
-        - {{ . }}
-      {{- end }}
-        ports:
-        - containerPort: {{ default "8443" .Values.apiserver.securePort }}
+          - run
+        {{- if .Values.license }}
+          - --license-file=/var/run/secrets/appscode/license/key.txt
+        {{- end }}
+        {{- with .Values.config.clusterName }}
+          - --cluster-name={{ . }}
+        {{- end }}
+        {{- with .Values.config.configSourceNamespace }}
+          - --config-source-namespace={{ . }}
+        {{- end }}
+        {{- if .Values.config.kubeconfigContent }}
+          - --kubeconfig-file=/srv/config-syncer/kubeconfig
+        {{- end }}
+        {{- range .Values.config.additionalOptions }}
+          - {{ . }}
+        {{- end }}
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
       {{- if .Values.apiserver.healthcheck.enabled }}
         readinessProbe:
           httpGet:
-            path: /healthz
-            port: {{ default "8443" .Values.apiserver.securePort }}
-            scheme: HTTPS
+            path: /readyz
+            port: 8081
           initialDelaySeconds: 5
+          periodSeconds: 10
         livenessProbe:
           httpGet:
             path: /healthz
-            port: {{ default "8443" .Values.apiserver.securePort }}
-            scheme: HTTPS
-          initialDelaySeconds: 5
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 20
       {{- end }}
         resources:
           {{- toYaml .Values.image.resources | nindent 10 }}
@@ -87,8 +87,6 @@ spec:
           mountPath: /srv/config-syncer
         - name: scratch
           mountPath: /tmp
-        - mountPath: /var/serving-cert
-          name: serving-cert
         {{- if .Values.license }}
         - mountPath: /var/run/secrets/appscode/license
           name: license
@@ -99,10 +97,6 @@ spec:
           secretName: {{ template "config-syncer.fullname" . }}
       - name: scratch
         emptyDir: {}
-      - name: serving-cert
-        secret:
-          defaultMode: 420
-          secretName: {{ template "config-syncer.fullname" . }}-apiserver-cert
       {{- if .Values.license }}
       - name: license
         secret:
