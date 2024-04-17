@@ -35,7 +35,7 @@ driver:
 
 nodeDriverRegistrar:
   # Docker registry used to pull node-driver-registrar image
-  registry: k8s.gcr.io/sig-storage
+  registry: registry.k8s.io/sig-storage
   # Name of node-driver-registrar container image
   repository: csi-node-driver-registrar
   # node-driver-registrar container image tag
@@ -44,10 +44,9 @@ nodeDriverRegistrar:
   pullPolicy: IfNotPresent
   # Compute Resources required by the node-driver-registrar container
   resources: {}
-
 livenessProbe:
   # Docker registry used to pull livenessprobe image
-  registry: k8s.gcr.io/sig-storage
+  registry: registry.k8s.io/sig-storage
   # Name of livenessprobe container image
   repository: livenessprobe
   # livenessprobe container image tag
