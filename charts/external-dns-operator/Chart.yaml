@@ -2,8 +2,8 @@ apiVersion: v2
 name: external-dns-operator
 description: A Helm chart for External DNS Operator by AppsCode
 type: application
-version: v2023.10.1
-appVersion: v0.0.5
+version: v2024.4.19
+appVersion: v0.0.7
 home: https://github.com/kubeops/external-dns-operator
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
 sources:
