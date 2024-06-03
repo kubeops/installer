@@ -2,8 +2,8 @@ apiVersion: v2
 name: kube-ui-server
 description: A Helm chart for kube-ui-server by AppsCode
 type: application
-version: v2024.5.17
-appVersion: v0.0.41
+version: v2024.6.3
+appVersion: v0.0.42
 home: https://github.com/kubeops/kube-ui-server
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
 sources:
