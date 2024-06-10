@@ -37,22 +37,6 @@ spec:
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  name: v1alpha1.authentication.k8s.appscode.com
-  labels:
-    {{- include "kube-ui-server.labels" . | nindent 4 }}
-spec:
-  group: authentication.k8s.appscode.com
-  version: v1alpha1
-  service:
-    namespace: {{ .Release.Namespace }}
-    name: {{ include "kube-ui-server.fullname" . }}
-  caBundle: {{ $caCrt }}
-  groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
-  versionPriority: {{ .Values.apiserver.versionPriority }}
----
-apiVersion: apiregistration.k8s.io/v1
-kind: APIService
-metadata:
   name: v1alpha1.core.k8s.appscode.com
   labels:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
@@ -74,6 +58,22 @@ metadata:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
 spec:
   group: cost.k8s.appscode.com
+  version: v1alpha1
+  service:
+    namespace: {{ .Release.Namespace }}
+    name: {{ include "kube-ui-server.fullname" . }}
+  caBundle: {{ $caCrt }}
+  groupPriorityMinimum: {{ .Values.apiserver.groupPriorityMinimum }}
+  versionPriority: {{ .Values.apiserver.versionPriority }}
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1alpha1.identity.k8s.appscode.com
+  labels:
+    {{- include "kube-ui-server.labels" . | nindent 4 }}
+spec:
+  group: identity.k8s.appscode.com
   version: v1alpha1
   service:
     namespace: {{ .Release.Namespace }}
