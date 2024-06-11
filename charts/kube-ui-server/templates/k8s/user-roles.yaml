@@ -38,15 +38,17 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - auditor.appscode.com
+  - identity.k8s.appscode.com
   resources:
-  - siteinfos
+  - inboxtokenrequests
+  - selfsubjectnamespaceaccessreviews
   verbs: ["create"]
 - apiGroups:
   - identity.k8s.appscode.com
   resources:
-  - whoamis
-  verbs: ["create"]
+  - clusteridentities
+  - siteinfos
+  verbs: ["get", "list"]
 - apiGroups:
   - core.k8s.appscode.com
   resources:
