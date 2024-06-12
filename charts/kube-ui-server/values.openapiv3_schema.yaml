@@ -1175,6 +1175,18 @@ properties:
     additionalProperties:
       type: string
     type: object
+  platform:
+    properties:
+      baseURL:
+        type: string
+      caBundle:
+        type: string
+      token:
+        type: string
+    required:
+    - baseURL
+    - token
+    type: object
   podAnnotations:
     additionalProperties:
       type: string
@@ -1436,6 +1448,7 @@ required:
 - imagePullPolicy
 - kubeconfigSecretName
 - monitoring
+- platform
 - prometheus
 - registryFQDN
 - replicaCount

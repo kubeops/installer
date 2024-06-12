@@ -80,10 +80,18 @@ type KubeUiServerSpec struct {
 	Prometheus           PrometheusConfig         `json:"prometheus"`
 	HelmRepositories     HelmRepositories         `json:"helmRepositories"`
 	KubeconfigSecretName string                   `json:"kubeconfigSecretName"`
+	Platform             AcePlatformSpec          `json:"platform"`
 }
 
 type HelmRepositories struct {
 	Create bool `json:"create"`
+}
+
+type AcePlatformSpec struct {
+	BaseURL string `json:"baseURL"`
+	Token   string `json:"token"`
+	// +optional
+	CABundle string `json:"caBundle"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
