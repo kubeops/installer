@@ -92,10 +92,24 @@ spec:
         - --prometheus.insecure-skip-verify={{ . }}
       {{- end }}
     {{- end }}
+      {{- if .Values.platform.baseURL }}
+        - --baseURL={{ .Values.platform.baseURL }}
+        - --token=$(PLATFORM_API_TOKEN)
+      {{- end }}
+      {{- if .Values.platform.caBundle }}
+        - --platform-ca-file=/var/platform-ca/tls.crt
+      {{- end }}
         ports:
         - containerPort: 8443
         - containerPort: 8081
         env:
+        {{- if .Values.platform.token }}
+        - name: PLATFORM_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "kube-ui-server.fullname" . }}-platform-auth
+              key: token
+        {{- end }}
         - name: POD_NAME
           valueFrom:
             fieldRef:
@@ -125,6 +139,10 @@ spec:
           name: serving-cert
         - mountPath: /tmp
           name: tmp-dir
+      {{- if .Values.platform.caBundle }}
+        - mountPath: /var/platform-auth
+          name: platform-auth
+      {{- end }}
       {{- if .Values.kubeconfigSecretName }}
         - mountPath: /var/run/secrets/ocm/auth
           name: ocm-auth
@@ -144,6 +162,12 @@ spec:
           secretName: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
       - name: tmp-dir
         emptyDir: {}
+      {{- if .Values.platform.caBundle }}
+      - name: platform-auth
+        secret:
+          defaultMode: 420
+          secretName: {{ include "kube-ui-server.fullname" . }}-platform-auth
+      {{- end }}
       {{- if .Values.kubeconfigSecretName }}
       - name: ocm-auth
         secret:

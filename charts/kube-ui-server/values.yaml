@@ -129,3 +129,8 @@ helmRepositories:
   create: false
 
 kubeconfigSecretName: ""
+
+platform:
+  baseURL: ""
+  token: ""
+  caBundle: ""
