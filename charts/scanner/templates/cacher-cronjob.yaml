@@ -38,6 +38,8 @@ spec:
             env:
             - name: FILESERVER_ADDR
               value: https://{{ include "scanner.fullname" . }}.{{ .Release.Namespace }}.svc
+            - name: REGISTRY
+              value: {{ .Values.registryFQDN }}
             resources:
               {{- toYaml .Values.cacher.resources | nindent 14 }}
             volumeMounts:
