@@ -26,6 +26,7 @@ type: kubernetes.io/tls
 data:
   tls.crt: {{ $serverCrt }}
   tls.key: {{ $serverKey }}
+  ca.crt: {{ $caCrt }}
 ---
 # to read the config for terminating authentication
 apiVersion: rbac.authorization.k8s.io/v1
