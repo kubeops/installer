@@ -28,7 +28,7 @@ spec:
       ca:
         secret:
           name: {{ include "kube-ui-server.fullname" . }}-apiserver-cert
-          key: tls.crt
+          key: ca.crt
       serverName: "{{ include "kube-ui-server.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token

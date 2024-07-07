@@ -139,6 +139,7 @@ metadata:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
 type: kubernetes.io/tls
 data:
+  ca.crt: {{ $caCrt }}
   tls.crt: {{ $serverCrt }}
   tls.key: {{ $serverKey }}
 ---
