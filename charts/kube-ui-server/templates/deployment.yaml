@@ -97,7 +97,7 @@ spec:
         - --token=$(PLATFORM_API_TOKEN)
       {{- end }}
       {{- if .Values.platform.caBundle }}
-        - --platform-ca-file=/var/platform-ca/tls.crt
+        - --platform-ca-file=/var/platform-auth/ca.crt
       {{- end }}
         ports:
         - containerPort: 8443
