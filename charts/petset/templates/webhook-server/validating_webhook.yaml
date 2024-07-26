@@ -4,6 +4,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ include "petset.fullname" . }}
   labels:
+    updated-for: {{ .Release.Namespace }}/{{ .Release.Name }}
     {{- include "petset.labels" . | nindent 4 }}
 webhooks:
   - admissionReviewVersions:
