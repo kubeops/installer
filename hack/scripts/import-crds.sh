@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CERT_MANAGER_CERT_MANAGER_TAG=${CERT_MANAGER_CERT_MANAGER_TAG:-v1.15.1}
 FLUXCD_HELM_CONTROLLER_TAG=${FLUXCD_HELM_CONTROLLER_TAG:-v1.0.1}
 FLUXCD_SOURCE_CONTROLLER_TAG=${FLUXCD_SOURCE_CONTROLLER_TAG:-v1.3.0}
 KMODULES_CUSTOM_RESOURCES_TAG=${KMODULES_CUSTOM_RESOURCES_TAG:-v0.29.1}
@@ -23,10 +24,16 @@ KUBEOPS_SIDEKICK_TAG=${KUBEOPS_SIDEKICK_TAG:-v0.0.4}
 OPEN_POLICY_AGENT_GATEKEEPER_TAG=${OPEN_POLICY_AGENT_GATEKEEPER_TAG:-v3.14.0}
 OPEN_VIZ_APIMACHINERY_TAG=${OPEN_VIZ_APIMACHINERY_TAG:-v0.0.7}
 PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG=${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG:-kube-prometheus-stack-56.4.0}
+PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR_TAG=${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR_TAG:-v0.75.2}
 X_HELM_APIMACHINERY_TAG=${X_HELM_APIMACHINERY_TAG:-v0.0.16}
 
 crd-importer \
     --input=https://github.com/kubeops/csi-driver-cacerts/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
+    --out=./charts/cert-manager-csi-driver-cacerts/crds
+
+crd-importer \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=ClusterIssuer.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
@@ -82,12 +89,12 @@ crd-importer \
 
 # import cert-manager crds
 crd-importer \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
     --out=./charts/cert-manager-crds/crds
 
 # import prometheus-operator crds
 crd-importer \
-    --input=https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.60.1/stripped-down-crds.yaml \
+    --input=https://github.com/prometheus-operator/prometheus-operator/releases/download/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR_TAG}/stripped-down-crds.yaml \
     --out=./charts/prometheus-operator-crds/crds
 
 crd-importer \
