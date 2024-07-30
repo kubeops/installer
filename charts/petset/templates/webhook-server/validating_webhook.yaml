@@ -13,7 +13,6 @@ webhooks:
         name: {{ include "petset.webhookServiceName" . }}
         namespace: {{ .Release.Namespace }}
         path: /validate-apps-k8s-appscode-com-v1-petset
-      caBundle: {{ b64enc .Values.apiserver.ca }}
     failurePolicy: Fail
     name: petsets.apps.k8s.appscode.com
     rules:
