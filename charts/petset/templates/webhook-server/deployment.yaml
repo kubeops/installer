@@ -66,6 +66,8 @@ spec:
           containerPort: 9443
           protocol: TCP
         env:
+        - name: "RELEASE_REVISION"
+          value: "{{ .Release.Revision }}"
         - name: POD_NAME
           valueFrom:
             fieldRef:
