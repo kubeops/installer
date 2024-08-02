@@ -892,8 +892,6 @@ properties:
     properties:
       bypassValidatingWebhookXray:
         type: boolean
-      ca:
-        type: string
       enableMutatingWebhook:
         type: boolean
       enableValidatingWebhook:
@@ -924,7 +922,6 @@ properties:
         type: integer
     required:
     - bypassValidatingWebhookXray
-    - ca
     - enableMutatingWebhook
     - enableValidatingWebhook
     - groupPriorityMinimum
