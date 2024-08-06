@@ -1,4 +1,4 @@
-{{ template "prepare-certs" $ }}
+{{ template "petset.prepare-certs" $ }}
 
 {{- if or .Values.apiserver.enableMutatingWebhook .Values.apiserver.enableValidatingWebhook }}
 apiVersion: v1
