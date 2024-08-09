@@ -115,7 +115,7 @@ imagePullSecrets:
 Prepare certs
 */}}
 {{- define "petset.prepare-certs" -}}
-{{- if not ._caCert }}
+{{- if not ._caCrt }}
 {{- $caCrt := "" }}
 {{- $serverCrt := "" }}
 {{- $serverKey := "" }}
