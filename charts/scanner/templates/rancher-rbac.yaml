@@ -1,0 +1,35 @@
+{{ if and (.Capabilities.APIVersions.Has "management.cattle.io/v3") (not (empty (lookup "management.cattle.io/v3" "Cluster" "" "local"))) }}
+
+# required for project scoped user in Rancher
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: scanner:rancher:viewer
+rules:
+- apiGroups:
+  - reports.scanner.appscode.com
+  resources:
+  - "*"
+  verbs: ["get", "list"]
+- apiGroups:
+  - scanner.appscode.com
+  resources:
+  - "*"
+  verbs: ["get", "list"]
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: scanner:rancher:viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: scanner:rancher:viewer
+subjects:
+- kind: Group
+  name: system:authenticated
+  apiGroup: rbac.authorization.k8s.io
+
+{{ end }}
