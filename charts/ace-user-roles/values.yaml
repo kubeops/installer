@@ -1,0 +1,11 @@
+# Default values for ace-user-roles.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Overrides name template
+nameOverride: ""
+# Overrides fullname template
+fullnameOverride: ""
+
+# If icm is false, then the roles will be created
+ocm: false
