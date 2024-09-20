@@ -83,6 +83,11 @@ rules:
   - resourcegraphs
   verbs: ["create"]
 - apiGroups:
+  - policy.k8s.appscode.com
+  resources:
+  - "*"
+  verbs: ["create"]
+- apiGroups:
   - meta.k8s.appscode.com
   resources:
   - menus
