@@ -1,24 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: appscode:petset:admin
-  labels:
-    rbac.authorization.k8s.io/aggregate-to-admin: "true"
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
-rules:
-- apiGroups:
-  - apps.k8s.appscode.com
-  resources:
-  - petsets
-  - placementpolicies
-  verbs: ["*"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: appscode:petset:edit
+  name: appscode:ace:edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
   annotations:
@@ -26,16 +9,15 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - apps.k8s.appscode.com
+  - drivers.x-helm.dev
   resources:
-  - petsets
-  - placementpolicies
+  - appreleases
   verbs: ["create", "delete", "deletecollection", "patch", "update"]
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: appscode:petset:view
+  name: appscode:ace:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -43,8 +25,17 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - apps.k8s.appscode.com
+  - storage.k8s.io
   resources:
-  - petsets
-  - placementpolicies
+  - storageclasses
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - node.k8s.appscode.com
+  resources:
+  - nodetopologies
+  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - drivers.x-helm.dev
+  resources:
+  - appreleases
   verbs: ["get", "list", "watch"]
