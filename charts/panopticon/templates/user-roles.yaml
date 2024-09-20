@@ -1,41 +1,24 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: appscode:scanner:admin
+  name: appscode:metrics:edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
-rules:
-- apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
-  resources:
-  - "*"
-  verbs: ["*"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: appscode:scanner:edit
-  labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
+  - metrics.appscode.com
   resources:
   - "*"
-  verbs: ["create", "delete", "deletecollection", "patch", "update"]
+  verbs: ["*"]
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: appscode:scanner:view
+  name: appscode:metrics:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -43,8 +26,7 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
+  - metrics.appscode.com
   resources:
   - "*"
   verbs: ["get", "list", "watch"]
