@@ -134,3 +134,6 @@ platform:
   baseURL: ""
   token: ""
   caBundle: ""
+
+ace-user-roles:
+  enabled: false

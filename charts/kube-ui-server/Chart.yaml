@@ -11,3 +11,8 @@ sources:
 maintainers:
 - name: appscode
   email: support@appscode.com
+dependencies:
+- name: ace-user-roles
+  repository: file://../ace-user-roles
+  condition: ace-user-roles.enabled
+  version: v2024.8.21

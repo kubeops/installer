@@ -35,3 +35,5 @@ _testmain.go
 /.go
 /.crds
 .DS_Store
+
+/charts/kube-ui-server/charts
