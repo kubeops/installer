@@ -56,4 +56,5 @@ jobs:
           CHART_REPOSITORY: github.com/appscode/charts
         run: |
           export REGISTRY_0=oci://ghcr.io/appscode-charts
+          ./hack/scripts/update-chart-dependencies.sh
           $RUNNER_WORKSPACE/$(basename $CHART_REPOSITORY)/hack/scripts/publish-oci-charts.sh $(pwd)

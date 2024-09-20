@@ -1,0 +1,6 @@
+dependencies:
+- name: ace-user-roles
+  repository: file://../ace-user-roles
+  version: v2024.8.21
+digest: sha256:47c57010bbc2f96c7a9237922add276da614618f59c13753f215a35d14c30a36
+generated: "2024-09-19T23:53:28.094646-07:00"

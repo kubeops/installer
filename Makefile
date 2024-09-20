@@ -346,7 +346,10 @@ ct: $(BUILD_DIRS)
 	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
 	    --env KUBECONFIG=$(subst $(HOME),,$(KUBECONFIG))        \
 	    $(CHART_TEST_IMAGE)                                     \
-	    ct $(CT_COMMAND) --debug --validate-maintainers=false $(CT_ARGS)
+	    /bin/sh -c "                                            \
+	      ./hack/scripts/update-chart-dependencies.sh; \
+	      ct $(CT_COMMAND) --debug --validate-maintainers=false $(CT_ARGS) \
+	    "
 
 ADDTL_LINTERS   := gofmt,goimports,unparam
 

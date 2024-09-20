@@ -6,6 +6,3 @@
 nameOverride: ""
 # Overrides fullname template
 fullnameOverride: ""
-
-# If icm is false, then the roles will be created
-ocm: false

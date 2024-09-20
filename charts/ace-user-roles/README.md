@@ -1,6 +1,6 @@
-# Gatekeeper Grafana Dashboards
+# ACE User Roles
 
-[Gatekeeper Grafana Dashboards by AppsCode](https://github.com/kubeops/ui-server) - Gatekeeper Grafana Dashboards for ByteBuilders
+[ACE User Roles by AppsCode](https://github.com/kubeops/ui-server) - ACE User Roles for ByteBuilders
 
 ## TL;DR;
 
@@ -13,7 +13,7 @@ $ helm upgrade -i ace-user-roles appscode/ace-user-roles -n kubeops --create-nam
 
 ## Introduction
 
-This chart deploys Gatekeeper Grafana Dashboards on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+This chart deploys ACE User Roles on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
 ## Prerequisites
 
@@ -27,7 +27,7 @@ To install/upgrade the chart with the release name `ace-user-roles`:
 $ helm upgrade -i ace-user-roles appscode/ace-user-roles -n kubeops --create-namespace --version=v2024.8.21
 ```
 
-The command deploys Gatekeeper Grafana Dashboards on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
+The command deploys ACE User Roles on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -45,23 +45,16 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the `ace-user-roles` chart and their default values.
 
-|            Parameter            |                            Description                             |      Default       |
-|---------------------------------|--------------------------------------------------------------------|--------------------|
-| nameOverride                    | Overrides name template                                            | <code>""</code>    |
-| fullnameOverride                | Overrides fullname template                                        | <code>""</code>    |
-| dashboard.enabled               |                                                                    | <code>true</code>  |
-| dashboard.folderID              | ID of Grafana folder where these dashboards will be applied        | <code>0</code>     |
-| dashboard.overwrite             | If true, dashboard with matching uid will be overwritten           | <code>true</code>  |
-| dashboard.templatize.title      | If true, datasource will be prefixed to dashboard name             | <code>false</code> |
-| dashboard.templatize.datasource | If true, datasource will be hardcoded in the dashboard             | <code>false</code> |
-| grafana.name                    | Name of Grafana Appbinding where these dashboards are applied      | <code>""</code>    |
-| grafana.namespace               | Namespace of Grafana Appbinding where these dashboards are applied | <code>""</code>    |
+|    Parameter     |         Description         |     Default     |
+|------------------|-----------------------------|-----------------|
+| nameOverride     | Overrides name template     | <code>""</code> |
+| fullnameOverride | Overrides fullname template | <code>""</code> |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i ace-user-roles appscode/ace-user-roles -n kubeops --create-namespace --version=v2024.8.21 --set dashboard.folderID=0
+$ helm upgrade -i ace-user-roles appscode/ace-user-roles -n kubeops --create-namespace --version=v2024.8.21 --set -- generate from values file --
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
