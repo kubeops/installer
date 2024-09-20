@@ -81,6 +81,11 @@ type KubeUiServerSpec struct {
 	HelmRepositories     HelmRepositories         `json:"helmRepositories"`
 	KubeconfigSecretName string                   `json:"kubeconfigSecretName"`
 	Platform             AcePlatformSpec          `json:"platform"`
+	AceUserRoles         AceUserRolesValues       `json:"ace-user-roles"`
+}
+
+type AceUserRolesValues struct {
+	Enabled bool `json:"enabled"`
 }
 
 type HelmRepositories struct {

@@ -1,4 +1,11 @@
 properties:
+  ace-user-roles:
+    properties:
+      enabled:
+        type: boolean
+    required:
+    - enabled
+    type: object
   affinity:
     description: If specified, the pod's scheduling constraints
     properties:
@@ -1442,6 +1449,7 @@ properties:
       type: object
     type: array
 required:
+- ace-user-roles
 - apiserver
 - helmRepositories
 - image

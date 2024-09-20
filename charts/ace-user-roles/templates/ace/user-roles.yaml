@@ -25,16 +25,6 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - storage.k8s.io
-  resources:
-  - storageclasses
-  verbs: ["get", "list", "watch"]
-- apiGroups:
-  - node.k8s.appscode.com
-  resources:
-  - nodetopologies
-  verbs: ["get", "list", "watch"]
-- apiGroups:
   - drivers.x-helm.dev
   resources:
   - appreleases

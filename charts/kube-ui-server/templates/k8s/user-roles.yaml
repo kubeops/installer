@@ -3,9 +3,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeops:ui:editor
+  name: appscode:kube-ui-server:edit
   labels:
-    rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
   annotations:
     "helm.sh/hook": post-install,post-upgrade
@@ -30,7 +29,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeops:ui:viewer
+  name: appscode:kube-ui-server:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -108,18 +107,19 @@ rules:
 
 ---
 
-# required for standard user in Rancher
+# Grant logged in users permission on cluster scoped resources required for cluster-ui
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: kubeops:ui:viewer
+  name: appscode:kube-ui-server:view
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubeops:ui:viewer
+  name: appscode:kube-ui-server:view
 subjects:
 - kind: Group
   name: system:authenticated
