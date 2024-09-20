@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: appscode:scanner:admin
+  name: appscode:cacerts-driver:admin
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
   annotations:
@@ -9,16 +9,15 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
+  - cacerts.csi.cert-manager.io
   resources:
-  - "*"
+  - caproviderclasses
   verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: appscode:scanner:edit
+  name: appscode:cacerts-driver:edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
   annotations:
@@ -26,16 +25,15 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
+  - cacerts.csi.cert-manager.io
   resources:
-  - "*"
+  - caproviderclasses
   verbs: ["create", "delete", "deletecollection", "patch", "update"]
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: appscode:scanner:view
+  name: appscode:cacerts-driver:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -43,8 +41,7 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - scanner.appscode.com
-  - reports.scanner.appscode.com
+  - cacerts.csi.cert-manager.io
   resources:
-  - "*"
+  - caproviderclasses
   verbs: ["get", "list", "watch"]
