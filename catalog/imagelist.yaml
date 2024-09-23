@@ -1,0 +1,17 @@
+- ghcr.io/appscode/cluster-connector:v0.0.12
+- ghcr.io/appscode/config-syncer:v0.15.2
+- ghcr.io/appscode/csi-driver-cacerts:v0.0.4
+- ghcr.io/appscode/external-dns-operator:v0.0.8
+- ghcr.io/appscode/falco-ui-server:v0.0.4
+- ghcr.io/appscode/kube-rbac-proxy:v0.11.0
+- ghcr.io/appscode/kube-ui-server:v0.0.45
+- ghcr.io/appscode/kubectl:v1.22
+- ghcr.io/appscode/panopticon:v0.0.14
+- ghcr.io/appscode/petset:v0.0.7
+- ghcr.io/appscode/scanner:v0.0.19
+- ghcr.io/appscode/sidekick:v0.0.8
+- ghcr.io/appscode/supervisor:v0.0.6
+- ghcr.io/appscode/trivydb:0.0.2
+- rancher/kine:v0.11.4
+- registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.11.1
+- registry.k8s.io/sig-storage/livenessprobe:v2.13.1
