@@ -1,9 +1,0 @@
-# https://github.com/helm/charts/blob/master/test/README.md#providing-custom-test-values
-operator:
-  securityContext:
-    seccompProfile:
-      type: RuntimeDefault
-rbacproxy:
-  securityContext:
-    seccompProfile:
-      type: RuntimeDefault
