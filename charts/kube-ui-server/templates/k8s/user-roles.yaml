@@ -88,6 +88,7 @@ rules:
   - menus
   - resourceblockdefinitions
   - resourcedescriptors
+  - resourceeditors
   - resourcelayouts
   - resourceoutlines
   - resourcetabledefinitions
