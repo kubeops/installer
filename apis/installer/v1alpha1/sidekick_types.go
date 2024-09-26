@@ -70,6 +70,9 @@ type SidekickSpec struct {
 	// +optional
 	Affinity   *core.Affinity `json:"affinity"`
 	Monitoring Monitoring     `json:"monitoring"`
+
+	// +optional
+	NetworkPolicy NetworkPolicy `json:"networkPolicy"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
