@@ -2,7 +2,7 @@ apiVersion: v2
 name: supervisor
 description: A Helm chart for Supervisor by AppsCode
 type: application
-version: v2024.8.21
+version: v2024.9.30
 appVersion: v0.0.6
 home: https://github.com/kubeops/supervisor
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png

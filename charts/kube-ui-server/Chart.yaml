@@ -2,7 +2,7 @@ apiVersion: v2
 name: kube-ui-server
 description: A Helm chart for kube-ui-server by AppsCode
 type: application
-version: v2024.8.21
+version: v2024.9.30
 appVersion: v0.0.45
 home: https://github.com/kubeops/kube-ui-server
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
@@ -15,4 +15,4 @@ dependencies:
 - name: ace-user-roles
   repository: file://../ace-user-roles
   condition: ace-user-roles.enabled
-  version: v2024.8.21
+  version: v2024.9.30
