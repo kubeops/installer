@@ -33,6 +33,11 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - pods
+  verbs: ["deletecollection"]
+- apiGroups:
+  - ""
+  resources:
   - configmaps
   verbs: ["*"]
 - apiGroups:
