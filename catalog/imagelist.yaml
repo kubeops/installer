@@ -4,7 +4,7 @@
 - ghcr.io/appscode/external-dns-operator:v0.0.8
 - ghcr.io/appscode/falco-ui-server:v0.0.4
 - ghcr.io/appscode/kube-rbac-proxy:v0.11.0
-- ghcr.io/appscode/kube-ui-server:v0.0.46
+- ghcr.io/appscode/kube-ui-server:v0.0.47
 - ghcr.io/appscode/kubectl:v1.22
 - ghcr.io/appscode/panopticon:v0.0.14
 - ghcr.io/appscode/petset:v0.0.7
