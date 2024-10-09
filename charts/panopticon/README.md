@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/panopticon --version=v2024.9.30
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.9.30
+$ helm search repo appscode/panopticon --version=v2024.10.7
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.10.7
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 To install/upgrade the chart with the release name `panopticon`:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.9.30
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.10.7
 ```
 
 The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -94,12 +94,12 @@ The following table lists the configurable parameters of the `panopticon` chart 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.9.30 --set replicaCount=1
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.10.7 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.9.30 --values values.yaml
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2024.10.7 --values values.yaml
 ```
