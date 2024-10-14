@@ -80,3 +80,6 @@ podAnnotations: {}
 
 # Tolerations for pod assignment
 tolerations: []
+
+rbac:
+  enableUserRoles: true
