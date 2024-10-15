@@ -75,6 +75,7 @@ The following table lists the configurable parameters of the `cert-manager-csi-d
 | annotations                    | Annotations applied to csi driver daemonset                                                                                        | <code>{}</code>                                                                                  |
 | podAnnotations                 | Annotations passed to csi driver pod(s).                                                                                           | <code>{}</code>                                                                                  |
 | tolerations                    | Tolerations for pod assignment                                                                                                     | <code>[]</code>                                                                                  |
+| rbac.enableUserRoles           |                                                                                                                                    | <code>true</code>                                                                                |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
