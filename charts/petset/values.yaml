@@ -40,7 +40,7 @@ rbacproxy:
   # Name of operator container image
   repository: kube-rbac-proxy
   # Operator container image tag
-  tag: v0.11.0
+  tag: v0.15.0
   # Compute Resources required by the operator container
   resources: # +doc-gen:break
     requests:
