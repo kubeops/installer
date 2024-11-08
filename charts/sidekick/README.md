@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/sidekick --version=v2024.8.21
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.8.21
+$ helm search repo appscode/sidekick --version=v2024.11.8
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.11.8
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys an Sidekick on a [Kubernetes](http://kubernetes.io) cluster u
 To install/upgrade the chart with the release name `sidekick`:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.8.21
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.11.8
 ```
 
 The command deploys an Sidekick on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -74,12 +74,12 @@ The following table lists the configurable parameters of the `sidekick` chart an
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.8.21 --set replicaCount=1
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.11.8 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.8.21 --values values.yaml
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2024.11.8 --values values.yaml
 ```
