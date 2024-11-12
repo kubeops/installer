@@ -59,5 +59,11 @@ rules:
   - '*'
   verbs:
   - get
+  # ocm cluster claim
+- apiGroups:
+    - cluster.open-cluster-management.io
+  resources:
+    - clusterclaims
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
 
 {{- end }}
