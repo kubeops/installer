@@ -4,13 +4,13 @@
 - ghcr.io/appscode/external-dns-operator:v0.0.8
 - ghcr.io/appscode/falco-ui-server:v0.0.4
 - ghcr.io/appscode/kube-rbac-proxy:v0.15.0
-- ghcr.io/appscode/kube-ui-server:v0.0.48
+- ghcr.io/appscode/kube-ui-server:v0.0.50
 - ghcr.io/appscode/kubectl-nonroot:1.31
-- ghcr.io/appscode/panopticon:v0.0.15
+- ghcr.io/appscode/panopticon:v0.0.16
 - ghcr.io/appscode/petset:v0.0.7
 - ghcr.io/appscode/scanner:v0.0.19
-- ghcr.io/appscode/sidekick:v0.0.8
-- ghcr.io/appscode/supervisor:v0.0.6
+- ghcr.io/appscode/sidekick:v0.0.9
+- ghcr.io/appscode/supervisor:v0.0.7
 - ghcr.io/appscode/trivydb:0.0.2
 - rancher/kine:v0.11.4
 - registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.11.1
