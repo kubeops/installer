@@ -55,15 +55,22 @@ rules:
   - get
   - list
   - watch
-- nonResourceURLs:
-  - '*'
-  verbs:
-  - get
-  # ocm cluster claim
+# ocm cluster claim
 - apiGroups:
   - cluster.open-cluster-management.io
   resources:
   - clusterclaims
   verbs: ["get", "list", "watch", "create", "update", "patch"]
-
+# impersonate user for grafana dashboard calls
+- apiGroups: [""]
+  resources: ["users", "groups", "serviceaccounts"]
+  verbs: ["impersonate"]
+# Can set "Impersonate-Extra-ace.appscode.com/org-id" header and the "Impersonate-Uid" header.
+- apiGroups: ["authentication.k8s.io"]
+  resources: ["userextras/ace.appscode.com/org-id", "uids"]
+  verbs: ["impersonate"]
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - get
 {{- end }}
