@@ -53,11 +53,12 @@ crd-importer \
     --input=https://github.com/fluxcd/source-controller/raw/${FLUXCD_SOURCE_CONTROLLER_TAG}/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/management.k8s.appscode.com_projectquotas.yaml \
+    --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_clusterprofiles.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_features.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_featuresets.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_resourcedashboards.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_resourceeditors.yaml \
-    --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_clusterprofiles.yaml \
+    --input=https://github.com/kmodules/resource-metadata/raw/master/crds/ui.k8s.appscode.com_resourceoutlinefilters.yaml \
     --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_chartpresets.yaml \
     --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_clusterchartpresets.yaml \
