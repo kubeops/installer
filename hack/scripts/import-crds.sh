@@ -81,15 +81,20 @@ crd-importer \
     --out=./charts/falco-ui-server/crds
 
 crd-importer \
-    --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
-    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
-    --out=./charts/scanner/crds
+    --no-description \
+    --input=https://github.com/kubeops/operator-shard-manager/raw/master/crds/operator.k8s.appscode.com_shardconfigurations.yaml \
+    --out=./charts/operator-shard-manager/crds
 
 crd-importer \
     --no-description \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_petsets.yaml \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_placementpolicies.yaml \
     --out=./charts/petset/crds
+
+crd-importer \
+    --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
+    --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
+    --out=./charts/scanner/crds
 
 # import cert-manager crds
 crd-importer \
