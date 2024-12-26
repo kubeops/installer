@@ -34,6 +34,7 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.GatekeeperGrafanaDashboardsSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.GatekeeperLibrarySpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.KubeUiServerSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.OperatorShardManagerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PanopticonSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PetsetSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ScannerSpec{}},
