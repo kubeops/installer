@@ -28,6 +28,14 @@ rules:
   resources:
   - "placementpolicies"
   verbs: ["get", "list", "watch"]
+- apiGroups:
+  - charts.x-helm.dev
+  resources:
+  - "clusterchartpresets"
+  verbs: ["get", "list", "watch"]
+  resourceNames:
+  - "kubedb-ui-presets"
+  - "stash-presets"
 ---
 
 # Grant logged in users read permission on cluster scoped resources required for kubedb-ui
