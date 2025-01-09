@@ -3,7 +3,7 @@ name: sidekick
 description: A Helm chart for Sidekick Operator by AppsCode
 type: application
 version: v2024.11.8
-appVersion: v0.0.9
+appVersion: v0.0.10
 home: https://github.com/kubeops/sidekick
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
 sources:
