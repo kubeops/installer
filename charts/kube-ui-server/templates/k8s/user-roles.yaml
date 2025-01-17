@@ -93,6 +93,7 @@ rules:
   - resourceoutlines
   - resourcetabledefinitions
   - usermenus
+  - gatewayinfos
   verbs: ["get", "list"]
 - apiGroups:
   - meta.k8s.appscode.com
