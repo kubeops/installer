@@ -12,6 +12,7 @@ enableClusterRoles:
   appcatalog: true
   catalog: true
   cert-manager: true
+  kubedb: true
   kubedb-ui: true
   kubestash: true
   license-proxyserver: true

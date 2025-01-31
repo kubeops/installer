@@ -53,6 +53,7 @@ The following table lists the configurable parameters of the `ace-user-roles` ch
 | enableClusterRoles.appcatalog          |                             | <code>true</code> |
 | enableClusterRoles.catalog             |                             | <code>true</code> |
 | enableClusterRoles.cert-manager        |                             | <code>true</code> |
+| enableClusterRoles.kubedb              |                             | <code>true</code> |
 | enableClusterRoles.kubedb-ui           |                             | <code>true</code> |
 | enableClusterRoles.kubestash           |                             | <code>true</code> |
 | enableClusterRoles.license-proxyserver |                             | <code>true</code> |
