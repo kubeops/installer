@@ -45,10 +45,20 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The following table lists the configurable parameters of the `ace-user-roles` chart and their default values.
 
-|    Parameter     |         Description         |     Default     |
-|------------------|-----------------------------|-----------------|
-| nameOverride     | Overrides name template     | <code>""</code> |
-| fullnameOverride | Overrides fullname template | <code>""</code> |
+|               Parameter                |         Description         |      Default      |
+|----------------------------------------|-----------------------------|-------------------|
+| nameOverride                           | Overrides name template     | <code>""</code>   |
+| fullnameOverride                       | Overrides fullname template | <code>""</code>   |
+| enableClusterRoles.ace                 |                             | <code>true</code> |
+| enableClusterRoles.appcatalog          |                             | <code>true</code> |
+| enableClusterRoles.catalog             |                             | <code>true</code> |
+| enableClusterRoles.cert-manager        |                             | <code>true</code> |
+| enableClusterRoles.kubedb-ui           |                             | <code>true</code> |
+| enableClusterRoles.kubestash           |                             | <code>true</code> |
+| enableClusterRoles.license-proxyserver |                             | <code>true</code> |
+| enableClusterRoles.metrics             |                             | <code>true</code> |
+| enableClusterRoles.prometheus          |                             | <code>true</code> |
+| enableClusterRoles.stash               |                             | <code>true</code> |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:

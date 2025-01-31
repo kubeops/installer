@@ -1,7 +1,9 @@
+{{- if dig "appcatalog" false .Values.enableClusterRoles }}
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: appscode:catalog:admin
+  name: appscode:appcatalog:admin
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
   annotations:
@@ -9,31 +11,15 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - catalog.appscode.com
+  - appcatalog.appscode.com
   resources:
   - "*"
   verbs: ["*"]
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: appscode:catalog:edit
-  labels:
-    rbac.authorization.k8s.io/aggregate-to-edit: "true"
-  annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
-rules:
-- apiGroups:
-  - catalog.appscode.com
-  resources:
-  - "*"
-  verbs: ["create", "delete", "deletecollection", "patch", "update"]
----
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: appscode:catalog:view
+  name: appscode:appcatalog:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -41,7 +27,9 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - catalog.appscode.com
+  - appcatalog.appscode.com
   resources:
   - "*"
   verbs: ["get", "list", "watch"]
+
+{{- end }}
