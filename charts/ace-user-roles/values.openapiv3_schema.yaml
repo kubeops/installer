@@ -1,43 +1,45 @@
 properties:
-  dashboard:
+  enableClusterRoles:
     properties:
-      enabled:
+      ace:
         type: boolean
-      folderID:
-        type: integer
-      overwrite:
+      appcatalog:
         type: boolean
-      templatize:
-        properties:
-          datasource:
-            type: boolean
-          title:
-            type: boolean
-        required:
-        - datasource
-        - title
-        type: object
+      catalog:
+        type: boolean
+      cert-manager:
+        type: boolean
+      kubedb:
+        type: boolean
+      kubedb-ui:
+        type: boolean
+      kubestash:
+        type: boolean
+      license-proxyserver:
+        type: boolean
+      metrics:
+        type: boolean
+      prometheus:
+        type: boolean
+      stash:
+        type: boolean
     required:
-    - enabled
-    - folderID
-    - overwrite
-    - templatize
+    - ace
+    - appcatalog
+    - catalog
+    - cert-manager
+    - kubedb
+    - kubedb-ui
+    - kubestash
+    - license-proxyserver
+    - metrics
+    - prometheus
+    - stash
     type: object
   fullnameOverride:
     type: string
-  grafana:
-    properties:
-      name:
-        type: string
-      namespace:
-        type: string
-    required:
-    - name
-    - namespace
-    type: object
   nameOverride:
     type: string
 required:
-- dashboard
-- grafana
+- enableClusterRoles
 type: object
