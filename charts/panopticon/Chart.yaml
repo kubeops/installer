@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 description: Kubernetes Panopticon by AppsCode
 name: panopticon
 version: v2024.11.8
@@ -10,3 +10,8 @@ sources:
 maintainers:
 - name: appscode
   email: support@appscode.com
+dependencies:
+- name: ace-user-roles
+  repository: oci://ghcr.io/appscode-charts
+  condition: ace-user-roles.enabled
+  version: v2024.9.30

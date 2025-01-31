@@ -141,3 +141,19 @@ monitoring:
 
 networkPolicy:
   enabled: false
+
+ace-user-roles:
+  # If enabled, installs the ace-user-roles chart
+  enabled: true
+  enableClusterRoles:
+    ace: false
+    appcatalog: false
+    catalog: false
+    cert-manager: false
+    kubedb: false
+    kubedb-ui: false
+    kubestash: false
+    license-proxyserver: true
+    metrics: true
+    prometheus: false
+    stash: false
