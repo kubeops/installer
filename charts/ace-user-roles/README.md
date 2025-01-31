@@ -56,6 +56,7 @@ The following table lists the configurable parameters of the `ace-user-roles` ch
 | enableClusterRoles.kubedb              |                             | <code>true</code> |
 | enableClusterRoles.kubedb-ui           |                             | <code>true</code> |
 | enableClusterRoles.kubestash           |                             | <code>true</code> |
+| enableClusterRoles.kubevault           |                             | <code>true</code> |
 | enableClusterRoles.license-proxyserver |                             | <code>true</code> |
 | enableClusterRoles.metrics             |                             | <code>true</code> |
 | enableClusterRoles.prometheus          |                             | <code>true</code> |

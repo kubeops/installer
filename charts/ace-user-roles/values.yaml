@@ -15,6 +15,7 @@ enableClusterRoles:
   kubedb: true
   kubedb-ui: true
   kubestash: true
+  kubevault: true
   license-proxyserver: true
   metrics: true
   prometheus: true
