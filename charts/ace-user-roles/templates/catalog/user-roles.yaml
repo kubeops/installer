@@ -1,43 +1,41 @@
-{{- if not .Values.ocm }}
+{{- if dig "catalog" false .Values.enableClusterRoles }}
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: extra:ui:viewer
+  name: appscode:catalog:admin
   labels:
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - drivers.x-helm.dev
+  - catalog.appscode.com
   resources:
-  - "appreleases"
-  verbs: ["get", "list"]
-
+  - "*"
+  verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: extra:ui:edit
+  name: appscode:catalog:edit
   labels:
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - drivers.x-helm.dev
+  - catalog.appscode.com
   resources:
-  - "appreleases"
-  verbs: ["create", "update", "patch", "delete"]
+  - "*"
+  verbs: ["create", "delete", "deletecollection", "patch", "update"]
 ---
-
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: extra:ui:admin
+  name: appscode:catalog:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
   annotations:
@@ -45,8 +43,9 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation
 rules:
 - apiGroups:
-  - drivers.x-helm.dev
+  - catalog.appscode.com
   resources:
-  - "appreleases"
-  verbs: ["deletecollection"]
-{{ end }}
+  - "*"
+  verbs: ["get", "list", "watch"]
+
+{{- end }}

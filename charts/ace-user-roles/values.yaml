@@ -6,3 +6,15 @@
 nameOverride: ""
 # Overrides fullname template
 fullnameOverride: ""
+
+enableClusterRoles:
+  ace: true
+  appcatalog: true
+  catalog: true
+  cert-manager: true
+  kubedb-ui: true
+  kubestash: true
+  license-proxyserver: true
+  metrics: true
+  prometheus: true
+  stash: true
