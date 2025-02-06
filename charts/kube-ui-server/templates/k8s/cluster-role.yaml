@@ -67,7 +67,7 @@ rules:
   verbs: ["impersonate"]
 # Can set "Impersonate-Extra-ace.appscode.com/org-id" header and the "Impersonate-Uid" header.
 - apiGroups: ["authentication.k8s.io"]
-  resources: ["userextras/ace.appscode.com/org-id", "uids"]
+  resources: ["userextras/ace.appscode.com/org-id", "userextras/ace.appscode.com/client-org", "uids"]
   verbs: ["impersonate"]
 - nonResourceURLs:
   - '*'
