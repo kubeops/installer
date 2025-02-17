@@ -30,27 +30,33 @@ PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR_TAG=${PROMETHEUS_OPERATOR_PROMETHEUS_OPE
 X_HELM_APIMACHINERY_TAG=${X_HELM_APIMACHINERY_TAG:-v0.0.16}
 
 crd-importer \
+    --no-description \
     --input=https://github.com/kubeops/csi-driver-cacerts/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
     --gk=ClusterIssuer.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/kubeops/external-dns-operator/raw/${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG}/crds/external-dns.appscode.com_externaldnses.yaml \
     --out=./charts/external-dns-operator/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/open-policy-agent/gatekeeper/raw/${OPEN_POLICY_AGENT_GATEKEEPER_TAG}/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
     --out=./charts/gatekeeper-library/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/kubeops/sidekick/raw/${KUBEOPS_SIDEKICK_TAG}/crds/apps.k8s.appscode.com_sidekicks.yaml \
     --out=./charts/sidekick/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/fluxcd/helm-controller/raw/${FLUXCD_HELM_CONTROLLER_TAG}/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
     --input=https://github.com/fluxcd/source-controller/raw/${FLUXCD_SOURCE_CONTROLLER_TAG}/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
@@ -67,15 +73,18 @@ crd-importer \
     --out=./charts/kube-ui-server/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
     --out=./charts/gatekeeper-grafana-dashboards/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
     --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/falco-ui-server/crds
@@ -92,21 +101,25 @@ crd-importer \
     --out=./charts/petset/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
     --input=https://github.com/prometheus-community/helm-charts/raw/${PROMETHEUS_COMMUNITY_HELM_CHARTS_TAG}/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml \
     --out=./charts/scanner/crds
 
 # import cert-manager crds
 crd-importer \
+    --no-description \
     --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
     --out=./charts/cert-manager-crds/crds
 
 # import prometheus-operator crds
 crd-importer \
+    --no-description \
     --input=https://github.com/prometheus-operator/prometheus-operator/releases/download/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR_TAG}/stripped-down-crds.yaml \
     --out=./charts/prometheus-operator-crds/crds
 
 crd-importer \
+    --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --out=./charts/kmodules-crds/crds
@@ -144,6 +157,7 @@ rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
     fi
 
     crd-importer \
+        --no-description \
         --input=${supervisor_dir} \
         --out=./charts/supervisor/crds
 }
