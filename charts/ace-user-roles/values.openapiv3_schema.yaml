@@ -1,4 +1,8 @@
 properties:
+  annotations:
+    additionalProperties:
+      type: string
+    type: object
   enableClusterRoles:
     properties:
       ace:
