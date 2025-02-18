@@ -4,9 +4,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: appscode:license-checker
+  {{- with .Values.annotations }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 rules:
 # Get cluster id
 - apiGroups:

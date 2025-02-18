@@ -6,9 +6,10 @@ metadata:
   name: kubedb:ops:admin
   labels:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
+  {{- with .Values.annotations }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 rules:
 - apiGroups:
   - ops.kubedb.com
@@ -23,9 +24,10 @@ metadata:
   name: kubedb:ops:edit
   labels:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
+  {{- with .Values.annotations }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 rules:
 - apiGroups:
   - ops.kubedb.com
@@ -40,9 +42,10 @@ metadata:
   name: kubedb:ops:view
   labels:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
+  {{- with .Values.annotations }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 rules:
 - apiGroups:
   - ops.kubedb.com

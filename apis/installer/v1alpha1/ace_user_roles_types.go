@@ -48,6 +48,8 @@ type AceUserRolesSpec struct {
 	//+optional
 	FullnameOverride   string           `json:"fullnameOverride"`
 	EnableClusterRoles UserClusterRoles `json:"enableClusterRoles"`
+	//+optional
+	Annotations map[string]string `json:"annotations"`
 }
 
 type UserClusterRoles struct {
