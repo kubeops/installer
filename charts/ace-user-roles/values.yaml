@@ -8,18 +8,18 @@ nameOverride: ""
 fullnameOverride: ""
 
 enableClusterRoles:
-  ace: false
-  appcatalog: false
-  catalog: false
-  cert-manager: false
+  ace: true
+  appcatalog: true
+  catalog: true
+  cert-manager: true
   kubedb: true
-  kubedb-ui: false
-  kubestash: false
-  kubevault: false
-  license-proxyserver: false
-  metrics: false
-  prometheus: false
-  stash: false
+  kubedb-ui: true
+  kubestash: true
+  kubevault: true
+  license-proxyserver: true
+  metrics: true
+  prometheus: true
+  stash: true
 
 annotations:
   "helm.sh/hook": pre-install,pre-upgrade

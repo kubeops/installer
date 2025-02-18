@@ -49,18 +49,18 @@ The following table lists the configurable parameters of the `ace-user-roles` ch
 |----------------------------------------|-----------------------------|--------------------------------------|
 | nameOverride                           | Overrides name template     | <code>""</code>                      |
 | fullnameOverride                       | Overrides fullname template | <code>""</code>                      |
-| enableClusterRoles.ace                 |                             | <code>false</code>                   |
-| enableClusterRoles.appcatalog          |                             | <code>false</code>                   |
-| enableClusterRoles.catalog             |                             | <code>false</code>                   |
-| enableClusterRoles.cert-manager        |                             | <code>false</code>                   |
+| enableClusterRoles.ace                 |                             | <code>true</code>                    |
+| enableClusterRoles.appcatalog          |                             | <code>true</code>                    |
+| enableClusterRoles.catalog             |                             | <code>true</code>                    |
+| enableClusterRoles.cert-manager        |                             | <code>true</code>                    |
 | enableClusterRoles.kubedb              |                             | <code>true</code>                    |
-| enableClusterRoles.kubedb-ui           |                             | <code>false</code>                   |
-| enableClusterRoles.kubestash           |                             | <code>false</code>                   |
-| enableClusterRoles.kubevault           |                             | <code>false</code>                   |
-| enableClusterRoles.license-proxyserver |                             | <code>false</code>                   |
-| enableClusterRoles.metrics             |                             | <code>false</code>                   |
-| enableClusterRoles.prometheus          |                             | <code>false</code>                   |
-| enableClusterRoles.stash               |                             | <code>false</code>                   |
+| enableClusterRoles.kubedb-ui           |                             | <code>true</code>                    |
+| enableClusterRoles.kubestash           |                             | <code>true</code>                    |
+| enableClusterRoles.kubevault           |                             | <code>true</code>                    |
+| enableClusterRoles.license-proxyserver |                             | <code>true</code>                    |
+| enableClusterRoles.metrics             |                             | <code>true</code>                    |
+| enableClusterRoles.prometheus          |                             | <code>true</code>                    |
+| enableClusterRoles.stash               |                             | <code>true</code>                    |
 | annotations.helm.sh/hook               |                             | <code>pre-install,pre-upgrade</code> |
 | annotations.helm.sh/hook-delete-policy |                             | <code>before-hook-creation</code>    |
 
