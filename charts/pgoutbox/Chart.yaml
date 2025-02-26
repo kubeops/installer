@@ -1,0 +1,12 @@
+apiVersion: v2
+description: PgOutbox by AppsCode
+name: pgoutbox
+version: v2025.2.28
+appVersion: v0.0.1
+home: https://kubedb.com/
+icon: https://cdn.appscode.com/images/products/stash/petset-icon.png
+sources:
+- https://github.com/stashed
+maintainers:
+- name: appscode
+  email: support@appscode.com
