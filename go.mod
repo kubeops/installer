@@ -8,7 +8,7 @@ require (
 	github.com/google/gofuzz v1.2.0
 	k8s.io/api v0.30.2
 	k8s.io/apimachinery v0.30.2
-	kmodules.xyz/image-packer v0.0.0-20241207122203-4cd11a16c36e
+	kmodules.xyz/image-packer v0.0.0-20250215070631-0dc6bed037c5
 	kmodules.xyz/schema-checker v0.4.1
 )
 
@@ -53,12 +53,12 @@ require (
 	github.com/vbatts/tar-split v0.11.3 // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
-	golang.org/x/net v0.29.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/term v0.24.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/term v0.27.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	gomodules.xyz/go-sh v0.1.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
@@ -69,7 +69,7 @@ require (
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240703190633-0aa61b46e8c2 // indirect
 	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0 // indirect
-	kmodules.xyz/client-go v0.30.40 // indirect
+	kmodules.xyz/client-go v0.30.45 // indirect
 	kubeops.dev/scanner v0.0.19 // indirect
 	sigs.k8s.io/controller-runtime v0.18.4 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect

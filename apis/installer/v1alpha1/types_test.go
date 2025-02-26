@@ -38,6 +38,7 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.OperatorShardManagerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PanopticonSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.PetsetSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.PgoutboxSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ScannerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SidekickSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
