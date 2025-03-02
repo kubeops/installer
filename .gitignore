@@ -37,3 +37,4 @@ _testmain.go
 .DS_Store
 
 /charts/kube-ui-server/charts
+/charts/panopticon/charts
