@@ -2,8 +2,8 @@ apiVersion: v2
 name: ace-user-roles
 description: A Helm chart for ACE user roles
 type: application
-version: v2024.9.30
-appVersion: v2024.9.30
+version: v2025.3.14
+appVersion: v2025.3.14
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
 sources:
 - https://github.com/kubeops/installer
