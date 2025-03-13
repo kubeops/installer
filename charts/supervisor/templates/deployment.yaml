@@ -70,6 +70,7 @@ spec:
         - --before-deadline-duration={{ .Values.beforeDeadlineDuration }}
         ports:
         - containerPort: 8443
+        - containerPort: 9443
         env:
         - name: POD_NAME
           valueFrom:

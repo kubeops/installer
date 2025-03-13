@@ -18,5 +18,8 @@ spec:
   - name: api
     port: 443
     targetPort: 8443
+  - name: webhook
+    port: 9443
+    targetPort: 9443
   selector:
     {{- include "supervisor.selectorLabels" . | nindent 4 }}
