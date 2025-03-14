@@ -1,0 +1,18 @@
+project:
+  name: FluxCD to ArgoCD Bridge by AppsCode
+  shortName: FluxCD to ArgoCD Bridge
+  url: https://github.com/appscode-cloud
+  description: FluxCD to ArgoCD Bridge
+  app: a FluxCD to ArgoCD Bridge
+repository:
+  url: https://charts.appscode.com/stable
+  name: appscode
+chart:
+  name: fargocd
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.29+
+release:
+  name: fargocd
+  namespace: argocd
