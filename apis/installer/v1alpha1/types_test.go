@@ -32,6 +32,7 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.ConfigSyncerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ExternalDnsOperatorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.FalcoUiServerSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.FargocdSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.GatekeeperGrafanaDashboardsSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.GatekeeperLibrarySpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.KubeUiServerSpec{}},
