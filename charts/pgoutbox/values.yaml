@@ -130,3 +130,5 @@ affinity: {}
 app:
   config: {}
   configSecretName: ""
+  natsSecretName: ""
+  natsMountPath: ""

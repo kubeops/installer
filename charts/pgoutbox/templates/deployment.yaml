@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "pgoutbox.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "pgoutbox.labels" . | nindent 4 }}
 spec:
@@ -64,6 +65,10 @@ spec:
             - mountPath: /var/run/pgoutbox
               name: config
           {{- end }}
+          {{- if (include "pgoutbox.natsSecretName" .) }}
+            - name: nats-cred
+              mountPath: {{ .Values.app.natsMountPath }}
+          {{- end }}
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -72,6 +77,12 @@ spec:
           secret:
             defaultMode: 420
             secretName: {{ include "pgoutbox.configSecretName" . }}
+        {{- with $secretName := (include "pgoutbox.natsSecretName" .) }}
+        - name: nats-cred
+          secret:
+            defaultMode: 420
+            secretName: {{ $secretName }}
+        {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
