@@ -78,3 +78,7 @@ Returns the app config secret name
 {{- printf "%s-config" (include "pgoutbox.fullname" .) -}}
 {{- end }}
 {{- end }}
+
+{{- define  "pgoutbox.natsSecretName" -}}
+{{- .Values.app.natsSecretName -}}
+{{- end }}
