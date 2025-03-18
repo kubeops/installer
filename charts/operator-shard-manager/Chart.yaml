@@ -2,8 +2,8 @@ apiVersion: v2
 name: operator-shard-manager
 description: A Helm chart for OpenShift
 type: application
-version: v2025.1.17
-appVersion: v0.0.1
+version: v2025.3.14
+appVersion: v0.0.2
 home: https://github.com/appscode-cloud
 icon: https://cdn.appscode.com/images/products/bytebuilders/icons/android-icon-192x192.png
 sources:
