@@ -18,6 +18,22 @@ spec:
     matchLabels:
       {{- include "sidekick.selectorLabels" . | nindent 6 }}
   endpoints:
-  - port: metrics
-    scheme: http
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    path: /metrics
+    port: metrics
+    scheme: https
+    tlsConfig:
+      ca:
+        secret:
+          name: {{ include "sidekick.fullname" . }}-cert
+          key: ca.crt
+      cert:
+        secret:
+          name: {{ include "sidekick.fullname" . }}-cert
+          key: tls.crt
+      insecureSkipVerify: false
+      keySecret:
+        name: {{ include "sidekick.fullname" . }}-cert
+        key: tls.key
+      serverName: "{{ include "sidekick.fullname" . }}.{{ .Release.Namespace }}.svc"
 {{- end }}

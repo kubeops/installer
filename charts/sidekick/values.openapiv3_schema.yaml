@@ -1289,6 +1289,42 @@ properties:
             x-kubernetes-list-type: atomic
         type: object
     type: object
+  annotations:
+    additionalProperties:
+      type: string
+    type: object
+  apiserver:
+    properties:
+      enableMutatingWebhook:
+        type: boolean
+      enableValidatingWebhook:
+        type: boolean
+      healthcheck:
+        properties:
+          enabled:
+            type: boolean
+        type: object
+      servingCerts:
+        properties:
+          caCrt:
+            type: string
+          generate:
+            type: boolean
+          serverCrt:
+            type: string
+          serverKey:
+            type: string
+        required:
+        - generate
+        type: object
+    required:
+    - enableMutatingWebhook
+    - enableValidatingWebhook
+    - healthcheck
+    - servingCerts
+    type: object
+  criticalAddon:
+    type: boolean
   fullnameOverride:
     type: string
   image:
@@ -1636,6 +1672,9 @@ properties:
     items:
       type: string
     type: array
+  logLevel:
+    format: int32
+    type: integer
   monitoring:
     properties:
       agent:
@@ -1669,6 +1708,10 @@ properties:
       type: string
     type: object
   podAnnotations:
+    additionalProperties:
+      type: string
+    type: object
+  podLabels:
     additionalProperties:
       type: string
     type: object
@@ -2074,6 +2117,7 @@ properties:
       type: object
     type: array
 required:
+- apiserver
 - image
 - imagePullPolicy
 - monitoring

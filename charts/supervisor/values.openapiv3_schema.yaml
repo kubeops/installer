@@ -1299,8 +1299,6 @@ properties:
         type: boolean
       enableValidatingWebhook:
         type: boolean
-      groupPriorityMinimum:
-        type: integer
       healthcheck:
         properties:
           enabled:
@@ -1319,18 +1317,11 @@ properties:
         required:
         - generate
         type: object
-      useKubeapiserverFqdnForAks:
-        type: boolean
-      versionPriority:
-        type: integer
     required:
     - enableMutatingWebhook
     - enableValidatingWebhook
-    - groupPriorityMinimum
     - healthcheck
     - servingCerts
-    - useKubeapiserverFqdnForAks
-    - versionPriority
     type: object
   beforeDeadlineDuration:
     type: string
@@ -1721,6 +1712,10 @@ properties:
       type: string
     type: object
   podAnnotations:
+    additionalProperties:
+      type: string
+    type: object
+  podLabels:
     additionalProperties:
       type: string
     type: object

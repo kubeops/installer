@@ -12,7 +12,7 @@ replicaCount: 1
 # Docker registry fqdn used to pull Stash related images.
 # Set this to use docker registry hosted at ${registryFQDN}/${registry}/${image}
 registryFQDN: ghcr.io
-operator:
+image:
   # Docker registry used to pull operator image
   registry: appscode
   # Name of operator container image
@@ -34,39 +34,17 @@ operator:
     seccompProfile:
       type: RuntimeDefault
 
-rbacproxy:
-  # Docker registry used to pull operator image
-  registry: appscode
-  # Name of operator container image
-  repository: kube-rbac-proxy
-  # Operator container image tag
-  tag: v0.15.0
-  # Compute Resources required by the operator container
-  resources: # +doc-gen:break
-    requests:
-      cpu: "100m"
-  # Security options this container should run with
-  securityContext: # +doc-gen:break
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop: ["ALL"]
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 65534
-    seccompProfile:
-      type: RuntimeDefault
-
 # Specify an array of imagePullSecrets.
 # Secrets must be manually created in the namespace.
 #
 # Example:
-# helm template charts/stash \
+# helm template charts/petset \
 #   --set imagePullSecrets[0].name=sec0 \
 #   --set imagePullSecrets[1].name=sec1
 imagePullSecrets: []
 # Container image pull policy
 imagePullPolicy: IfNotPresent
-# If true, installs Stash operator as critical addon
+# If true, installs petset as critical addon
 criticalAddon: false
 # Log level for operator
 logLevel: 3
@@ -95,22 +73,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 apiserver:
-  # The minimum priority the webhook api group should have at least. Please see
-  # https://github.com/kubernetes/kube-aggregator/blob/release-1.9/pkg/apis/apiregistration/v1beta1/types.go#L58-L64
-  # for more information on proper values of this field.
-  groupPriorityMinimum: 10000
-  # The ordering of the webhook api inside of the group. Please see
-  # https://github.com/kubernetes/kube-aggregator/blob/release-1.9/pkg/apis/apiregistration/v1beta1/types.go#L66-L70
-  # for more information on proper values of this field
-  versionPriority: 15
-  # If true, mutating webhook is configured for Kubernetes workloads
+  # If true, mutating webhook is configured for petset CRDs
   enableMutatingWebhook: true
-  # If true, validating webhook is configured for Stash CRDss
-  enableValidatingWebhook: false
-  # If true, bypasses checks that validating webhook is actually enabled in the Kubernetes cluster.
-  bypassValidatingWebhookXray: false
-  # If true, uses kube-apiserver FQDN for AKS cluster to workaround https://github.com/Azure/AKS/issues/522 (default true)
-  useKubeapiserverFqdnForAks: true
+  # If true, validating webhook is configured for petset CRDs
+  enableValidatingWebhook: true
   healthcheck:
     # If true, enables the readiness and liveliness probes for the operator pod.
     enabled: false
