@@ -42,6 +42,26 @@ image:
 imagePullSecrets: []
 # Container image pull policy
 imagePullPolicy: Always
+# If true, installs sidekick as critical addon
+criticalAddon: false
+# Log level for operator
+logLevel: 3
+# Annotations applied to operator deployment
+annotations: {}
+# Annotations passed to operator pod(s).
+podAnnotations: {}
+# Labels passed to operator pod(s)
+podLabels: {}
+# Node labels for pod assignment
+nodeSelector: # +doc-gen:break
+  kubernetes.io/os: linux
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+tolerations: []
+
+affinity: {}
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -52,17 +72,24 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
+apiserver:
+  # If true, mutating webhook is configured for sidekick CRDs
+  enableMutatingWebhook: false
+  # If true, validating webhook is configured for sidekick CRDs
+  enableValidatingWebhook: false
+  healthcheck:
+    # If true, enables the readiness and liveliness probes for the operator pod.
+    enabled: false
+  servingCerts:
+    # If true, generates on install/upgrade the certs that allow the kube-apiserver (and potentially ServiceMonitor)
+    # to authenticate operators pods. Otherwise specify certs in `apiserver.servingCerts.{caCrt, serverCrt, serverKey}`.
+    generate: true
+    # CA certficate used by serving certificate of webhook server.
+    caCrt: ""
+    # Serving certficate used by webhook server.
+    serverCrt: ""
+    # Private key for the serving certificate used by webhook server.
+    serverKey: ""
 monitoring:
   # Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")
   agent: ""

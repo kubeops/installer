@@ -37,8 +37,11 @@ spec:
     metadata:
       labels:
         {{- include "supervisor.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
-        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/apiregistration.yaml") . | sha256sum }}
+        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       {{- if $criticalAddon }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
       {{- end }}
@@ -57,20 +60,15 @@ spec:
         args:
         - run
         - --v={{ .Values.logLevel }}
-        - --secure-port=8443
-        - --audit-log-path=-
-        - --tls-cert-file=/var/serving-cert/tls.crt
-        - --tls-private-key-file=/var/serving-cert/tls.key
-        - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
-        - --enable-validating-webhook={{ .Values.apiserver.enableValidatingWebhook }}
-        - --enable-mutating-webhook={{ .Values.apiserver.enableMutatingWebhook }}
+        - --leader-elect=false
+        - --metrics-secure=true
+        - --metrics-bind-address=:8443
+        - --health-probe-bind-address=:8081
+        - --cert-dir=/var/serving-cert
         - --max-concurrent-reconcile={{ .Values.maxConcurrentReconcile }}
         - --requeue-after-duration={{ .Values.requeueAfterDuration }}
         - --retry-after-duration={{ .Values.retryAfterDuration }}
         - --before-deadline-duration={{ .Values.beforeDeadlineDuration }}
-        ports:
-        - containerPort: 8443
-        - containerPort: 9443
         env:
         - name: POD_NAME
           valueFrom:
@@ -80,19 +78,29 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        ports:
+        - containerPort: 8081
+          name: probes
+          protocol: TCP
+        - containerPort: 8443
+          name: metrics
+          protocol: TCP
+        - containerPort: 9443
+          name: https
+          protocol: TCP
       {{- if .Values.apiserver.healthcheck.enabled }}
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 8443
-            scheme: HTTPS
-          initialDelaySeconds: 5
+            port: probes
+          initialDelaySeconds: 15
+          periodSeconds: 20
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8443
-            scheme: HTTPS
+            port: probes
           initialDelaySeconds: 5
+          periodSeconds: 10
       {{- end }}
         resources:
           {{- toYaml .Values.image.resources | nindent 10 }}
@@ -103,7 +111,7 @@ spec:
       - name: serving-cert
         secret:
           defaultMode: 420
-          secretName: {{ include "supervisor.fullname" . }}-apiserver-cert
+          secretName: {{ include "supervisor.fullname" . }}-cert
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
     {{- if or $tolerations $criticalAddon }}

@@ -2,13 +2,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "supervisor.fullname" . }}
+  name: {{ include "operator-shard-manager.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
   {{- if eq "true" ( include "monitoring.apply-servicemonitor-label" . ) }}
     {{- include "monitoring.servicemonitor-label" . | nindent 4 }}
   {{- else }}
-    {{- include "supervisor.selectorLabels" . | nindent 4 }}
+    {{- include "operator-shard-manager.selectorLabels" . | nindent 4 }}
   {{- end }}
 spec:
   namespaceSelector:
@@ -16,7 +16,7 @@ spec:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      {{- include "supervisor.selectorLabels" . | nindent 6 }}
+      {{- include "operator-shard-manager.selectorLabels" . | nindent 6 }}
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     path: /metrics
@@ -25,15 +25,15 @@ spec:
     tlsConfig:
       ca:
         secret:
-          name: {{ include "supervisor.fullname" . }}-cert
+          name: {{ include "operator-shard-manager.fullname" . }}-cert
           key: ca.crt
       cert:
         secret:
-          name: {{ include "supervisor.fullname" . }}-cert
+          name: {{ include "operator-shard-manager.fullname" . }}-cert
           key: tls.crt
       insecureSkipVerify: false
       keySecret:
-        name: {{ include "supervisor.fullname" . }}-cert
+        name: {{ include "operator-shard-manager.fullname" . }}-cert
         key: tls.key
-      serverName: "{{ include "supervisor.fullname" . }}.{{ .Release.Namespace }}.svc"
+      serverName: "{{ include "operator-shard-manager.fullname" . }}.{{ .Release.Namespace }}.svc"
 {{- end }}

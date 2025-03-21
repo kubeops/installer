@@ -14,12 +14,13 @@ metadata:
 {{- end }}
 spec:
   ports:
-  # Port used to expose admission webhook apiserver
-  - name: api
-    port: 80
-    targetPort: 8081
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
   - name: metrics
-    port: 8080
-    targetPort: 8080
+    port: 8443
+    protocol: TCP
+    targetPort: metrics
   selector:
     {{- include "sidekick.selectorLabels" . | nindent 4 }}

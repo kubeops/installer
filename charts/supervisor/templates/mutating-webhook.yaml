@@ -1,7 +1,6 @@
 {{ template "supervisor.prepare-certs" $ }}
 
 {{- if .Values.apiserver.enableMutatingWebhook }}
-{{- $caCrt := dig "data" "ca.crt" "unknown" (lookup "v1" "ConfigMap" .Release.Namespace "kube-root-ca.crt") | b64enc }}
 
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
@@ -16,7 +15,6 @@ webhooks:
         namespace: {{ .Release.Namespace }}
         name: {{ include "supervisor.fullname" . }}
         path: /mutate-supervisor-appscode-com-v1alpha1-recommendation
-        port: 9443
       caBundle: {{ $._caCrt }}
     rules:
     - apiGroups: ["supervisor.appscode.com"]
@@ -31,7 +29,6 @@ webhooks:
         namespace: {{ .Release.Namespace }}
         name: {{ include "supervisor.fullname" . }}
         path: /mutate-supervisor-appscode-com-v1alpha1-maintenancewindow
-        port: 9443
       caBundle: {{ $._caCrt }}
     rules:
       - apiGroups: ["supervisor.appscode.com"]
@@ -46,7 +43,6 @@ webhooks:
         namespace: {{ .Release.Namespace }}
         name: {{ include "supervisor.fullname" . }}
         path: /mutate-supervisor-appscode-com-v1alpha1-clustermaintenancewindow
-        port: 9443
       caBundle: {{ $._caCrt }}
     rules:
       - apiGroups: ["supervisor.appscode.com"]

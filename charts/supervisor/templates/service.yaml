@@ -14,12 +14,13 @@ metadata:
 {{- end }}
 spec:
   ports:
-  # Port used to expose admission webhook apiserver
-  - name: api
+  - name: https
     port: 443
-    targetPort: 8443
-  - name: webhook
-    port: 9443
-    targetPort: 9443
+    protocol: TCP
+    targetPort: https
+  - name: metrics
+    port: 8443
+    protocol: TCP
+    targetPort: metrics
   selector:
     {{- include "supervisor.selectorLabels" . | nindent 4 }}
