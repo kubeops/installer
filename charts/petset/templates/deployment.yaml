@@ -41,7 +41,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        checksum/apiregistration.yaml: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        reload: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       {{- if $criticalAddon }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
       {{- end }}
