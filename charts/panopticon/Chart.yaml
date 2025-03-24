@@ -2,7 +2,7 @@ apiVersion: v2
 description: Kubernetes Panopticon by AppsCode
 name: panopticon
 version: v2025.3.14
-appVersion: v0.0.17
+appVersion: v0.0.18
 home: https://github.com/kubeops/panopticon
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
 sources:
