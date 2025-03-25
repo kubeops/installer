@@ -49,7 +49,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "falco-ui-server.fullname" . }}-apiserver-auth-delegator
+  name: {{ include "falco-ui-server.fullname" . }}-auth-delegator
   labels:
     {{- include "falco-ui-server.labels" . | nindent 4 }}
 roleRef:

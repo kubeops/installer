@@ -164,7 +164,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "kube-ui-server.fullname" . }}-apiserver-auth-delegator
+  name: {{ include "kube-ui-server.fullname" . }}-auth-delegator
   labels:
     {{- include "kube-ui-server.labels" . | nindent 4 }}
 roleRef:

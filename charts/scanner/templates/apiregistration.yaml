@@ -49,7 +49,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "scanner.fullname" . }}-apiserver-auth-delegator
+  name: {{ include "scanner.fullname" . }}-auth-delegator
   labels:
     {{- include "scanner.labels" . | nindent 4 }}
 roleRef:

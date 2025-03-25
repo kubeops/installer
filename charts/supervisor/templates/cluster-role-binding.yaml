@@ -16,7 +16,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "supervisor.fullname" . }}:metrics-auth
+  name: {{ include "supervisor.fullname" . }}-auth-delegator
   labels:
     {{- include "supervisor.labels" . | nindent 4 }}
 roleRef:

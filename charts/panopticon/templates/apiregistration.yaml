@@ -49,7 +49,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "panopticon.fullname" . }}-apiserver-auth-delegator
+  name: {{ include "panopticon.fullname" . }}-auth-delegator
   labels:
     {{- include "panopticon.labels" . | nindent 4 }}
 roleRef:
