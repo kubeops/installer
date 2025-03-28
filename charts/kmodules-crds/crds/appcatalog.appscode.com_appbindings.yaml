@@ -91,6 +91,7 @@ spec:
               secret:
                 properties:
                   name:
+                    default: ""
                     type: string
                 type: object
                 x-kubernetes-map-type: atomic
@@ -114,6 +115,7 @@ spec:
                         secretRef:
                           properties:
                             name:
+                              default: ""
                               type: string
                           type: object
                           x-kubernetes-map-type: atomic
@@ -140,6 +142,7 @@ spec:
               tlsSecret:
                 properties:
                   name:
+                    default: ""
                     type: string
                 type: object
                 x-kubernetes-map-type: atomic

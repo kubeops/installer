@@ -7,7 +7,7 @@ metadata:
     app: cert-manager
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.15.4
+    app.kubernetes.io/version: v1.17.1
   name: certificaterequests.cert-manager.io
 spec:
   group: cert-manager.io
@@ -37,7 +37,7 @@ spec:
       name: Issuer
       type: string
     - jsonPath: .spec.username
-      name: Requestor
+      name: Requester
       type: string
     - jsonPath: .status.conditions[?(@.type=="Ready")].message
       name: Status
