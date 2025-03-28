@@ -1,0 +1,15 @@
+{{- if gt (int .Values.replicaCount) 1 }}
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+  name: {{ include "fargocd.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fargocd.labels" . | nindent 4 }}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "fargocd.selectorLabels" . | nindent 6 }}
+
+{{- end }}

@@ -1,3 +1,4 @@
+{{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
 */}}
@@ -62,7 +63,14 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
-Returns the registry used for image docker image
+Returns the appscode license
+*/}}
+{{- define "appscode.license" -}}
+{{- .Values.license }}
+{{- end }}
+
+{{/*
+Returns the registry used for operator docker image
 */}}
 {{- define "image.registry" -}}
 {{- list .Values.registryFQDN .Values.image.registry | compact | join "/" }}
@@ -72,5 +80,58 @@ Returns the registry used for image docker image
 {{- with .Values.imagePullSecrets -}}
 imagePullSecrets:
 {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+
+{{/*
+Returns the enabled monitoring agent name
+*/}}
+{{- define "monitoring.agent" -}}
+{{- .Values.monitoring.agent }}
+{{- end }}
+
+{{/*
+Returns whether the ServiceMonitor will be labeled with custom label
+*/}}
+{{- define "monitoring.apply-servicemonitor-label" -}}
+{{- ternary "false" "true" ( empty .Values.monitoring.serviceMonitor.labels ) -}}
+{{- end }}
+
+{{/*
+Returns the ServiceMonitor labels
+*/}}
+{{- define "monitoring.servicemonitor-label" -}}
+{{- range $key, $val := .Values.monitoring.serviceMonitor.labels }}
+{{ $key }}: {{ $val }}
+{{- end }}
+{{- end }}
+
+{{/*
+Prepare certs
+*/}}
+{{- define "fargocd.prepare-certs" -}}
+{{- if not ._caCrt }}
+{{- $caCrt := "" }}
+{{- $serverCrt := "" }}
+{{- $serverKey := "" }}
+{{- if .Values.apiserver.servingCerts.generate }}
+{{- $ca := genCA "ca" 3650 }}
+{{- $cn := include "fargocd.fullname" . -}}
+{{- $altName1 := printf "%s.%s" $cn .Release.Namespace }}
+{{- $altName2 := printf "%s.%s.svc" $cn .Release.Namespace }}
+{{- $server := genSignedCert $cn nil (list $altName1 $altName2) 3650 $ca }}
+{{- $caCrt =  b64enc $ca.Cert }}
+{{- $serverCrt = b64enc $server.Cert }}
+{{- $serverKey = b64enc $server.Key }}
+{{- else }}
+{{- $caCrt = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.caCrt }}
+{{- $serverCrt = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverCrt }}
+{{- $serverKey = required "Required when apiserver.servingCerts.generate is false" .Values.apiserver.servingCerts.serverKey }}
+{{- end }}
+
+{{ $_ := set $ "_caCrt" $caCrt }}
+{{ $_ := set $ "_serverCrt" $serverCrt }}
+{{ $_ := set $ "_serverKey" $serverKey }}
+
 {{- end }}
 {{- end }}
