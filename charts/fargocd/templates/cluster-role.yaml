@@ -50,6 +50,14 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - ui.k8s.appscode.com
+  resources:
+  - features
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - ""
   resources:
   - configmaps
