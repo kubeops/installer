@@ -134,6 +134,7 @@ rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
 
 {
     supervisor_dir=${1:-}/supervisor/crds
+    update_supervisor_crds=true
 
     supervisor_repo_url=https://github.com/kubeops/supervisor.git
     supervisor_repo_tag=${KUBEOPS_SUPERVISOR_TAG:-master}
@@ -142,28 +143,30 @@ rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
         if [ "${supervisor_repo_tag}" == "master" ]; then
             echo "Error: missing path_to_input_crds_directory"
             echo "Usage: import-crds.sh <path_to_input_crds_directory>"
-            exit 1
+            update_supervisor_crds=false
+        else
+            tmp_dir=$(mktemp -d -t api-XXXXXXXXXX)
+            # always cleanup temp dir
+            # ref: https://opensource.com/article/20/6/bash-trap
+            trap \
+                "{ rm -rf "${tmp_dir}"; }" \
+                SIGINT SIGTERM ERR EXIT
+
+            mkdir -p ${tmp_dir}
+            pushd $tmp_dir
+            git clone $supervisor_repo_url
+            repo_dir=$(ls -b1)
+            cd $repo_dir
+            git checkout $supervisor_repo_tag
+            popd
+            supervisor_dir=${tmp_dir}/${repo_dir}/crds
         fi
-
-        tmp_dir=$(mktemp -d -t api-XXXXXXXXXX)
-        # always cleanup temp dir
-        # ref: https://opensource.com/article/20/6/bash-trap
-        trap \
-            "{ rm -rf "${tmp_dir}"; }" \
-            SIGINT SIGTERM ERR EXIT
-
-        mkdir -p ${tmp_dir}
-        pushd $tmp_dir
-        git clone $supervisor_repo_url
-        repo_dir=$(ls -b1)
-        cd $repo_dir
-        git checkout $supervisor_repo_tag
-        popd
-        supervisor_dir=${tmp_dir}/${repo_dir}/crds
     fi
 
-    crd-importer \
-        --no-description \
-        --input=${supervisor_dir} \
-        --out=./charts/supervisor/crds
+    if [ "$update_supervisor_crds" = true ] && [ -d ${supervisor_dir} ]; then
+        crd-importer \
+            --no-description \
+            --input=${supervisor_dir} \
+            --out=./charts/supervisor/crds
+    fi
 }
