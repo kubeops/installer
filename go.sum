@@ -219,8 +219,8 @@ k8s.io/utils v0.0.0-20241210054802-24370beab758 h1:sdbE21q2nlQtFh65saZY+rRM6x6aJ
 k8s.io/utils v0.0.0-20241210054802-24370beab758/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
 kmodules.xyz/client-go v0.32.1 h1:W8TWGBBaokQEqfesbdhlRFMMV0TChcRbMRQ0eTIRS88=
 kmodules.xyz/client-go v0.32.1/go.mod h1:tqe40/iDtO/RSNaDJs/a+rgnMPSOcK622HpOmOFvcds=
-kmodules.xyz/image-packer v0.0.0-20250329033732-e9f22aa987ae h1:UQM6/LOWEn2gIIB6PN05dgKxzmXdbSua0pefJV9xnIk=
-kmodules.xyz/image-packer v0.0.0-20250329033732-e9f22aa987ae/go.mod h1:JBD86GYMRXJ0rl+1+pM+OgZt4VCNyAtLzrvP5IabBkw=
+kmodules.xyz/image-packer v0.0.0-20250416205511-125e742f0e3b h1:dSB+R7nee1olUVv6klpMvHElGdFlDCW/8u6WAySddM0=
+kmodules.xyz/image-packer v0.0.0-20250416205511-125e742f0e3b/go.mod h1:UV0NPWR6wiy1bUnsApFGPJDNuOV9mm6qkPjuoov9138=
 kmodules.xyz/schema-checker v0.4.2 h1:tAbxEtM759GxDM/3sQi/+OKKwUsEF+Ih4KReV3Eb/Xw=
 kmodules.xyz/schema-checker v0.4.2/go.mod h1:N7ETPwfY4LbTHbydC9jjssPmYKKgZ8DC0IuLCU55wwc=
 kubeops.dev/scanner v0.0.19 h1:J8C94k4j3NY3Y8UGHcG4nCZtmpSqPneCmkuvGNUOv4s=
