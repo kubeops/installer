@@ -8,7 +8,7 @@ require (
 	github.com/google/gofuzz v1.2.0
 	k8s.io/api v0.32.3
 	k8s.io/apimachinery v0.32.3
-	kmodules.xyz/image-packer v0.0.0-20250329033732-e9f22aa987ae
+	kmodules.xyz/image-packer v0.0.0-20250416205511-125e742f0e3b
 	kmodules.xyz/schema-checker v0.4.2
 )
 
