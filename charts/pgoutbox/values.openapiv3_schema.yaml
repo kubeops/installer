@@ -1296,9 +1296,15 @@ properties:
         x-kubernetes-preserve-unknown-fields: true
       configSecretName:
         type: string
+      natsMountPath:
+        type: string
+      natsSecretName:
+        type: string
     required:
     - config
     - configSecretName
+    - natsMountPath
+    - natsSecretName
     type: object
   autoscaling:
     properties:
