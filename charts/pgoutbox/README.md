@@ -84,6 +84,8 @@ The following table lists the configurable parameters of the `pgoutbox` chart an
 | affinity                                   |                                                                                                                                                                                                  | <code>{}</code>           |
 | app.config                                 |                                                                                                                                                                                                  | <code>{}</code>           |
 | app.configSecretName                       |                                                                                                                                                                                                  | <code>""</code>           |
+| app.natsSecretName                         |                                                                                                                                                                                                  | <code>""</code>           |
+| app.natsMountPath                          |                                                                                                                                                                                                  | <code>""</code>           |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
