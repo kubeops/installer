@@ -13,6 +13,7 @@
 - ghcr.io/appscode/scanner:v0.0.19
 - ghcr.io/appscode/sidekick:v0.0.11
 - ghcr.io/appscode/supervisor:v0.0.9
+- ghcr.io/appscode/taskqueue:v0.0.1
 - ghcr.io/appscode/trivydb:0.0.2
 - rancher/kine:v0.11.4
 - registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.11.1
