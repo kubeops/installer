@@ -8,7 +8,7 @@ require (
 	github.com/google/gofuzz v1.2.0
 	k8s.io/api v0.32.3
 	k8s.io/apimachinery v0.32.3
-	kmodules.xyz/image-packer v0.0.0-20250502223312-8ace1603db39
+	kmodules.xyz/image-packer v0.0.0-20250528193538-0cb00550d6b5
 	kmodules.xyz/schema-checker v0.4.2
 )
 
@@ -68,7 +68,7 @@ require (
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250318172550-b98be4ee1595 // indirect
 	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
-	kmodules.xyz/client-go v0.32.3 // indirect
+	kmodules.xyz/client-go v0.32.4-0.20250513070944-c75b17fe7c82 // indirect
 	kubeops.dev/scanner v0.0.19 // indirect
 	sigs.k8s.io/controller-runtime v0.20.4 // indirect
 	sigs.k8s.io/json v0.0.0-20241014173422-cfa47c3a1cc8 // indirect
