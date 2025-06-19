@@ -64,7 +64,6 @@ spec:
         - --metrics-secure=true
         - --metrics-bind-address=:8443
         - --health-probe-bind-address=:8081
-        - --cert-dir=/var/serving-cert
         env:
         - name: POD_NAME
           valueFrom:
