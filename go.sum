@@ -217,10 +217,10 @@ k8s.io/kube-openapi v0.0.0-20250318172550-b98be4ee1595 h1:oj2YLpdiU3TRGr10fBjJ5G
 k8s.io/kube-openapi v0.0.0-20250318172550-b98be4ee1595/go.mod h1:5jIi+8yX4RIb8wk3XwBo5Pq2ccx4FP10ohkbSKCZoK8=
 k8s.io/utils v0.0.0-20241210054802-24370beab758 h1:sdbE21q2nlQtFh65saZY+rRM6x6aJJI8IUa1AmH/qa0=
 k8s.io/utils v0.0.0-20241210054802-24370beab758/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
-kmodules.xyz/client-go v0.32.4-0.20250513070944-c75b17fe7c82 h1:WbDqyWzq50f+5Dman/wvUPpAPjXlnNwf24fsfmtFBMc=
-kmodules.xyz/client-go v0.32.4-0.20250513070944-c75b17fe7c82/go.mod h1:ZwLnc7UqEXUNSe43n/SnER6+7YAQCu38L2te6YefoHU=
-kmodules.xyz/image-packer v0.0.0-20250528193538-0cb00550d6b5 h1:t3xt2ZRTrJncM51Gz2ybwaEp2oeaFyyvIqax1eZpkqo=
-kmodules.xyz/image-packer v0.0.0-20250528193538-0cb00550d6b5/go.mod h1:Unj9a2TDMf0WJykzdBYCD8AOvdbEB8GFtVTtOVbpYiQ=
+kmodules.xyz/client-go v0.32.6 h1:/V9T0aLfe38PsyF+5FeU5QaC3GcqD8hQoWSCZw/uOpI=
+kmodules.xyz/client-go v0.32.6/go.mod h1:ZwLnc7UqEXUNSe43n/SnER6+7YAQCu38L2te6YefoHU=
+kmodules.xyz/image-packer v0.0.0-20250618195635-2d28be8a47e3 h1:7rjSg1FPlBXDfZOgcUFP2tEuZyo/FPUrudrnfWcqYTQ=
+kmodules.xyz/image-packer v0.0.0-20250618195635-2d28be8a47e3/go.mod h1:Gmcxcxg13UUQZHvTZ93vNuDL9UiLCKS/AzxzmHUY/t0=
 kmodules.xyz/schema-checker v0.4.2 h1:tAbxEtM759GxDM/3sQi/+OKKwUsEF+Ih4KReV3Eb/Xw=
 kmodules.xyz/schema-checker v0.4.2/go.mod h1:N7ETPwfY4LbTHbydC9jjssPmYKKgZ8DC0IuLCU55wwc=
 kubeops.dev/scanner v0.0.19 h1:J8C94k4j3NY3Y8UGHcG4nCZtmpSqPneCmkuvGNUOv4s=
