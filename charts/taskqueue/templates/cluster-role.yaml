@@ -23,14 +23,23 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - "*"
+  - "stash.appscode.com"
   resources:
-  - "*"
+  - "backupsessions"
   verbs:
   - get
   - list
   - watch
   - create
+- apiGroups:
+    - "core.kubestash.com"
+  resources:
+    - "backupsessions"
+  verbs:
+    - get
+    - list
+    - watch
+    - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
