@@ -26,6 +26,7 @@ rules:
   - "stash.appscode.com"
   resources:
   - "backupsessions"
+  - "restoresessions"
   verbs:
   - get
   - list
@@ -35,6 +36,7 @@ rules:
     - "core.kubestash.com"
   resources:
     - "backupsessions"
+    - "restoresessions"
   verbs:
     - get
     - list
