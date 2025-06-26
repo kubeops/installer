@@ -20,6 +20,7 @@ FLUXCD_SOURCE_CONTROLLER_TAG=${FLUXCD_SOURCE_CONTROLLER_TAG:-v1.5.0}
 KMODULES_CUSTOM_RESOURCES_TAG=${KMODULES_CUSTOM_RESOURCES_TAG:-v0.32.0}
 KMODULES_RESOURCE_METADATA_TAG=${KMODULES_RESOURCE_METADATA_TAG:-master}
 KUBEOPS_CSI_DRIVER_CACERTS_TAG=${KUBEOPS_CSI_DRIVER_CACERTS_TAG:-v0.1.0}
+KUBEOPS_TASKQUEUE_TAG=${KUBEOPS_TASKQUEUE_TAG:-v0.0.1}
 KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG=${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG:-v0.0.9}
 KUBEOPS_PETSET_TAG=${KUBEOPS_PETSET_TAG:-v0.0.10}
 KUBEOPS_SIDEKICK_TAG=${KUBEOPS_SIDEKICK_TAG:-v0.0.11}
@@ -32,6 +33,12 @@ crd-importer \
     --no-description \
     --input=https://github.com/kubeops/csi-driver-cacerts/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/cacerts.csi.cert-manager.io_caproviderclasses.yaml \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/batch.k8s.appscode.com_pendingtasks.yaml \
+    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/batch.k8s.appscode.com_taskqueues.yaml \
+    --out=./charts/taskqueue/crds
 
 crd-importer \
     --no-description \
