@@ -36,8 +36,8 @@ crd-importer \
 
 crd-importer \
     --no-description \
-    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/batch.k8s.appscode.com_pendingtasks.yaml \
-    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_CSI_DRIVER_CACERTS_TAG}/crds/batch.k8s.appscode.com_taskqueues.yaml \
+    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_TASKQUEUE_TAG}/crds/batch.k8s.appscode.com_pendingtasks.yaml \
+    --input=https://github.com/kubeops/taskqueue/raw/${KUBEOPS_TASKQUEUE_TAG}/crds/batch.k8s.appscode.com_taskqueues.yaml \
     --out=./charts/taskqueue/crds
 
 crd-importer \
