@@ -1,10 +1,6 @@
 {{- if .Values.cacher.enable }}
 
-{{- if .Capabilities.APIVersions.Has "batch/v1/CronJob" }}
 apiVersion: batch/v1
-{{ else }}
-apiVersion: batch/v1beta1
-{{ end -}}
 kind: CronJob
 metadata:
   name: {{ include "scanner.fullname" . }}-trivydb-cacher

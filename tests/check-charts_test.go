@@ -33,7 +33,7 @@ func Test_CheckImageArchitectures(t *testing.T) {
 
 	if err := lib.CheckImageArchitectures([]string{
 		filepath.Join(dir, "catalog", "imagelist.yaml"),
-	}, nil); err != nil {
+	}, nil, nil); err != nil {
 		t.Errorf("CheckImageArchitectures() error = %v", err)
 	}
 }
