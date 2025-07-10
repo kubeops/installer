@@ -42,6 +42,16 @@ rules:
     - list
     - watch
     - create
+- apiGroups:
+    - batch.k8s.appscode.com
+  resources:
+    - pendingtasks/finalizers
+  verbs: ["update"]
+- apiGroups:
+    - stash.appscode.com
+  resources:
+    - backupconfigurations/finalizers
+  verbs: ["update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
