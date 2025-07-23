@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/kube-ui-server --version=v2025.7.16
-$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.16
+$ helm search repo appscode/kube-ui-server --version=v2025.7.31
+$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.31
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Kubernetes UI Server on a [Kubernetes](http://kubernetes.io
 To install/upgrade the chart with the release name `kube-ui-server`:
 
 ```bash
-$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.16
+$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.31
 ```
 
 The command deploys a Kubernetes UI Server on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -100,12 +100,12 @@ The following table lists the configurable parameters of the `kube-ui-server` ch
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.16 --set replicaCount=1
+$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.31 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.16 --values values.yaml
+$ helm upgrade -i kube-ui-server appscode/kube-ui-server -n kubeops --create-namespace --version=v2025.7.31 --values values.yaml
 ```
