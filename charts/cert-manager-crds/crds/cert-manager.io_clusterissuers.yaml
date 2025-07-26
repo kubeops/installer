@@ -7,7 +7,7 @@ metadata:
     app: cert-manager
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.17.1
+    app.kubernetes.io/version: v1.18.2
   name: clusterissuers.cert-manager.io
 spec:
   group: cert-manager.io
@@ -17,6 +17,8 @@ spec:
     kind: ClusterIssuer
     listKind: ClusterIssuerList
     plural: clusterissuers
+    shortNames:
+    - ciss
     singular: clusterissuer
   scope: Cluster
   versions:
@@ -93,6 +95,8 @@ spec:
                     required:
                     - name
                     type: object
+                  profile:
+                    type: string
                   server:
                     type: string
                   skipTLSVerify:
@@ -1652,6 +1656,8 @@ spec:
                   path:
                     type: string
                   server:
+                    type: string
+                  serverName:
                     type: string
                 required:
                 - auth
