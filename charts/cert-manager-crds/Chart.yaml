@@ -2,8 +2,8 @@ apiVersion: v2
 name: cert-manager-crds
 description: Jetstack cert-manager CRDs
 type: application
-version: 1.9.1
-appVersion: v1.9.1
+version: 1.18.2
+appVersion: v1.18.2
 home: https://cert-manager.io
 icon: https://cdn.appscode.com/images/products/appscode/appscode-512x512.png
 sources:

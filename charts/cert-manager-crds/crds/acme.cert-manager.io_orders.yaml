@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.17.1
+    app.kubernetes.io/version: v1.18.2
   name: orders.acme.cert-manager.io
 spec:
   group: acme.cert-manager.io
@@ -76,6 +76,8 @@ spec:
                 required:
                 - name
                 type: object
+              profile:
+                type: string
               request:
                 format: byte
                 type: string
