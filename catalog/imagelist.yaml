@@ -1,6 +1,6 @@
 - ghcr.io/appscode/cluster-connector:v0.0.12
 - ghcr.io/appscode/config-syncer:v0.15.3
-- ghcr.io/appscode/csi-driver-cacerts:v0.1.0
+- ghcr.io/appscode/csi-driver-cacerts:v0.2.0
 - ghcr.io/appscode/external-dns-operator:v0.0.8
 - ghcr.io/appscode/falco-ui-server:v0.0.4
 - ghcr.io/appscode/fargocd:v0.0.1
@@ -16,5 +16,5 @@
 - ghcr.io/appscode/taskqueue:v0.0.1
 - ghcr.io/appscode/trivydb:0.0.2
 - rancher/kine:v0.11.4
-- registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.11.1
-- registry.k8s.io/sig-storage/livenessprobe:v2.13.1
+- registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.14.0
+- registry.k8s.io/sig-storage/livenessprobe:v2.16.0
