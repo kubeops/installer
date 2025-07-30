@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/cert-manager-csi-driver-cacerts --version=v2024.10.17
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2024.10.17
+$ helm search repo appscode/cert-manager-csi-driver-cacerts --version=v2025.7.31
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2025.7.31
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a CSI driver on a [Kubernetes](http://kubernetes.io) cluster 
 To install/upgrade the chart with the release name `cert-manager-csi-driver-cacerts`:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2024.10.17
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2025.7.31
 ```
 
 The command deploys a CSI driver on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -60,12 +60,12 @@ The following table lists the configurable parameters of the `cert-manager-csi-d
 | driver.resources               | Compute Resources required by the driver container                                                                                 | <code>{}</code>                                                                                  |
 | nodeDriverRegistrar.registry   | Docker registry used to pull node-driver-registrar image                                                                           | <code>registry.k8s.io/sig-storage</code>                                                         |
 | nodeDriverRegistrar.repository | Name of node-driver-registrar container image                                                                                      | <code>csi-node-driver-registrar</code>                                                           |
-| nodeDriverRegistrar.tag        | node-driver-registrar container image tag                                                                                          | <code>v2.11.1</code>                                                                             |
+| nodeDriverRegistrar.tag        | node-driver-registrar container image tag                                                                                          | <code>v2.14.0</code>                                                                             |
 | nodeDriverRegistrar.pullPolicy | Kubernetes imagePullPolicy on node-driver-registrar                                                                                | <code>IfNotPresent</code>                                                                        |
 | nodeDriverRegistrar.resources  | Compute Resources required by the node-driver-registrar container                                                                  | <code>{}</code>                                                                                  |
 | livenessProbe.registry         | Docker registry used to pull livenessprobe image                                                                                   | <code>registry.k8s.io/sig-storage</code>                                                         |
 | livenessProbe.repository       | Name of livenessprobe container image                                                                                              | <code>livenessprobe</code>                                                                       |
-| livenessProbe.tag              | livenessprobe container image tag                                                                                                  | <code>v2.13.1</code>                                                                             |
+| livenessProbe.tag              | livenessprobe container image tag                                                                                                  | <code>v2.16.0</code>                                                                             |
 | livenessProbe.pullPolicy       | Kubernetes imagePullPolicy on liveness probe.                                                                                      | <code>IfNotPresent</code>                                                                        |
 | livenessProbe.resources        | Compute Resources required by the livenessprobe container                                                                          | <code>{"limits":{"cpu":"100m","memory":"100Mi"},"requests":{"cpu":"10m","memory":"20Mi"}}</code> |
 | imagePullSecrets               |                                                                                                                                    | <code>[]</code>                                                                                  |
@@ -81,12 +81,12 @@ The following table lists the configurable parameters of the `cert-manager-csi-d
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2024.10.17 --set app.logLevel=2 # 1-5
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2025.7.31 --set app.logLevel=2 # 1-5
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2024.10.17 --values values.yaml
+$ helm upgrade -i cert-manager-csi-driver-cacerts appscode/cert-manager-csi-driver-cacerts -n cert-manager --create-namespace --version=v2025.7.31 --values values.yaml
 ```

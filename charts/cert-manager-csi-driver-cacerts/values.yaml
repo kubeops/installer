@@ -39,7 +39,7 @@ nodeDriverRegistrar:
   # Name of node-driver-registrar container image
   repository: csi-node-driver-registrar
   # node-driver-registrar container image tag
-  tag: v2.11.1
+  tag: v2.14.0
   # Kubernetes imagePullPolicy on node-driver-registrar
   pullPolicy: IfNotPresent
   # Compute Resources required by the node-driver-registrar container
@@ -50,7 +50,7 @@ livenessProbe:
   # Name of livenessprobe container image
   repository: livenessprobe
   # livenessprobe container image tag
-  tag: v2.13.1
+  tag: v2.16.0
   # Kubernetes imagePullPolicy on liveness probe.
   pullPolicy: IfNotPresent
   # Compute Resources required by the livenessprobe container

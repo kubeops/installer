@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/cert-manager-crds --version=1.9.1
-$ helm upgrade -i cert-manager-crds appscode/cert-manager-crds -n kube-system --create-namespace --version=1.9.1
+$ helm search repo appscode/cert-manager-crds --version=1.18.2
+$ helm upgrade -i cert-manager-crds appscode/cert-manager-crds -n kube-system --create-namespace --version=1.18.2
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys cert-manager crds on a [Kubernetes](http://kubernetes.io) clu
 To install/upgrade the chart with the release name `cert-manager-crds`:
 
 ```bash
-$ helm upgrade -i cert-manager-crds appscode/cert-manager-crds -n kube-system --create-namespace --version=1.9.1
+$ helm upgrade -i cert-manager-crds appscode/cert-manager-crds -n kube-system --create-namespace --version=1.18.2
 ```
 
 The command deploys cert-manager crds on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.

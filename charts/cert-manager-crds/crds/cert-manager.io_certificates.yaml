@@ -7,7 +7,7 @@ metadata:
     app: cert-manager
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.17.1
+    app.kubernetes.io/version: v1.18.2
   name: certificates.cert-manager.io
 spec:
   group: cert-manager.io
@@ -243,6 +243,16 @@ spec:
                       type: string
                     type: object
                 type: object
+              signatureAlgorithm:
+                enum:
+                - SHA256WithRSA
+                - SHA384WithRSA
+                - SHA512WithRSA
+                - ECDSAWithSHA256
+                - ECDSAWithSHA384
+                - ECDSAWithSHA512
+                - PureEd25519
+                type: string
               subject:
                 properties:
                   countries:
