@@ -23,6 +23,8 @@ spec:
             type: object
           spec:
             properties:
+              distributed:
+                type: boolean
               minReadySeconds:
                 format: int32
                 type: integer

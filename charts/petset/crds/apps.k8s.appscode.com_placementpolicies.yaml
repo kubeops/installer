@@ -72,6 +72,23 @@ spec:
                 - maxSkew
                 - whenUnsatisfiable
                 type: object
+              ocm:
+                properties:
+                  distributionRules:
+                    items:
+                      properties:
+                        clusterName:
+                          type: string
+                        replicas:
+                          items:
+                            format: int32
+                            type: integer
+                          type: array
+                      type: object
+                    type: array
+                  sliceName:
+                    type: string
+                type: object
               zoneSpreadConstraint:
                 properties:
                   maxSkew:
