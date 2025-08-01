@@ -8,11 +8,11 @@
 - ghcr.io/appscode/kubectl-nonroot:1.31
 - ghcr.io/appscode/operator-shard-manager:v0.0.3
 - ghcr.io/appscode/panopticon:v0.0.19
-- ghcr.io/appscode/petset:v0.0.10
+- ghcr.io/appscode/petset:v0.0.11
 - ghcr.io/appscode/pgoutbox:v0.0.2
 - ghcr.io/appscode/scanner:v0.0.19
 - ghcr.io/appscode/sidekick:v0.0.11
-- ghcr.io/appscode/supervisor:v0.0.9
+- ghcr.io/appscode/supervisor:v0.0.10
 - ghcr.io/appscode/taskqueue:v0.0.1
 - ghcr.io/appscode/trivydb:0.0.2
 - rancher/kine:v0.11.4
