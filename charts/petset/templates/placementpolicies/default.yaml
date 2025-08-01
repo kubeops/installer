@@ -1,6 +1,9 @@
 apiVersion: apps.k8s.appscode.com/v1
 kind: PlacementPolicy
 metadata:
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "10"
   name: default
 spec:
   zoneSpreadConstraint:
