@@ -63,4 +63,10 @@ webhooks:
         resources:
           - "placementpolicies"
     sideEffects: None
+    objectSelector:
+      matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: NotIn
+        values:
+        - default
 {{- end }}
