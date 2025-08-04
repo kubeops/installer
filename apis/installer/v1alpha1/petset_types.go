@@ -50,6 +50,7 @@ type PetsetSpec struct {
 	RegistryFQDN     string    `json:"registryFQDN"`
 	ReplicaCount     int32     `json:"replicaCount"`
 	Image            Container `json:"image"`
+	Waitfor          ImageRef  `json:"waitfor"`
 	ImagePullPolicy  string    `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []string `json:"imagePullSecrets"`

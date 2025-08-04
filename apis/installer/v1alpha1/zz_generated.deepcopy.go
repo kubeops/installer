@@ -1939,6 +1939,7 @@ func (in *PetsetList) DeepCopyObject() runtime.Object {
 func (in *PetsetSpec) DeepCopyInto(out *PetsetSpec) {
 	*out = *in
 	in.Image.DeepCopyInto(&out.Image)
+	out.Waitfor = in.Waitfor
 	if in.ImagePullSecrets != nil {
 		in, out := &in.ImagePullSecrets, &out.ImagePullSecrets
 		*out = make([]string, len(*in))

@@ -83,6 +83,14 @@ imagePullSecrets:
 {{- end }}
 {{- end }}
 
+
+{{/*
+Returns the registry used for waitfor docker image
+*/}}
+{{- define "waitfor.registry" -}}
+{{- list .Values.registryFQDN .Values.waitfor.registry | compact | join "/" }}
+{{- end }}
+
 {{/*
 Returns the enabled monitoring agent name
 */}}

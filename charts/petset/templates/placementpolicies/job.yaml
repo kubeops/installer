@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-wait-for-webhook
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: wait-for-webhook
+          image: {{ include "waitfor.registry" . }}/{{ .Values.waitfor.repository }}:{{ .Values.waitfor.tag }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              kubectl wait --for=condition=Ready pod -l app.kubernetes.io/name: {{ include "petset.name" . }} --namespace {{ .Release.Namespace }} --timeout=120s
+              kubectl apply -f /helm/templates/placementpolicies/default.yaml
+          volumeMounts:
+            - name: placementpolicy
+              mountPath: /helm/templates/placementpolicies
+      volumes:
+        - name: placementpolicy
+          configMap:
+            name: {{ .Release.Name }}-placementpolicy
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "petset.serviceAccountName" . }}
