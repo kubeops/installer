@@ -101,3 +101,10 @@ monitoring:
 
 networkPolicy:
   enabled: false
+
+features:
+  ocm:
+    enabled: false
+    placement:
+      create: true
+      name: global
