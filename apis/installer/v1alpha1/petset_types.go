@@ -81,6 +81,22 @@ type PetsetSpec struct {
 	Monitoring Monitoring          `json:"monitoring"`
 	// +optional
 	NetworkPolicy NetworkPolicy `json:"networkPolicy"`
+	// +optional
+	Features PetsetFeatures `json:"features"`
+}
+
+type PetsetFeatures struct {
+	// +optional
+	Ocm OCMSpec `json:"ocm"`
+}
+type OCMSpec struct {
+	Enabled   bool         `json:"enabled"`
+	Placement OCMPlacement `json:"placement"`
+}
+
+type OCMPlacement struct {
+	Create bool   `json:"create"`
+	Name   string `json:"name"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
