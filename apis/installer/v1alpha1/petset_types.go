@@ -80,7 +80,7 @@ type PetsetSpec struct {
 	Apiserver  SupervisorApiserver `json:"apiserver"`
 	Monitoring Monitoring          `json:"monitoring"`
 	// +optional
-	NetworkPolicy NetworkPolicy `json:"networkPolicy"`
+	NetworkPolicy NetworkPolicySpec `json:"networkPolicy"`
 	// +optional
 	Features PetsetFeatures `json:"features"`
 }
