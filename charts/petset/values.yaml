@@ -102,6 +102,9 @@ monitoring:
 networkPolicy:
   enabled: false
 
+distro:
+  openshift: false
+
 features:
   ocm:
     enabled: false

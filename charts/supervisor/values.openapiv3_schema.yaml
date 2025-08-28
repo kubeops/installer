@@ -1327,6 +1327,13 @@ properties:
     type: string
   criticalAddon:
     type: boolean
+  distro:
+    properties:
+      openshift:
+        type: boolean
+    required:
+    - openshift
+    type: object
   fullnameOverride:
     type: string
   image:
