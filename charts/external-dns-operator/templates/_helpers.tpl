@@ -105,3 +105,10 @@ Returns the ServiceMonitor labels
 {{ $key }}: {{ $val }}
 {{- end }}
 {{- end }}
+
+{{/*
+Returns whether the OpenShift distribution is used
+*/}}
+{{- define "distro.openshift" -}}
+{{- ternary "true" "false" .Values.distro.openshift -}}
+{{- end }}

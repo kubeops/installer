@@ -114,6 +114,13 @@ Returns whether the NetworkPolicy should be enabled
 {{- end }}
 
 {{/*
+Returns whether the OpenShift distribution is used
+*/}}
+{{- define "distro.openshift" -}}
+{{- ternary "true" "false" .Values.distro.openshift -}}
+{{- end }}
+
+{{/*
 Prepare certs
 */}}
 {{- define "petset.prepare-certs" -}}
