@@ -1,4 +1,5 @@
-{{- if .Values.networkPolicy.enabled }}
+{{- if eq "true" ( include "security.enableNetworkPolicy" . ) }}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -9,7 +10,30 @@ spec:
     matchLabels:
       {{- include "petset.selectorLabels" . | nindent 6 }}
   egress:
+  # Scenarios considered:
+  # - Communication with apiServer
+  # - DB Health Check
+  # - Pull Image from external sources like docker hub
+  # - Calls of discovery.DiscoveryInterface from cloud providers
   - {}
   policyTypes:
   - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "petset.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "petset.selectorLabels" . | nindent 6 }}
+  ingress:
+  # Scenarios considered:
+  # - Mutation, Validation
+  # - Conversion
+  - {}
+  policyTypes:
+  - Ingress
+
 {{- end }}

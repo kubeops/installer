@@ -107,6 +107,13 @@ Returns the ServiceMonitor labels
 {{- end }}
 
 {{/*
+Returns whether the NetworkPolicy should be enabled
+*/}}
+{{- define "security.enableNetworkPolicy" -}}
+{{- ternary "true" "false" .Values.networkPolicy.enabled -}}
+{{- end }}
+
+{{/*
 Prepare certs
 */}}
 {{- define "supervisor.prepare-certs" -}}

@@ -114,3 +114,10 @@ Returns the enabled monitoring agent name
 {{- define "monitoring.agent" -}}
 {{- .Values.monitoring.agent }}
 {{- end }}
+
+{{/*
+Returns whether the NetworkPolicy should be enabled
+*/}}
+{{- define "security.enableNetworkPolicy" -}}
+{{- ternary "true" "false" .Values.networkPolicy.enabled -}}
+{{- end }}

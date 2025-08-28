@@ -81,7 +81,7 @@ type OperatorShardManagerSpec struct {
 	Monitoring     Monitoring          `json:"monitoring"`
 
 	// +optional
-	NetworkPolicy NetworkPolicy `json:"networkPolicy"`
+	NetworkPolicy NetworkPolicySpec `json:"networkPolicy"`
 }
 
 type ImageReference struct {
