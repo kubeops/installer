@@ -18,3 +18,9 @@ rules:
 - apiGroups: ["cacerts.csi.cert-manager.io"]
   resources: ["*"]
   verbs: ["*"]
+{{- if eq "true" ( include "distro.openshift" . ) }}
+- apiGroups: ["security.openshift.io"]
+  resources: ["securitycontextconstraints"]
+  resourceNames: ["hostpath-provisioner"]
+  verbs: ["use"]
+{{- end }}
