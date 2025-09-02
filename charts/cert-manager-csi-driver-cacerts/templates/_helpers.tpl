@@ -74,3 +74,10 @@ Returns the registry used for driver docker image
 {{- define "driver.registry" -}}
 {{- list .Values.registryFQDN .Values.driver.registry | compact | join "/" }}
 {{- end }}
+
+{{/*
+Returns whether the OpenShift distribution is used
+*/}}
+{{- define "distro.openshift" -}}
+{{- or (.Capabilities.APIVersions.Has "project.openshift.io/v1/Project") .Values.distro.openshift -}}
+{{- end }}

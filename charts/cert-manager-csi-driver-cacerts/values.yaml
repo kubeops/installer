@@ -83,3 +83,6 @@ tolerations: []
 
 rbac:
   enableUserRoles: true
+
+distro:
+  openshift: false

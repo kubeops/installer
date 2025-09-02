@@ -4,6 +4,9 @@ metadata:
   name: {{ .Values.app.driver.name }}
   labels:
     {{- include "cert-manager-csi-driver-cacerts.labels" . | nindent 4 }}
+  {{- if eq "true" ( include "distro.openshift" . ) }}
+    security.openshift.io/csi-ephemeral-volume-profile: restricted
+  {{- end }}
 spec:
   attachRequired: false
   # need pod namespace
