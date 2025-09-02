@@ -124,3 +124,7 @@ type TLSConfig struct {
 type NetworkPolicySpec struct {
 	Enabled bool `json:"enabled"`
 }
+
+type DistroSpec struct {
+	Openshift bool `json:"openshift"`
+}

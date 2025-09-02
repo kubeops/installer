@@ -83,6 +83,8 @@ type PetsetSpec struct {
 	NetworkPolicy NetworkPolicySpec `json:"networkPolicy"`
 	// +optional
 	Features PetsetFeatures `json:"features"`
+	// +optional
+	Distro DistroSpec `json:"distro"`
 }
 
 type PetsetFeatures struct {

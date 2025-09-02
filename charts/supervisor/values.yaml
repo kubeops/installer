@@ -110,3 +110,6 @@ retryAfterDuration: 1m
 # When there is less time than `beforeDeadlineDuration` before deadline, Recommendations are free to execute regardless of Parallelism.
 # The flag accepts a value acceptable to time.ParseDuration. Ref: https://pkg.go.dev/time#ParseDuration
 beforeDeadlineDuration: 24h
+
+distro:
+  openshift: false
