@@ -2,6 +2,11 @@
 {{- $minor := default "0" .Capabilities.KubeVersion.Minor | trimSuffix "+" | int64 }}
 {{- $criticalAddon := and .Values.criticalAddon (or (eq .Release.Namespace "kube-system") (and (ge $major 1) (ge $minor 17))) -}}
 
+{{- $maxConcurrentReconciles := .Values.maxConcurrentReconciles }}
+{{- if .Values.global }}
+  {{ $maxConcurrentReconciles = default .Values.maxConcurrentReconciles .Values.global.maxConcurrentReconciles }}
+{{- end }}
+
 {{- $nodeSelector := .Values.nodeSelector }}
 {{- if .Values.global }}
   {{ $nodeSelector = default .Values.nodeSelector .Values.global.nodeSelector }}
@@ -70,6 +75,9 @@ spec:
         - --metrics-bind-address=:8443
         - --health-probe-bind-address=:8081
         - --cert-dir=/var/serving-cert
+        {{- with $maxConcurrentReconciles }}
+        - --max-concurrent-reconciles={{.}}
+        {{- end }}
         env:
         - name: POD_NAME
           valueFrom:

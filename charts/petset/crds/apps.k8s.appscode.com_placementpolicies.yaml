@@ -59,6 +59,81 @@ spec:
                       type: object
                     type: array
                 type: object
+              clusterSpreadConstraint:
+                properties:
+                  distributionRules:
+                    items:
+                      properties:
+                        clusterName:
+                          type: string
+                        monitoring:
+                          properties:
+                            prometheus:
+                              properties:
+                                appBindingRef:
+                                  properties:
+                                    name:
+                                      type: string
+                                    namespace:
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                authSecret:
+                                  properties:
+                                    name:
+                                      type: string
+                                    namespace:
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                caBundle:
+                                  format: byte
+                                  type: string
+                                insecureSkipTLSVerify:
+                                  type: boolean
+                                serverName:
+                                  type: string
+                                tlsSecret:
+                                  properties:
+                                    name:
+                                      type: string
+                                    namespace:
+                                      type: string
+                                  required:
+                                  - name
+                                  type: object
+                                url:
+                                  type: string
+                              type: object
+                          type: object
+                        replicaIndices:
+                          items:
+                            format: int32
+                            type: integer
+                          type: array
+                        storageClassName:
+                          type: string
+                      required:
+                      - clusterName
+                      - replicaIndices
+                      type: object
+                    type: array
+                  slice:
+                    properties:
+                      projectNamespace:
+                        type: string
+                      sliceName:
+                        type: string
+                    required:
+                    - projectNamespace
+                    - sliceName
+                    type: object
+                required:
+                - distributionRules
+                - slice
+                type: object
               nodeSpreadConstraint:
                 properties:
                   maxSkew:
@@ -71,23 +146,6 @@ spec:
                 required:
                 - maxSkew
                 - whenUnsatisfiable
-                type: object
-              ocm:
-                properties:
-                  distributionRules:
-                    items:
-                      properties:
-                        clusterName:
-                          type: string
-                        replicas:
-                          items:
-                            format: int32
-                            type: integer
-                          type: array
-                      type: object
-                    type: array
-                  sliceName:
-                    type: string
                 type: object
               zoneSpreadConstraint:
                 properties:

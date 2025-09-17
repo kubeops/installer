@@ -111,3 +111,6 @@ features:
     placement:
       create: true
       name: global
+
+# The maximum number of concurrent reconciles which can be run
+maxConcurrentReconciles: 0
