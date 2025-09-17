@@ -85,6 +85,8 @@ type PetsetSpec struct {
 	Features PetsetFeatures `json:"features"`
 	// +optional
 	Distro DistroSpec `json:"distro"`
+	// +optional
+	MaxConcurrentReconciles int `json:"maxConcurrentReconciles"`
 }
 
 type PetsetFeatures struct {
