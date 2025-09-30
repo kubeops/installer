@@ -45,6 +45,10 @@ spec:
                     type: boolean
                   preferCNAME:
                     type: boolean
+                  sdCreateTag:
+                    additionalProperties:
+                      type: string
+                    type: object
                   sdServiceCleanup:
                     type: boolean
                   secretRef:
@@ -66,9 +70,13 @@ spec:
                     type: array
                   zoneType:
                     type: string
+                required:
+                - sdCreateTag
                 type: object
               azure:
                 properties:
+                  maxRetriesCount:
+                    type: integer
                   resourceGroup:
                     type: string
                   secretRef:
@@ -85,12 +93,28 @@ spec:
                     type: string
                   userAssignedIdentityClientID:
                     type: string
+                  zonesCacheDuration:
+                    format: int64
+                    type: integer
+                required:
+                - maxRetriesCount
+                - zonesCacheDuration
                 type: object
               cloudflare:
                 properties:
                   baseURL:
                     type: string
+                  customHostnames:
+                    type: boolean
+                  customHostnamesCertificateAuthority:
+                    type: string
+                  customHostnamesMinTLSVersion:
+                    type: string
                   proxied:
+                    type: boolean
+                  regionKey:
+                    type: string
+                  regionalServices:
                     type: boolean
                   secretRef:
                     properties:
@@ -105,6 +129,12 @@ spec:
                     required:
                     - name
                     type: object
+                required:
+                - customHostnames
+                - customHostnamesCertificateAuthority
+                - customHostnamesMinTLSVersion
+                - regionKey
+                - regionalServices
                 type: object
               connectorSourceServer:
                 type: string
