@@ -423,7 +423,7 @@ k8s.io/utils/ptr
 ## explicit; go 1.23.0
 kmodules.xyz/client-go/api/v1
 kmodules.xyz/client-go/tools/parser
-# kmodules.xyz/image-packer v0.0.0-20251020171910-074f85860e12
+# kmodules.xyz/image-packer v0.0.0-20251031165437-ee37158457af
 ## explicit; go 1.23.0
 kmodules.xyz/image-packer/pkg/lib
 # kmodules.xyz/schema-checker v0.4.2
