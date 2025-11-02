@@ -2,7 +2,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "cert-manager-csi-driver-cacerts.fullname" . }}
-  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "cert-manager-csi-driver-cacerts.labels" . | nindent 4 }}
 rules:
@@ -19,6 +18,9 @@ rules:
   resources: ["*"]
   verbs: ["*"]
 {{- if eq "true" ( include "distro.openshift" . ) }}
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["watch", "get", "list"]
 - apiGroups: ["security.openshift.io"]
   resources: ["securitycontextconstraints"]
   resourceNames: ["hostpath-provisioner"]

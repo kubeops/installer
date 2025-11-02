@@ -105,6 +105,17 @@ spec:
             - mountPath: /var/run/containers/storage
               mountPropagation: Bidirectional
               name: storagerunroot-dir
+            {{- if eq "true" ( include "distro.openshift" . ) }}
+            - name: selinux-sysfs
+              mountPath: /sys/fs/selinux
+              readOnly: true
+            - name: selinux-config
+              mountPath: /etc/selinux
+              readOnly: true
+            - name: selinux-usr
+              mountPath: /usr/share/containers/selinux
+              readOnly: true
+            {{- end }}
           resources:
             {{- toYaml .Values.driver.resources | nindent 12 }}
 
@@ -132,3 +143,17 @@ spec:
             path: /var/run/containers/storage
             type: DirectoryOrCreate
           name: storagerunroot-dir
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        - name: selinux-sysfs
+          hostPath:
+            path: /sys/fs/selinux
+            type: Directory
+        - name: selinux-config
+          hostPath:
+            path: /etc/selinux
+            type: Directory
+        - name: selinux-usr
+          hostPath:
+            path: /usr/share/containers/selinux
+            type: Directory
+        {{- end }}
