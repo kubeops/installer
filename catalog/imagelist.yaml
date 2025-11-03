@@ -1,6 +1,6 @@
 - ghcr.io/appscode/cluster-connector:v0.0.12
 - ghcr.io/appscode/config-syncer:v0.15.3
-- ghcr.io/appscode/csi-driver-cacerts:v0.2.0
+- ghcr.io/appscode/csi-driver-cacerts:v0.3.0
 - ghcr.io/appscode/external-dns-operator:v0.1.0
 - ghcr.io/appscode/falco-ui-server:v0.0.4
 - ghcr.io/appscode/fargocd:v0.0.1
