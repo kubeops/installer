@@ -4,6 +4,9 @@ description: A Helm chart for External DNS Operator by AppsCode
 type: application
 version: v2025.12.5
 appVersion: v0.2.0
+kubeVersion: ">=1.28.0"
+annotations:
+  charts.openshift.io/name: external-dns-operator
 home: https://github.com/kubeops/external-dns-operator
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
 sources:

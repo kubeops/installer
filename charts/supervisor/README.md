@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/supervisor --version=v2025.7.31
-$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.7.31
+$ helm search repo appscode/supervisor --version=v2025.12.15
+$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Supervisor on a [Kubernetes](http://kubernetes.io) cluster 
 To install/upgrade the chart with the release name `supervisor`:
 
 ```bash
-$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.7.31
+$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 The command deploys a Supervisor on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -84,18 +84,19 @@ The following table lists the configurable parameters of the `supervisor` chart 
 | requeueAfterDuration              | Duration after the Recommendation object will be requeue when it is waiting for MaintenanceWindow. The flag accepts a value acceptable to time.ParseDuration. Ref: https://pkg.go.dev/time#ParseDuration                                    | <code>1m</code>                                                                                                                                                                                |
 | retryAfterDuration                | Duration after the failure events will be requeue again. The flag accepts a value acceptable to time.ParseDuration. Ref: https://pkg.go.dev/time#ParseDuration                                                                              | <code>1m</code>                                                                                                                                                                                |
 | beforeDeadlineDuration            | When there is less time than `beforeDeadlineDuration` before deadline, Recommendations are free to execute regardless of Parallelism. The flag accepts a value acceptable to time.ParseDuration. Ref: https://pkg.go.dev/time#ParseDuration | <code>24h</code>                                                                                                                                                                               |
-| distro.openshift                  |                                                                                                                                                                                                                                             | <code>false</code>                                                                                                                                                                             |
+| distro.openshift                  | Set true, if installed in OpenShift                                                                                                                                                                                                         | <code>false</code>                                                                                                                                                                             |
+| distro.ubi                        | Set operator or all to use ubi images                                                                                                                                                                                                       | <code>""</code>                                                                                                                                                                                |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.7.31 --set replicaCount=1
+$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.12.15 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.7.31 --values values.yaml
+$ helm upgrade -i supervisor appscode/supervisor -n kubeops --create-namespace --version=v2025.12.15 --values values.yaml
 ```

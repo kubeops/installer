@@ -2,8 +2,11 @@ apiVersion: v2
 name: taskqueue
 description: A Helm chart for TaskQueue
 type: application
-version: v2025.6.30
-appVersion: v0.0.1
+version: v2025.12.15
+appVersion: v0.0.2
+kubeVersion: ">=1.28.0"
+annotations:
+  charts.openshift.io/name: taskqueue
 home: https://github.com/appscode-cloud
 icon: https://cdn.appscode.com/images/products/bytebuilders/icons/android-icon-192x192.png
 sources:

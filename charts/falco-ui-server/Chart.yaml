@@ -3,6 +3,9 @@ description: Falco UI Server by AppsCode
 name: falco-ui-server
 version: v2024.5.17
 appVersion: v0.0.4
+kubeVersion: ">=1.28.0"
+annotations:
+  charts.openshift.io/name: falco-ui-server
 home: https://github.com/kubeops/falco-ui-server
 icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
 sources:

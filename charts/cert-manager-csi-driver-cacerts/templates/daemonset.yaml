@@ -66,7 +66,7 @@ spec:
             {{- toYaml .Values.livenessProbe.resources | nindent 12 }}
 
         - name: driver
-          image: {{ include "driver.registry" . }}/{{ .Values.driver.repository }}:{{ .Values.driver.tag | default .Chart.AppVersion }}
+          image: {{ include "driver.registry" . }}/{{ .Values.driver.repository }}:{{ .Values.driver.tag | default .Chart.AppVersion }}{{ include "operator.ubi" . }}
           args:
             - -v={{ .Values.app.logLevel }}
             - --drivername={{ .Values.app.driver.name }}

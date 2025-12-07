@@ -4,6 +4,9 @@ description: A Helm chart for kube-ui-server by AppsCode
 type: application
 version: v2025.10.31
 appVersion: v0.0.67
+kubeVersion: ">=1.28.0"
+annotations:
+  charts.openshift.io/name: kube-ui-server
 home: https://github.com/kubeops/kube-ui-server
 icon: https://cdn.appscode.com/images/products/kubeops/icons/android-icon-192x192.png
 sources:
