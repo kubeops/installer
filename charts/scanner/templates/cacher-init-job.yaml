@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: starter
-        image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
+        image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}{{ include "operator.ubi" . }}
         command:
           - kubectl
           - create
@@ -29,7 +29,12 @@ spec:
           - --from=cronjob/{{ include "scanner.fullname" . }}-trivydb-cacher
           - {{ include "scanner.fullname" . }}-trivydb-cacher-{{ randAlphaNum 8 | lower }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.cacher.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.cacher.securityContext | nindent 10 }}
+        {{- end }}
       restartPolicy: Never
 {{ end }}

@@ -125,6 +125,12 @@ prometheus:
     # To skip tls verification when communicating with the Prometheus server.
     insecureSkipTLSVerify: false
 
+distro:
+  # Set true, if installed in OpenShift
+  openshift: false
+  # Set operator or all to use ubi images
+  ubi: ""
+
 helmRepositories:
   create: false
 

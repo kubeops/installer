@@ -25,6 +25,10 @@ import (
 	"kmodules.xyz/image-packer/pkg/lib"
 )
 
+var ignoreMissingList = []string{
+	"ghcr.io/appscode/config-syncer:v0.15.3",
+}
+
 func Test_CheckImageArchitectures(t *testing.T) {
 	dir, err := rootDir()
 	if err != nil {
@@ -33,8 +37,43 @@ func Test_CheckImageArchitectures(t *testing.T) {
 
 	if err := lib.CheckImageArchitectures([]string{
 		filepath.Join(dir, "catalog", "imagelist.yaml"),
-	}, nil, nil); err != nil {
+	}, nil, ignoreMissingList); err != nil {
 		t.Errorf("CheckImageArchitectures() error = %v", err)
+	}
+}
+
+func Test_CheckUBIImageArchitectures(t *testing.T) {
+	dir, err := rootDir()
+	if err != nil {
+		t.Error(err)
+	}
+
+	const (
+		//	ubiAll = `global:
+		// distro:
+		//  ubi: all`
+		ubiOperator = `distro:
+  ubi: operator`
+		//	ubiCatalog = `distro:
+		// ubi: catalog`
+	)
+	values := map[string]string{
+		"cert-manager-csi-driver-cacerts/": ubiOperator,
+		"external-dns-operator":            ubiOperator,
+		"falco-ui-server":                  ubiOperator,
+		"fargocd":                          ubiOperator,
+		"kube-ui-server":                   ubiOperator,
+		"operator-shard-manager":           ubiOperator,
+		"panopticon":                       ubiOperator,
+		"petset":                           ubiOperator,
+		"pgoutbox":                         ubiOperator,
+		"scanner":                          ubiOperator,
+		"sidekick":                         ubiOperator,
+		"supervisor":                       ubiOperator,
+		"taskqueue":                        ubiOperator,
+	}
+	if err := lib.CheckHelmChartImageArchitectures(filepath.Join(dir, "charts"), values, nil, ignoreMissingList); err != nil {
+		t.Errorf("CheckUBIImageArchitectures() error = %v", err)
 	}
 }
 

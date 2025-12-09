@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/sidekick --version=v2025.3.14
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.3.14
+$ helm search repo appscode/sidekick --version=v2025.12.15
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys an Sidekick on a [Kubernetes](http://kubernetes.io) cluster u
 To install/upgrade the chart with the release name `sidekick`:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.3.14
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 The command deploys an Sidekick on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -80,18 +80,19 @@ The following table lists the configurable parameters of the `sidekick` chart an
 | monitoring.agent                  | Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")                                                                                                                               | <code>""</code>                                                                                                                                                                                |
 | monitoring.serviceMonitor.labels  | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/operator`.                                                                | <code>{}</code>                                                                                                                                                                                |
 | networkPolicy.enabled             |                                                                                                                                                                                                                                    | <code>false</code>                                                                                                                                                                             |
-| distro.openshift                  |                                                                                                                                                                                                                                    | <code>false</code>                                                                                                                                                                             |
+| distro.openshift                  | Set true, if installed in OpenShift                                                                                                                                                                                                | <code>false</code>                                                                                                                                                                             |
+| distro.ubi                        | Set operator or all to use ubi images                                                                                                                                                                                              | <code>""</code>                                                                                                                                                                                |
 
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.3.14 --set replicaCount=1
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.12.15 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.3.14 --values values.yaml
+$ helm upgrade -i sidekick appscode/sidekick -n kubeops --create-namespace --version=v2025.12.15 --values values.yaml
 ```

@@ -102,7 +102,7 @@ cacher:
   # Name of cacher container image
   repository: trivydb
   # Operator container image tag
-  tag: 0.0.2
+  tag: 0.0.3
   # Compute Resources required by the cacher container
   resources: {}
   # Security options this container should run with
@@ -215,6 +215,12 @@ nats:
   auth:
     username: ""
     password: ""
+
+distro:
+  # Set true, if installed in OpenShift
+  openshift: false
+  # Set operator or all to use ubi images
+  ubi: ""
 
 scanRequestTTLAfterFinished: 2h0m0s
 scanReportTTLAfterOutdated: 168h0m0s

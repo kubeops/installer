@@ -103,4 +103,7 @@ networkPolicy:
   enabled: false
 
 distro:
+  # Set true, if installed in OpenShift
   openshift: false
+  # Set operator or all to use ubi images
+  ubi: ""

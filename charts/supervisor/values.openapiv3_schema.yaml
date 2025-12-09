@@ -1331,8 +1331,15 @@ properties:
     properties:
       openshift:
         type: boolean
+      ubi:
+        enum:
+        - all
+        - catalog
+        - operator
+        type: string
     required:
     - openshift
+    - ubi
     type: object
   fullnameOverride:
     type: string

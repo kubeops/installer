@@ -24,9 +24,14 @@ spec:
           automountServiceAccountToken: true
           containers:
           - name: cacher
+            {{- if eq "true" ( include "distro.openshift" . ) }}
+            securityContext:
+              {{- toYaml (omit .Values.cacher.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 14 }}
+            {{- else }}
             securityContext:
               {{- toYaml .Values.cacher.securityContext | nindent 14 }}
-            image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}
+            {{- end }}
+            image: {{ include "cacher.registry" . }}/{{ .Values.cacher.repository }}:{{ .Values.cacher.tag }}{{ include "operator.ubi" . }}
             imagePullPolicy: {{ .Values.imagePullPolicy  }}
             workingDir: /tmp
             command:

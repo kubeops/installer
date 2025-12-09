@@ -20,7 +20,7 @@ spec:
       - name: busybox
         securityContext:
           {{- toYaml .Values.cleaner.securityContext | nindent 10 }}
-        image: {{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}
+        image: {{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}{{ include "operator.ubi" . }}
         command:
           - sh
           - -c

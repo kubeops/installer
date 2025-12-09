@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/panopticon --version=v2025.6.30
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.6.30
+$ helm search repo appscode/panopticon --version=v2025.12.15
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 ## Introduction
@@ -24,7 +24,7 @@ This chart deploys a Kubernetes Panopticon on a [Kubernetes](http://kubernetes.i
 To install/upgrade the chart with the release name `panopticon`:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.6.30
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.12.15
 ```
 
 The command deploys a Kubernetes Panopticon on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -89,6 +89,8 @@ The following table lists the configurable parameters of the `panopticon` chart 
 | monitoring.agent                                      | Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")                                                                                                                                                                                                                                                          | <code>prometheus.io/operator</code>                                                                                                                                                            |
 | monitoring.serviceMonitor.labels                      | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/operator`.                                                                                                                                                                                           | <code>{"monitoring.appscode.com/prometheus":"federated"}</code>                                                                                                                                |
 | networkPolicy.enabled                                 |                                                                                                                                                                                                                                                                                                                                                               | <code>false</code>                                                                                                                                                                             |
+| distro.openshift                                      | Set true, if installed in OpenShift                                                                                                                                                                                                                                                                                                                           | <code>false</code>                                                                                                                                                                             |
+| distro.ubi                                            | Set operator or all to use ubi images                                                                                                                                                                                                                                                                                                                         | <code>""</code>                                                                                                                                                                                |
 | ace-user-roles.enabled                                | If enabled, installs the ace-user-roles chart                                                                                                                                                                                                                                                                                                                 | <code>true</code>                                                                                                                                                                              |
 | ace-user-roles.enableClusterRoles.ace                 |                                                                                                                                                                                                                                                                                                                                                               | <code>false</code>                                                                                                                                                                             |
 | ace-user-roles.enableClusterRoles.appcatalog          |                                                                                                                                                                                                                                                                                                                                                               | <code>false</code>                                                                                                                                                                             |
@@ -109,12 +111,12 @@ The following table lists the configurable parameters of the `panopticon` chart 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.6.30 --set replicaCount=1
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.12.15 --set replicaCount=1
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.6.30 --values values.yaml
+$ helm upgrade -i panopticon appscode/panopticon -n kubeops --create-namespace --version=v2025.12.15 --values values.yaml
 ```
