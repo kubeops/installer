@@ -96,6 +96,8 @@ spec:
                       properties:
                         description:
                           type: string
+                        icon:
+                          type: string
                         items:
                           items:
                             properties:
@@ -131,6 +133,8 @@ spec:
                                 type: boolean
                               flow:
                                 type: string
+                              icon:
+                                type: string
                               icons:
                                 items:
                                   properties:
@@ -147,6 +151,8 @@ spec:
                               name:
                                 type: string
                               operationId:
+                                type: string
+                              partOf:
                                 type: string
                             required:
                             - enforceQuota

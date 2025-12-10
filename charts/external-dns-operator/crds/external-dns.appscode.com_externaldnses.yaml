@@ -70,8 +70,6 @@ spec:
                     type: array
                   zoneType:
                     type: string
-                required:
-                - sdCreateTag
                 type: object
               azure:
                 properties:
@@ -96,9 +94,6 @@ spec:
                   zonesCacheDuration:
                     format: int64
                     type: integer
-                required:
-                - maxRetriesCount
-                - zonesCacheDuration
                 type: object
               cloudflare:
                 properties:
@@ -129,12 +124,6 @@ spec:
                     required:
                     - name
                     type: object
-                required:
-                - customHostnames
-                - customHostnamesCertificateAuthority
-                - customHostnamesMinTLSVersion
-                - regionKey
-                - regionalServices
                 type: object
               connectorSourceServer:
                 type: string
