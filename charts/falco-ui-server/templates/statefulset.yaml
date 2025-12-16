@@ -36,8 +36,13 @@ spec:
     {{- if eq .Values.apiserver.db "kine" }}
       initContainers:
       - name: init-db
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.kine.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.kine.securityContext | nindent 10 }}
+        {{- end }}
         image: {{ include "kine.registry" . }}/{{ .Values.kine.repository }}:{{ .Values.kine.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         command:
@@ -52,9 +57,14 @@ spec:
     {{- end }}
       containers:
       - name: app
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.app.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.app.securityContext | nindent 10 }}
-        image: {{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}
+        {{- end }}
+        image: {{ include "app.registry" . }}/{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}{{ include "operator.ubi" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
         - run
@@ -106,8 +116,13 @@ spec:
           name: storage
     {{- if eq .Values.apiserver.db "etcd" }}
       - name: etcd
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.etcd.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.etcd.securityContext | nindent 10 }}
+        {{- end }}
         image: {{ include "etcd.registry" . }}/{{ .Values.etcd.repository }}:{{ .Values.etcd.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         command:
@@ -161,8 +176,13 @@ spec:
     {{- end }}
     {{- if eq .Values.apiserver.db "kine" }}
       - name: kine
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.kine.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.kine.securityContext | nindent 10 }}
+        {{- end }}
         image: {{ include "kine.registry" . }}/{{ .Values.kine.repository }}:{{ .Values.kine.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy  }}
         args:
@@ -190,8 +210,13 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "falco-ui-server.fullname" . }}-etcd-cert
+      {{- if eq "true" ( include "distro.openshift" . ) }}
+      securityContext:
+        {{- toYaml (omit .Values.podSecurityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 8 }}
+      {{- else }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
     {{- if or .Values.tolerations $criticalAddon }}
       tolerations:
       {{- with .Values.tolerations }}
