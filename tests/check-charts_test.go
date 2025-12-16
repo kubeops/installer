@@ -26,7 +26,7 @@ import (
 )
 
 var ignoreMissingList = []string{
-	"ghcr.io/appscode/config-syncer:v0.15.3",
+	"ghcr.io/appscode/config-syncer:v0.15.4",
 }
 
 func Test_CheckImageArchitectures(t *testing.T) {

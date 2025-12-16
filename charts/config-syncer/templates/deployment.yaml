@@ -36,9 +36,14 @@ spec:
       serviceAccountName: {{ include "config-syncer.serviceAccountName" . }}
       containers:
       - name: app
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.image.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.image.securityContext | nindent 10 }}
-        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{if include "mode.enterprise" .}}-ent{{end}}
+        {{- end }}
+        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{if include "mode.enterprise" .}}-ent{{end}}{{ include "operator.ubi" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
           - run
@@ -103,8 +108,13 @@ spec:
           defaultMode: 420
           secretName: {{ include "config-syncer.fullname" . }}-license
       {{- end }}
+      {{- if eq "true" ( include "distro.openshift" . ) }}
+      securityContext:
+        {{- toYaml (omit .Values.podSecurityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 8 }}
+      {{- else }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
     {{- if or .Values.tolerations $criticalAddon }}
       tolerations:
       {{- with .Values.tolerations }}
