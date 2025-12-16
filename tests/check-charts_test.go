@@ -58,19 +58,19 @@ func Test_CheckUBIImageArchitectures(t *testing.T) {
 		// ubi: catalog`
 	)
 	values := map[string]string{
-		"cert-manager-csi-driver-cacerts/": ubiOperator,
-		"external-dns-operator":            ubiOperator,
-		"falco-ui-server":                  ubiOperator,
-		"fargocd":                          ubiOperator,
-		"kube-ui-server":                   ubiOperator,
-		"operator-shard-manager":           ubiOperator,
-		"panopticon":                       ubiOperator,
-		"petset":                           ubiOperator,
-		"pgoutbox":                         ubiOperator,
-		"scanner":                          ubiOperator,
-		"sidekick":                         ubiOperator,
-		"supervisor":                       ubiOperator,
-		"taskqueue":                        ubiOperator,
+		"cert-manager-csi-driver-cacerts": ubiOperator,
+		"external-dns-operator":           ubiOperator,
+		"falco-ui-server":                 ubiOperator,
+		"fargocd":                         ubiOperator,
+		"kube-ui-server":                  ubiOperator,
+		"operator-shard-manager":          ubiOperator,
+		"panopticon":                      ubiOperator,
+		"petset":                          ubiOperator,
+		"pgoutbox":                        ubiOperator,
+		"scanner":                         ubiOperator,
+		"sidekick":                        ubiOperator,
+		"supervisor":                      ubiOperator,
+		"taskqueue":                       ubiOperator,
 	}
 	if err := lib.CheckHelmChartImageArchitectures(filepath.Join(dir, "charts"), values, nil, ignoreMissingList); err != nil {
 		t.Errorf("CheckUBIImageArchitectures() error = %v", err)
