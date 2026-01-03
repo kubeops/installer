@@ -5,9 +5,10 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     app: cert-manager
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.18.2
+    app.kubernetes.io/version: v1.19.2
   name: clusterissuers.cert-manager.io
 spec:
   group: cert-manager.io
@@ -23,10 +24,10 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+    - jsonPath: .status.conditions[?(@.type == "Ready")].status
       name: Ready
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Ready")].message
+    - jsonPath: .status.conditions[?(@.type == "Ready")].message
       name: Status
       priority: 1
       type: string
@@ -265,6 +266,11 @@ spec:
                               properties:
                                 nameserver:
                                   type: string
+                                protocol:
+                                  enum:
+                                  - TCP
+                                  - UDP
+                                  type: string
                                 tsigAlgorithm:
                                   type: string
                                 tsigKeyName:
@@ -304,6 +310,7 @@ spec:
                                               items:
                                                 type: string
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             name:
                                               type: string
                                           required:
@@ -389,6 +396,7 @@ spec:
                                     - name
                                     type: object
                                   type: array
+                                  x-kubernetes-list-type: atomic
                                 podTemplate:
                                   properties:
                                     metadata:
@@ -852,12 +860,34 @@ spec:
                                             type: object
                                             x-kubernetes-map-type: atomic
                                           type: array
+                                          x-kubernetes-list-map-keys:
+                                          - name
+                                          x-kubernetes-list-type: map
                                         nodeSelector:
                                           additionalProperties:
                                             type: string
                                           type: object
                                         priorityClassName:
                                           type: string
+                                        resources:
+                                          properties:
+                                            limits:
+                                              additionalProperties:
+                                                anyOf:
+                                                - type: integer
+                                                - type: string
+                                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                                x-kubernetes-int-or-string: true
+                                              type: object
+                                            requests:
+                                              additionalProperties:
+                                                anyOf:
+                                                - type: integer
+                                                - type: string
+                                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                                x-kubernetes-int-or-string: true
+                                              type: object
+                                          type: object
                                         securityContext:
                                           properties:
                                             fsGroup:
@@ -898,6 +928,7 @@ spec:
                                                 format: int64
                                                 type: integer
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             sysctls:
                                               items:
                                                 properties:
@@ -910,6 +941,7 @@ spec:
                                                 - value
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                           type: object
                                         serviceAccountName:
                                           type: string
@@ -929,6 +961,7 @@ spec:
                                                 type: string
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                       type: object
                                   type: object
                                 serviceType:
@@ -1419,12 +1452,34 @@ spec:
                                             type: object
                                             x-kubernetes-map-type: atomic
                                           type: array
+                                          x-kubernetes-list-map-keys:
+                                          - name
+                                          x-kubernetes-list-type: map
                                         nodeSelector:
                                           additionalProperties:
                                             type: string
                                           type: object
                                         priorityClassName:
                                           type: string
+                                        resources:
+                                          properties:
+                                            limits:
+                                              additionalProperties:
+                                                anyOf:
+                                                - type: integer
+                                                - type: string
+                                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                                x-kubernetes-int-or-string: true
+                                              type: object
+                                            requests:
+                                              additionalProperties:
+                                                anyOf:
+                                                - type: integer
+                                                - type: string
+                                                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                                x-kubernetes-int-or-string: true
+                                              type: object
+                                          type: object
                                         securityContext:
                                           properties:
                                             fsGroup:
@@ -1465,6 +1520,7 @@ spec:
                                                 format: int64
                                                 type: integer
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                             sysctls:
                                               items:
                                                 properties:
@@ -1477,6 +1533,7 @@ spec:
                                                 - value
                                                 type: object
                                               type: array
+                                              x-kubernetes-list-type: atomic
                                           type: object
                                         serviceAccountName:
                                           type: string
@@ -1496,6 +1553,7 @@ spec:
                                                 type: string
                                             type: object
                                           type: array
+                                          x-kubernetes-list-type: atomic
                                       type: object
                                   type: object
                                 serviceType:
@@ -1508,10 +1566,12 @@ spec:
                               items:
                                 type: string
                               type: array
+                              x-kubernetes-list-type: atomic
                             dnsZones:
                               items:
                                 type: string
                               type: array
+                              x-kubernetes-list-type: atomic
                             matchLabels:
                               additionalProperties:
                                 type: string
@@ -1519,6 +1579,7 @@ spec:
                           type: object
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                 required:
                 - privateKeySecretRef
                 - server
@@ -1529,14 +1590,17 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   issuingCertificateURLs:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   ocspServers:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   secretName:
                     type: string
                 required:
@@ -1548,6 +1612,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                 type: object
               vault:
                 properties:
@@ -1603,6 +1668,7 @@ spec:
                                 items:
                                   type: string
                                 type: array
+                                x-kubernetes-list-type: atomic
                               name:
                                 type: string
                             required:

@@ -90,9 +90,17 @@ spec:
                 x-kubernetes-preserve-unknown-fields: true
               secret:
                 properties:
-                  name:
+                  apiGroup:
                     default: ""
                     type: string
+                  kind:
+                    default: Secret
+                    type: string
+                  name:
+                    type: string
+                required:
+                - kind
+                - name
                 type: object
                 x-kubernetes-map-type: atomic
               secretTransforms:
@@ -141,9 +149,17 @@ spec:
                 type: array
               tlsSecret:
                 properties:
-                  name:
+                  apiGroup:
                     default: ""
                     type: string
+                  kind:
+                    default: Secret
+                    type: string
+                  name:
+                    type: string
+                required:
+                - kind
+                - name
                 type: object
                 x-kubernetes-map-type: atomic
               type:
