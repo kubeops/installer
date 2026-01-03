@@ -5,9 +5,10 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     app: cert-manager
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.18.2
+    app.kubernetes.io/version: v1.19.2
   name: certificaterequests.cert-manager.io
 spec:
   group: cert-manager.io
@@ -24,13 +25,13 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=="Approved")].status
+    - jsonPath: .status.conditions[?(@.type == "Approved")].status
       name: Approved
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Denied")].status
+    - jsonPath: .status.conditions[?(@.type == "Denied")].status
       name: Denied
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+    - jsonPath: .status.conditions[?(@.type == "Ready")].status
       name: Ready
       type: string
     - jsonPath: .spec.issuerRef.name
@@ -39,7 +40,7 @@ spec:
     - jsonPath: .spec.username
       name: Requester
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Ready")].message
+    - jsonPath: .status.conditions[?(@.type == "Ready")].message
       name: Status
       priority: 1
       type: string
@@ -121,6 +122,7 @@ spec:
                   - netscape sgc
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               username:
                 type: string
             required:

@@ -2,8 +2,8 @@ apiVersion: v2
 name: cluster-connector
 description: A Helm chart for cluster-connector
 type: application
-version: v2023.10.18
-appVersion: v0.0.12
+version: v2025.12.15
+appVersion: v0.0.14
 home: https://github.com/kubeops/cluster-connector
 icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
 sources:

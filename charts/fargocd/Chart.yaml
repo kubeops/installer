@@ -2,7 +2,7 @@ apiVersion: v2
 name: fargocd
 description: A Helm chart for FluxCD to ArgoCD Bridge
 type: application
-version: v2025.12.15
+version: v2026.1.15
 appVersion: v0.0.2
 kubeVersion: ">=1.28.0"
 annotations:

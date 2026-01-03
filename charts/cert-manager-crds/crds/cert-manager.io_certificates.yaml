@@ -5,9 +5,10 @@ metadata:
     helm.sh/resource-policy: keep
   labels:
     app: cert-manager
+    app.kubernetes.io/component: crds
     app.kubernetes.io/instance: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/version: v1.18.2
+    app.kubernetes.io/version: v1.19.2
   name: certificates.cert-manager.io
 spec:
   group: cert-manager.io
@@ -24,7 +25,7 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+    - jsonPath: .status.conditions[?(@.type == "Ready")].status
       name: Ready
       type: string
     - jsonPath: .spec.secretName
@@ -34,7 +35,7 @@ spec:
       name: Issuer
       priority: 1
       type: string
-    - jsonPath: .status.conditions[?(@.type=="Ready")].message
+    - jsonPath: .status.conditions[?(@.type == "Ready")].message
       name: Status
       priority: 1
       type: string
@@ -69,24 +70,28 @@ spec:
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-type: atomic
               commonName:
                 type: string
               dnsNames:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               duration:
                 type: string
               emailAddresses:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               encodeUsagesInRequest:
                 type: boolean
               ipAddresses:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               isCA:
                 type: boolean
               issuerRef:
@@ -159,18 +164,22 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       emailAddresses:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       ipRanges:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       uriDomains:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                     type: object
                   permitted:
                     properties:
@@ -178,18 +187,22 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       emailAddresses:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       ipRanges:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                       uriDomains:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: atomic
                     type: object
                 type: object
               otherNames:
@@ -201,6 +214,7 @@ spec:
                       type: string
                   type: object
                 type: array
+                x-kubernetes-list-type: atomic
               privateKey:
                 properties:
                   algorithm:
@@ -259,37 +273,45 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   localities:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   organizationalUnits:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   organizations:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   postalCodes:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   provinces:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   serialNumber:
                     type: string
                   streetAddresses:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                 type: object
               uris:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
               usages:
                 items:
                   enum:
@@ -318,6 +340,7 @@ spec:
                   - netscape sgc
                   type: string
                 type: array
+                x-kubernetes-list-type: atomic
             required:
             - issuerRef
             - secretName

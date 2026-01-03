@@ -2,8 +2,8 @@ apiVersion: v2
 name: taskqueue
 description: A Helm chart for TaskQueue
 type: application
-version: v2025.12.15
-appVersion: v0.0.2
+version: v2026.1.15
+appVersion: v0.0.3
 kubeVersion: ">=1.28.0"
 annotations:
   charts.openshift.io/name: taskqueue
