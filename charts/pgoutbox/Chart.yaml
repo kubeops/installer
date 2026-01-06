@@ -1,8 +1,8 @@
 apiVersion: v2
 description: PgOutbox by AppsCode
 name: pgoutbox
-version: v2025.4.30
-appVersion: v0.0.2
+version: v2026.1.15
+appVersion: v0.0.3
 kubeVersion: ">=1.28.0"
 annotations:
   charts.openshift.io/name: pgoutbox
