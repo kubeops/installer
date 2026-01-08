@@ -2191,6 +2191,11 @@ func (in *PgoutboxSpec) DeepCopyInto(out *PgoutboxSpec) {
 	}
 	in.ServiceAccount.DeepCopyInto(&out.ServiceAccount)
 	out.Service = in.Service
+	if in.Monitoring != nil {
+		in, out := &in.Monitoring, &out.Monitoring
+		*out = new(Monitoring)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.LivenessProbe != nil {
 		in, out := &in.LivenessProbe, &out.LivenessProbe
 		*out = new(v1.Probe)
