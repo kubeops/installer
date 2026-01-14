@@ -52,7 +52,7 @@ cleaner:
   # Webhook cleaner container image
   repository: kubectl-nonroot
   # Webhook cleaner container image tag
-  tag: "1.31"
+  tag: "1.34"
   # Skip generating cleaner YAML
   skip: false
   # Security options this container should run with
