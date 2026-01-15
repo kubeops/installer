@@ -1557,6 +1557,25 @@ properties:
         format: int32
         type: integer
     type: object
+  monitoring:
+    properties:
+      agent:
+        enum:
+        - prometheus.io
+        - prometheus.io/operator
+        - prometheus.io/builtin
+        type: string
+      serviceMonitor:
+        properties:
+          labels:
+            additionalProperties:
+              type: string
+            type: object
+        type: object
+    required:
+    - agent
+    - serviceMonitor
+    type: object
   nameOverride:
     type: string
   nodeSelector:

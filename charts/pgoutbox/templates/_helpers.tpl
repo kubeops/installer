@@ -82,3 +82,26 @@ Returns the app config secret name
 {{- define  "pgoutbox.natsSecretName" -}}
 {{- .Values.app.natsSecretName -}}
 {{- end }}
+
+{{/*
+Returns the enabled monitoring agent name
+*/}}
+{{- define "monitoring.agent" -}}
+{{- .Values.monitoring.agent }}
+{{- end }}
+
+{{/*
+Returns whether the ServiceMonitor will be labeled with custom label
+*/}}
+{{- define "monitoring.apply-servicemonitor-label" -}}
+{{- ternary "false" "true" ( empty .Values.monitoring.serviceMonitor.labels ) -}}
+{{- end }}
+
+{{/*
+Returns the ServiceMonitor labels
+*/}}
+{{- define "monitoring.servicemonitor-label" -}}
+{{- range $key, $val := .Values.monitoring.serviceMonitor.labels }}
+{{ $key }}: {{ $val }}
+{{- end }}
+{{- end }}
