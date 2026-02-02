@@ -3,7 +3,7 @@ name: kube-ui-server
 description: A Helm chart for kube-ui-server by AppsCode
 type: application
 version: v2026.1.15
-appVersion: v0.0.68
+appVersion: v0.0.69
 kubeVersion: ">=1.28.0"
 annotations:
   charts.openshift.io/name: kube-ui-server
