@@ -4,9 +4,9 @@
 - ghcr.io/appscode/external-dns-operator:v0.3.0
 - ghcr.io/appscode/falco-ui-server:v0.0.6
 - ghcr.io/appscode/fargocd:v0.0.2
-- ghcr.io/appscode/kube-ui-server:v0.0.68
+- ghcr.io/appscode/kube-ui-server:v0.0.69
 - ghcr.io/appscode/kubectl-nonroot:1.34
-- ghcr.io/appscode/operator-shard-manager:v0.0.4
+- ghcr.io/appscode/operator-shard-manager:v0.0.5
 - ghcr.io/appscode/panopticon:v0.0.21
 - ghcr.io/appscode/petset:v0.0.16
 - ghcr.io/appscode/pgoutbox:v0.0.3
