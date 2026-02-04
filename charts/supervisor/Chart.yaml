@@ -4,7 +4,7 @@ description: A Helm chart for Supervisor by AppsCode
 type: application
 version: v2026.1.15
 appVersion: v0.0.12
-kubeVersion: ">=1.28.0"
+kubeVersion: ">=1.28.0-0"
 annotations:
   charts.openshift.io/name: supervisor
 home: https://github.com/kubeops/supervisor
