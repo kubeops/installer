@@ -3,7 +3,7 @@ description: Falco UI Server by AppsCode
 name: falco-ui-server
 version: v2026.1.15
 appVersion: v0.0.6
-kubeVersion: ">=1.28.0"
+kubeVersion: ">=1.28.0-0"
 annotations:
   charts.openshift.io/name: falco-ui-server
 home: https://github.com/kubeops/falco-ui-server
