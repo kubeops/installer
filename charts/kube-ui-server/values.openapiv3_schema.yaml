@@ -1727,8 +1727,6 @@ properties:
     items:
       type: string
     type: array
-  kubeconfigSecretName:
-    type: string
   logLevel:
     format: int32
     type: integer
@@ -2225,7 +2223,6 @@ required:
 - helmRepositories
 - image
 - imagePullPolicy
-- kubeconfigSecretName
 - monitoring
 - platform
 - prometheus

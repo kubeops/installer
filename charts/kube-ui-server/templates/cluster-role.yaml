@@ -1,5 +1,3 @@
-{{- if not .Values.kubeconfigSecretName }}
-
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -73,4 +71,3 @@ rules:
   - '*'
   verbs:
   - get
-{{- end }}
