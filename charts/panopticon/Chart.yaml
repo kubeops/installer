@@ -17,4 +17,4 @@ dependencies:
 - name: ace-user-roles
   repository: file://../ace-user-roles
   condition: ace-user-roles.enabled
-  version: v2025.3.14
+  version: v2026.2.16
