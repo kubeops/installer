@@ -11,7 +11,7 @@
 - ghcr.io/appscode/petset:v0.0.16
 - ghcr.io/appscode/pgoutbox:v0.0.3
 - ghcr.io/appscode/scanner:v0.0.21
-- ghcr.io/appscode/sidekick:v0.0.13
+- ghcr.io/appscode/sidekick:v0.0.14
 - ghcr.io/appscode/supervisor:v0.0.12
 - ghcr.io/appscode/taskqueue:v0.0.3
 - ghcr.io/appscode/trivydb:0.0.3
