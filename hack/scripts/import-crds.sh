@@ -44,7 +44,13 @@ crd-importer \
 crd-importer \
     --no-description \
     --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=ClusterIssuer.cert-manager.io --gk=Issuer.cert-manager.io \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
+    --out=./charts/taskqueue/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Issuer.cert-manager.io \
     --out=./charts/cert-manager-csi-driver-cacerts/crds
 
 crd-importer \
@@ -60,12 +66,24 @@ crd-importer \
 
 crd-importer \
     --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
+    --out=./charts/fargocd/crds
+
+crd-importer \
+    --no-description \
     --input=https://github.com/open-policy-agent/gatekeeper/raw/${OPEN_POLICY_AGENT_GATEKEEPER_TAG}/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
     --out=./charts/gatekeeper-library/crds
 
 crd-importer \
     --no-description \
     --input=https://github.com/kubeops/sidekick/raw/${KUBEOPS_SIDEKICK_TAG}/crds/apps.k8s.appscode.com_sidekicks.yaml \
+    --out=./charts/sidekick/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/sidekick/crds
 
 crd-importer \
@@ -109,8 +127,20 @@ crd-importer \
 
 crd-importer \
     --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
+    --out=./charts/operator-shard-manager/crds
+
+crd-importer \
+    --no-description \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_petsets.yaml \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_placementpolicies.yaml \
+    --out=./charts/petset/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/petset/crds
 
 crd-importer \
@@ -174,6 +204,12 @@ rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
         crd-importer \
             --no-description \
             --input=${supervisor_dir} \
+            --out=./charts/supervisor/crds
+
+        crd-importer \
+            --no-description \
+            --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+            --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
             --out=./charts/supervisor/crds
     fi
 }
