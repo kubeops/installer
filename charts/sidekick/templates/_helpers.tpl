@@ -135,7 +135,11 @@ Prepare certs
 {{- $caCrt := "" }}
 {{- $serverCrt := "" }}
 {{- $serverKey := "" }}
-{{- if .Values.apiserver.servingCerts.generate }}
+{{- if .Values.apiserver.servingCerts.certManager.enabled }}
+{{- $caCrt = "" }}
+{{- $serverCrt = "" }}
+{{- $serverKey = "" }}
+{{- else if .Values.apiserver.servingCerts.generate }}
 {{- $ca := genCA "ca" 3650 }}
 {{- $cn := include "sidekick.fullname" . -}}
 {{- $altName1 := printf "%s.%s" $cn .Release.Namespace }}
