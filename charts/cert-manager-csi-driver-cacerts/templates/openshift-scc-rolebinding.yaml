@@ -1,0 +1,17 @@
+{{- if eq "true" ( include "distro.openshift" . ) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "cert-manager-csi-driver-cacerts.fullname" . }}-privileged-scc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cert-manager-csi-driver-cacerts.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:privileged
+subjects:
+- kind: ServiceAccount
+  name: {{ include "cert-manager-csi-driver-cacerts.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+{{- end }}
