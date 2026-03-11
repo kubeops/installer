@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "petset.fullname" . }}-token
+  name: {{ include "petset.fullname" . }}-metrics-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "petset.serviceAccountName" . | quote }}
@@ -30,7 +30,7 @@ spec:
   - authorization:
       type: Bearer
       credentials:
-        name: {{ include "petset.fullname" . }}-token
+        name: {{ include "petset.fullname" . }}-metrics-token
         key: token
     path: /metrics
     port: metrics

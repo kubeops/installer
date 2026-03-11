@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "taskqueue.fullname" . }}-token
+  name: {{ include "taskqueue.fullname" . }}-metrics-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "taskqueue.serviceAccountName" . | quote }}
@@ -30,7 +30,7 @@ spec:
   - authorization:
       type: Bearer
       credentials:
-        name: {{ include "taskqueue.fullname" . }}-token
+        name: {{ include "taskqueue.fullname" . }}-metrics-token
         key: token
     path: /metrics
     port: metrics
