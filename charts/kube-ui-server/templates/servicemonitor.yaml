@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "kube-ui-server.fullname" . }}-token
+  name: {{ include "kube-ui-server.fullname" . }}-metrics-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "kube-ui-server.serviceAccountName" . | quote }}
@@ -32,7 +32,7 @@ spec:
     authorization:
       type: Bearer
       credentials:
-        name: {{ include "kube-ui-server.fullname" . }}-token
+        name: {{ include "kube-ui-server.fullname" . }}-metrics-token
         key: token
     scheme: https
     interval: 10s
@@ -47,7 +47,7 @@ spec:
     authorization:
       type: Bearer
       credentials:
-        name: {{ include "kube-ui-server.fullname" . }}-token
+        name: {{ include "kube-ui-server.fullname" . }}-metrics-token
         key: token
     scheme: http
     interval: 10s
