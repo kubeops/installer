@@ -27,9 +27,11 @@ spec:
     matchLabels:
       {{- include "sidekick.selectorLabels" . | nindent 6 }}
   endpoints:
-  - bearerTokenSecret:
-      name: {{ include "sidekick.fullname" . }}-prometheus-token
-      key: token
+  - authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "sidekick.fullname" . }}-prometheus-token
+        key: token
     path: /metrics
     port: metrics
     scheme: https

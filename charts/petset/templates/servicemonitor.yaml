@@ -27,9 +27,11 @@ spec:
     matchLabels:
       {{- include "petset.selectorLabels" . | nindent 6 }}
   endpoints:
-  - bearerTokenSecret:
-      name: {{ include "petset.fullname" . }}-prometheus-token
-      key: token
+  - authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "petset.fullname" . }}-prometheus-token
+        key: token
     path: /metrics
     port: metrics
     scheme: https

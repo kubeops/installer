@@ -28,9 +28,11 @@ spec:
       {{- include "falco-ui-server.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: api
-    bearerTokenSecret:
-      name: {{ include "falco-ui-server.fullname" . }}-prometheus-token
-      key: token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "falco-ui-server.fullname" . }}-prometheus-token
+        key: token
     scheme: https
     interval: 10s
     honorLabels: true
@@ -41,9 +43,11 @@ spec:
           key: ca.crt
       serverName: "{{ include "falco-ui-server.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
-    bearerTokenSecret:
-      name: {{ include "falco-ui-server.fullname" . }}-prometheus-token
-      key: token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "falco-ui-server.fullname" . }}-prometheus-token
+        key: token
     path: /falcometrics
     honorLabels: true
     scheme: http

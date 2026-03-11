@@ -29,9 +29,11 @@ spec:
       {{- include "panopticon.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: api
-    bearerTokenSecret:
-      name: {{ include "panopticon.fullname" . }}-prometheus-token
-      key: token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "panopticon.fullname" . }}-prometheus-token
+        key: token
     scheme: https
     interval: 10s
     honorLabels: true
@@ -42,9 +44,11 @@ spec:
           key: ca.crt
       serverName: "{{ include "panopticon.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
-    bearerTokenSecret:
-      name: {{ include "panopticon.fullname" . }}-prometheus-token
-      key: token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "panopticon.fullname" . }}-prometheus-token
+        key: token
     scheme: http
     interval: 10s
     honorLabels: true

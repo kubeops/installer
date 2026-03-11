@@ -28,9 +28,11 @@ spec:
       {{- include "scanner.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: telemetry
-    bearerTokenSecret:
-      name: {{ include "scanner.fullname" . }}-prometheus-token
-      key: token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "scanner.fullname" . }}-prometheus-token
+        key: token
     scheme: http
     interval: 10s
     honorLabels: true
