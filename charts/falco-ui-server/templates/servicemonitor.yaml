@@ -1,4 +1,13 @@
 {{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "falco-ui-server.fullname" . }}-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ include "falco-ui-server.serviceAccountName" . | quote }}
+type: kubernetes.io/service-account-token
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -19,7 +28,11 @@ spec:
       {{- include "falco-ui-server.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: api
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "falco-ui-server.fullname" . }}-token
+        key: token
     scheme: https
     interval: 10s
     honorLabels: true
@@ -30,7 +43,11 @@ spec:
           key: ca.crt
       serverName: "{{ include "falco-ui-server.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "falco-ui-server.fullname" . }}-token
+        key: token
     path: /falcometrics
     honorLabels: true
     scheme: http

@@ -1,4 +1,13 @@
 {{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "scanner.fullname" . }}-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ include "scanner.serviceAccountName" . | quote }}
+type: kubernetes.io/service-account-token
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -19,7 +28,11 @@ spec:
       {{- include "scanner.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: telemetry
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "scanner.fullname" . }}-token
+        key: token
     scheme: http
     interval: 10s
     honorLabels: true

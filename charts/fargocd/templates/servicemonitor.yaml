@@ -1,4 +1,13 @@
 {{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "fargocd.fullname" . }}-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ include "fargocd.serviceAccountName" . | quote }}
+type: kubernetes.io/service-account-token
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -18,7 +27,11 @@ spec:
     matchLabels:
       {{- include "fargocd.selectorLabels" . | nindent 6 }}
   endpoints:
-  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  - authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "fargocd.fullname" . }}-token
+        key: token
     path: /metrics
     port: metrics
     scheme: https
