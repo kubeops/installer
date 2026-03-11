@@ -1,4 +1,13 @@
 {{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "petset.fullname" . }}-prometheus-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ include "petset.serviceAccountName" . | quote }}
+type: kubernetes.io/service-account-token
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -18,7 +27,9 @@ spec:
     matchLabels:
       {{- include "petset.selectorLabels" . | nindent 6 }}
   endpoints:
-  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  - bearerTokenSecret:
+      name: {{ include "petset.fullname" . }}-prometheus-token
+      key: token
     path: /metrics
     port: metrics
     scheme: https

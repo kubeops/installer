@@ -4,6 +4,15 @@
 {{- $_ := set $labels "app.kubernetes.io/name" (include "panopticon.name" .) }}
 {{- $_ := set $labels "app.kubernetes.io/instance" .Release.Name }}
 
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "panopticon.fullname" . }}-prometheus-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ include "panopticon.serviceAccountName" . | quote }}
+type: kubernetes.io/service-account-token
+---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -20,7 +29,9 @@ spec:
       {{- include "panopticon.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: api
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    bearerTokenSecret:
+      name: {{ include "panopticon.fullname" . }}-prometheus-token
+      key: token
     scheme: https
     interval: 10s
     honorLabels: true
@@ -31,7 +42,9 @@ spec:
           key: ca.crt
       serverName: "{{ include "panopticon.fullname" . }}.{{ .Release.Namespace }}.svc"
   - port: telemetry
-    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    bearerTokenSecret:
+      name: {{ include "panopticon.fullname" . }}-prometheus-token
+      key: token
     scheme: http
     interval: 10s
     honorLabels: true
