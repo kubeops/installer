@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "supervisor.fullname" . }}-prometheus-token
+  name: {{ include "supervisor.fullname" . }}-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "supervisor.serviceAccountName" . | quote }}
@@ -30,7 +30,7 @@ spec:
   - authorization:
       type: Bearer
       credentials:
-        name: {{ include "supervisor.fullname" . }}-prometheus-token
+        name: {{ include "supervisor.fullname" . }}-token
         key: token
     path: /metrics
     port: metrics

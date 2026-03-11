@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "scanner.fullname" . }}-prometheus-token
+  name: {{ include "scanner.fullname" . }}-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "scanner.serviceAccountName" . | quote }}
@@ -31,7 +31,7 @@ spec:
     authorization:
       type: Bearer
       credentials:
-        name: {{ include "scanner.fullname" . }}-prometheus-token
+        name: {{ include "scanner.fullname" . }}-token
         key: token
     scheme: http
     interval: 10s

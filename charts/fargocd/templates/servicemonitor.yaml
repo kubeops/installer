@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "fargocd.fullname" . }}-prometheus-token
+  name: {{ include "fargocd.fullname" . }}-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "fargocd.serviceAccountName" . | quote }}
@@ -30,7 +30,7 @@ spec:
   - authorization:
       type: Bearer
       credentials:
-        name: {{ include "fargocd.fullname" . }}-prometheus-token
+        name: {{ include "fargocd.fullname" . }}-token
         key: token
     path: /metrics
     port: metrics

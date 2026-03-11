@@ -7,7 +7,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "panopticon.fullname" . }}-prometheus-token
+  name: {{ include "panopticon.fullname" . }}-token
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/service-account.name: {{ include "panopticon.serviceAccountName" . | quote }}
@@ -32,7 +32,7 @@ spec:
     authorization:
       type: Bearer
       credentials:
-        name: {{ include "panopticon.fullname" . }}-prometheus-token
+        name: {{ include "panopticon.fullname" . }}-token
         key: token
     scheme: https
     interval: 10s
@@ -47,7 +47,7 @@ spec:
     authorization:
       type: Bearer
       credentials:
-        name: {{ include "panopticon.fullname" . }}-prometheus-token
+        name: {{ include "panopticon.fullname" . }}-token
         key: token
     scheme: http
     interval: 10s
