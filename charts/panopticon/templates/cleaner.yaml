@@ -18,8 +18,13 @@ spec:
       serviceAccountName: {{ include "panopticon.serviceAccountName" . }}
       containers:
       - name: busybox
+        {{- if eq "true" ( include "distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.cleaner.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.cleaner.securityContext | nindent 10 }}
+        {{- end }}
         image: {{ include "cleaner.registry" . }}/{{ .Values.cleaner.repository }}:{{ .Values.cleaner.tag }}{{ include "operator.ubi" . }}
         command:
           - sh
@@ -29,8 +34,13 @@ spec:
            kubectl delete apiservice v1alpha1.validators.metrics.appscode.com || true;"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
       restartPolicy: Never
+      {{- if eq "true" ( include "distro.openshift" . ) }}
+      securityContext:
+        {{- toYaml (omit .Values.podSecurityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 8 }}
+      {{- else }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
     {{- if or .Values.tolerations }}
       tolerations:
       {{- with .Values.tolerations }}
