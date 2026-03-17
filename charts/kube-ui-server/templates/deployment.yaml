@@ -55,6 +55,9 @@ spec:
         - --authorization-always-allow-paths=/readyz
         - --authorization-always-allow-paths=/livez
         - --authorization-always-allow-paths=/metrics
+      {{- if eq "true" ( include "distro.openshift" . ) }}
+        - --prometheus.bearer-token-file=/var/run/secrets/kubernetes.io/serviceaccount/token
+      {{- end }}
         - --use-kubeapiserver-fqdn-for-aks={{ .Values.apiserver.useKubeapiserverFqdnForAks }}
     {{- with .Values.prometheus }}
       {{- with .address }}
