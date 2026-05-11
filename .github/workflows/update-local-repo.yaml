@@ -42,8 +42,8 @@ jobs:
 
       - name: Prepare git
         env:
-          GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo $GITHUB_SERVER_URL
           git config user.name "${GITHUB_USER}"
@@ -54,6 +54,6 @@ jobs:
       - name: Update Local Helm repo
         env:
           GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./hack/scripts/trigger.sh
