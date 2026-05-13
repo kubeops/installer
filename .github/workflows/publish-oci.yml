@@ -31,8 +31,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: 1gtm
+          password: ${{ secrets.LGTM_GITHUB_TOKEN }}
 
       - name: Install Helm 3
         run: |
@@ -41,8 +41,8 @@ jobs:
       - name: Clone charts repository
         env:
           GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHART_REPOSITORY: github.com/appscode/charts
+          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          CHART_REPOSITORY: ${{ secrets.CHART_REPOSITORY }}
         run: |
           url="https://${GITHUB_USER}:${GITHUB_TOKEN}@${CHART_REPOSITORY}.git"
           cd $RUNNER_WORKSPACE
@@ -54,8 +54,8 @@ jobs:
       - name: Publish OCI charts
         env:
           GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHART_REPOSITORY: github.com/appscode/charts
+          GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
+          CHART_REPOSITORY: ${{ secrets.CHART_REPOSITORY }}
         run: |
           export REGISTRY_0=oci://ghcr.io/appscode-charts
           ./hack/scripts/update-chart-dependencies.sh
