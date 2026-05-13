@@ -53,7 +53,6 @@ jobs:
 
       - name: Publish OCI charts
         env:
-          GITHUB_USER: 1gtm
           GITHUB_TOKEN: ${{ secrets.LGTM_GITHUB_TOKEN }}
           CHART_REPOSITORY: ${{ secrets.CHART_REPOSITORY }}
         run: |
