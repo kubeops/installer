@@ -7,6 +7,10 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
@@ -15,7 +19,9 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
 
       - name: Prepare Host
         run: |
@@ -34,11 +40,6 @@ jobs:
           curl -fsSL -o uibuilder-tools https://github.com/kmodules/uibuilder-tools/releases/download/v0.0.1/uibuilder-tools-linux-amd64
           chmod +x uibuilder-tools
           sudo mv ./uibuilder-tools /usr/local/bin/uibuilder-tools
-
-      - name: Install GitHub CLI
-        run: |
-          curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
-          sudo mv bin/hub /usr/local/bin
 
       - name: Prepare git
         env:
