@@ -109,6 +109,9 @@ monitoring:
 
 networkPolicy:
   enabled: false
+  # flavor selects which network policy API is used.
+  # Accepted values: "kubernetes" (default) or "cilium".
+  flavor: kubernetes
 
 distro:
   # Set true, if installed in OpenShift
