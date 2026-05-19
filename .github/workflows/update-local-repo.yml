@@ -54,7 +54,7 @@ jobs:
 
       - name: Update Local Helm repo
         env:
-          GITHUB_USER: 1gtm
+          GITHUB_USER: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./hack/scripts/trigger.sh
