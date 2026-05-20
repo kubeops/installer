@@ -7,10 +7,6 @@ on:
 
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
@@ -23,10 +19,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate LGTM App token
+        id: lgtm-app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.LGTM_APP_CLIENT_ID }}
+          private-key: ${{ secrets.LGTM_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: installer
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: Prepare Host
         run: |
           # install helm
-          curl -LO https://github.com/kubepack/helm/releases/download/ac-1.21.0/helm
+          curl -fsSL -O https://github.com/kubepack/helm/releases/download/ac-1.21.0/helm
           chmod +x ./helm
           sudo mv ./helm /usr/local/bin/helm
           # install yq
@@ -43,8 +50,8 @@ jobs:
 
       - name: Prepare git
         env:
-          GITHUB_USER: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: 1gtm
+          GITHUB_TOKEN: ${{ steps.lgtm-app-token.outputs.token }}
         run: |
           echo $GITHUB_SERVER_URL
           git config user.name "${GITHUB_USER}"
@@ -54,7 +61,6 @@ jobs:
 
       - name: Update Local Helm repo
         env:
-          GITHUB_USER: 1gtm
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.lgtm-app-token.outputs.token }}
         run: |
           ./hack/scripts/trigger.sh
