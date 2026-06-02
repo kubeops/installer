@@ -112,9 +112,15 @@ type FargocdArgocd struct {
 	ClusterName string `json:"clusterName"`
 	// KubeconfigSecret is the name of a Secret (in the release namespace)
 	// whose key `kubeconfig` holds the kubeconfig for the Argo CD
-	// principal cluster. Required in managed mode.
+	// principal cluster. Required in managed mode if Kubeconfig is empty.
 	// +optional
 	KubeconfigSecret string `json:"kubeconfigSecret"`
+	// Kubeconfig is the raw kubeconfig content for the Argo CD principal
+	// cluster. When set, the chart creates a Secret containing this
+	// kubeconfig and mounts it into the operator pod. Either Kubeconfig
+	// or KubeconfigSecret is required in managed mode.
+	// +optional
+	Kubeconfig string `json:"kubeconfig"`
 }
 
 type FargocdApiserver struct {

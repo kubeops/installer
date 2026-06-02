@@ -70,6 +70,26 @@ Returns the appscode license
 {{- end }}
 
 {{/*
+Returns the raw kubeconfig for the Argo CD principal cluster
+*/}}
+{{- define "argocd.kubeconfig" -}}
+{{- .Values.argocd.kubeconfig }}
+{{- end }}
+
+{{/*
+Returns the name of the Secret holding the Argo CD kubeconfig.
+Prefers an existing Secret named via argocd.kubeconfigSecret; otherwise
+derives a chart-owned name when argocd.kubeconfig content is provided.
+*/}}
+{{- define "argocd.kubeconfigSecretName" -}}
+{{- if .Values.argocd.kubeconfigSecret }}
+{{- .Values.argocd.kubeconfigSecret -}}
+{{- else if .Values.argocd.kubeconfig }}
+{{- printf "%s-argo-kubeconfig" (include "fargocd.fullname" .) -}}
+{{- end }}
+{{- end }}
+
+{{/*
 Returns the registry used for operator docker image
 */}}
 {{- define "image.registry" -}}

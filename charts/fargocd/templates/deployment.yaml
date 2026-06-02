@@ -86,12 +86,12 @@ spec:
         {{- with .Values.argocd.clusterName }}
         - --cluster-name={{ . }}
         {{- end }}
-        {{- if .Values.argocd.kubeconfigSecret }}
+        {{- if include "argocd.kubeconfigSecretName" . }}
         - --argo-kubeconfig=/etc/fargocd/argo/kubeconfig
         {{- end }}
         {{- if eq .Values.argocd.mode "managed" }}
-        {{- if not .Values.argocd.kubeconfigSecret }}
-        {{- fail "argocd.kubeconfigSecret is required when argocd.mode is managed" }}
+        {{- if not (include "argocd.kubeconfigSecretName" .) }}
+        {{- fail "argocd.kubeconfig or argocd.kubeconfigSecret is required when argocd.mode is managed" }}
         {{- end }}
         {{- if not .Values.argocd.clusterName }}
         {{- fail "argocd.clusterName is required when argocd.mode is managed" }}
@@ -135,7 +135,7 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
-        {{- if .Values.argocd.kubeconfigSecret }}
+        {{- if include "argocd.kubeconfigSecretName" . }}
         - mountPath: /etc/fargocd/argo
           name: argo-kubeconfig
           readOnly: true
@@ -145,11 +145,11 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "fargocd.fullname" . }}-cert
-      {{- if .Values.argocd.kubeconfigSecret }}
+      {{- if include "argocd.kubeconfigSecretName" . }}
       - name: argo-kubeconfig
         secret:
           defaultMode: 420
-          secretName: {{ .Values.argocd.kubeconfigSecret }}
+          secretName: {{ include "argocd.kubeconfigSecretName" . }}
       {{- end }}
       {{- if eq "true" ( include "distro.openshift" . ) }}
       securityContext:
