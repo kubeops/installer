@@ -1,0 +1,19 @@
+project:
+  name: FluxCD to ArgoCD Bridge OCM AddOn Manager
+  shortName: FluxCD to ArgoCD Bridge Manager
+  url: https://github.com/kubeops/fargocd
+  description: FluxCD to ArgoCD Bridge OCM AddOn Manager
+  app: a FluxCD to ArgoCD Bridge OCM AddOn Manager
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: fargocd-manager
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.29+
+- Open Cluster Management (https://open-cluster-management.io) hub
+release:
+  name: fargocd-manager
+  namespace: open-cluster-management-fargocd

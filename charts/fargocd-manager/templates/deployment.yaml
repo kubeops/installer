@@ -1,0 +1,111 @@
+{{- if and (eq .Values.argocd.mode "managed") (not (include "argocd.kubeconfigSecretName" .)) (not .Values.argocd.kubeconfigSpokeSecret) }}
+{{- fail "argocd.kubeconfig, argocd.kubeconfigSecret, or argocd.kubeconfigSpokeSecret is required when argocd.mode is managed" }}
+{{- end }}
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: fargocd-manager
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fargocd-manager.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "fargocd-manager.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fargocd-manager.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.kubeconfigSecretName }}
+      automountServiceAccountToken: false
+      {{- else }}
+      serviceAccount: fargocd-manager
+      automountServiceAccountToken: true
+      {{- end }}
+      containers:
+        - name: manager
+          image: {{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          args:
+            - manager
+            {{- if .Values.kubeconfigSecretName }}
+            - --kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+            {{- end }}
+            - --registryFQDN={{ .Values.registryFQDN }}
+            - --mode={{ .Values.argocd.mode }}
+            {{- with .Values.argocd.namespace }}
+            - --argo-namespace={{ . }}
+            {{- end }}
+            {{- with .Values.argocd.destServer }}
+            - --argo-dest-server={{ . }}
+            {{- end }}
+            {{- with .Values.argocd.destName }}
+            - --argo-dest-name={{ . }}
+            {{- end }}
+            {{- with .Values.argocd.project }}
+            - --argo-project={{ . }}
+            {{- end }}
+            {{- if include "argocd.kubeconfigSecretName" . }}
+            - --argo-kubeconfig-file=/var/run/secrets/fargocd/argo/kubeconfig
+            {{- end }}
+            {{- with .Values.argocd.kubeconfigSpokeSecret }}
+            - --argo-kubeconfig-secret={{ . }}
+            {{- end }}
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+          {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+          {{- if eq "true" ( include "distro.openshift" . ) }}
+          securityContext:
+            {{- toYaml (omit .Values.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 12 }}
+          {{- else }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            # readOnlyRootFilesystem: true blocks the addon-framework
+            # controller cmdfactory from writing its serving-cert temp
+            # dir under /tmp; mount an emptyDir there so it succeeds.
+            - mountPath: /tmp
+              name: tmp-dir
+          {{- if .Values.kubeconfigSecretName }}
+            - mountPath: /var/run/secrets/ocm/auth
+              name: ocm-auth
+              readOnly: true
+          {{- end }}
+          {{- if include "argocd.kubeconfigSecretName" . }}
+            - mountPath: /var/run/secrets/fargocd/argo
+              name: argo-kubeconfig
+              readOnly: true
+          {{- end }}
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
+        {{- if .Values.kubeconfigSecretName }}
+        - name: ocm-auth
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.kubeconfigSecretName }}
+        {{- end }}
+        {{- if include "argocd.kubeconfigSecretName" . }}
+        - name: argo-kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: {{ include "argocd.kubeconfigSecretName" . }}
+        {{- end }}

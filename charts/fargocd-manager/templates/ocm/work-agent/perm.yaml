@@ -1,0 +1,35 @@
+# ManifestWorkReplicaSet that ships a ClusterRole to each spoke. The role
+# is aggregated into the klusterlet-work agent's ClusterRole via the
+# `open-cluster-management.io/aggregate-to-work: true` label, granting it
+# the cluster-scoped permissions the fargocd installer chart needs to
+# install CRDs (HelmRepository, HelmRelease, cert-manager) and bind RBAC
+# for the operator on the spoke.
+apiVersion: work.open-cluster-management.io/v1alpha1
+kind: ManifestWorkReplicaSet
+metadata:
+  name: fargocd-agent
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fargocd-manager.labels" . | nindent 4 }}
+spec:
+  placementRefs:
+    - name: {{ .Values.placement.name }}
+  manifestWorkTemplate:
+    workload:
+      manifests:
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: open-cluster-management:klusterlet-work:fargocd
+            labels:
+              open-cluster-management.io/aggregate-to-work: "true"
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["*"]
+            - apiGroups: ["rbac.authorization.k8s.io"]
+              resources: ["clusterroles", "clusterrolebindings"]
+              verbs: ["*"]
+            - apiGroups: [""]
+              resources: ["namespaces"]
+              verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
