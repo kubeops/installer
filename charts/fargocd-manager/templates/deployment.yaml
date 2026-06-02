@@ -79,6 +79,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
           volumeMounts:
+            # readOnlyRootFilesystem: true blocks the addon-framework
+            # controller cmdfactory from writing its serving-cert temp
+            # dir under /tmp; mount an emptyDir there so it succeeds.
+            - mountPath: /tmp
+              name: tmp-dir
           {{- if .Values.kubeconfigSecretName }}
             - mountPath: /var/run/secrets/ocm/auth
               name: ocm-auth
@@ -90,6 +95,8 @@ spec:
               readOnly: true
           {{- end }}
       volumes:
+        - name: tmp-dir
+          emptyDir: {}
         {{- if .Values.kubeconfigSecretName }}
         - name: ocm-auth
           secret:
