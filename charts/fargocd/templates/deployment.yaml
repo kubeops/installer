@@ -70,6 +70,33 @@ spec:
         - --metrics-bind-address=:8443
         - --health-probe-bind-address=:8081
         - --cert-dir=/var/serving-cert
+        - --mode={{ .Values.fargocd.mode }}
+        {{- with .Values.fargocd.argoNamespace }}
+        - --argo-namespace={{ . }}
+        {{- end }}
+        {{- with .Values.fargocd.argoDestServer }}
+        - --argo-dest-server={{ . }}
+        {{- end }}
+        {{- with .Values.fargocd.argoDestName }}
+        - --argo-dest-name={{ . }}
+        {{- end }}
+        {{- with .Values.fargocd.argoProject }}
+        - --argo-project={{ . }}
+        {{- end }}
+        {{- with .Values.fargocd.clusterName }}
+        - --cluster-name={{ . }}
+        {{- end }}
+        {{- if .Values.fargocd.argoKubeconfigSecret }}
+        - --argo-kubeconfig=/etc/fargocd/argo/kubeconfig
+        {{- end }}
+        {{- if eq .Values.fargocd.mode "managed" }}
+        {{- if not .Values.fargocd.argoKubeconfigSecret }}
+        {{- fail "fargocd.argoKubeconfigSecret is required when fargocd.mode is managed" }}
+        {{- end }}
+        {{- if not .Values.fargocd.clusterName }}
+        {{- fail "fargocd.clusterName is required when fargocd.mode is managed" }}
+        {{- end }}
+        {{- end }}
         env:
         - name: POD_NAME
           valueFrom:
@@ -108,11 +135,22 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
+        {{- if .Values.fargocd.argoKubeconfigSecret }}
+        - mountPath: /etc/fargocd/argo
+          name: argo-kubeconfig
+          readOnly: true
+        {{- end }}
       volumes:
       - name: serving-cert
         secret:
           defaultMode: 420
           secretName: {{ include "fargocd.fullname" . }}-cert
+      {{- if .Values.fargocd.argoKubeconfigSecret }}
+      - name: argo-kubeconfig
+        secret:
+          defaultMode: 420
+          secretName: {{ .Values.fargocd.argoKubeconfigSecret }}
+      {{- end }}
       {{- if eq "true" ( include "distro.openshift" . ) }}
       securityContext:
         {{- toYaml (omit .Values.podSecurityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 8 }}

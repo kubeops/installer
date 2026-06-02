@@ -1331,6 +1331,29 @@ properties:
     - openshift
     - ubi
     type: object
+  fargocd:
+    properties:
+      argoDestName:
+        type: string
+      argoDestServer:
+        type: string
+      argoKubeconfigSecret:
+        type: string
+      argoNamespace:
+        type: string
+      argoProject:
+        type: string
+      clusterName:
+        type: string
+      mode:
+        enum:
+        - in-cluster
+        - autonomous
+        - managed
+        type: string
+    required:
+    - mode
+    type: object
   fullnameOverride:
     type: string
   image:
@@ -2124,6 +2147,7 @@ properties:
     type: array
 required:
 - apiserver
+- fargocd
 - image
 - imagePullPolicy
 - monitoring
