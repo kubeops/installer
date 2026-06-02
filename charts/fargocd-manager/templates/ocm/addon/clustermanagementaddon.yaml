@@ -1,0 +1,17 @@
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: ClusterManagementAddOn
+metadata:
+  name: fargocd
+  annotations:
+    addon.open-cluster-management.io/lifecycle: "addon-manager"
+  labels:
+    {{- include "fargocd-manager.labels" . | nindent 4 }}
+spec:
+  addOnMeta:
+    displayName: {{ .Chart.Name }}
+    description: {{ .Chart.Description }}
+  installStrategy:
+    type: Placements
+    placements:
+      - name: {{ .Values.placement.name }}
+        namespace: {{ .Release.Namespace }}

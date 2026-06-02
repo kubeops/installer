@@ -1,0 +1,16 @@
+apiVersion: v2
+name: fargocd-manager
+description: FluxCD to ArgoCD Bridge OCM AddOn Manager
+type: application
+version: v2026.2.16
+appVersion: v0.0.3
+kubeVersion: ">=1.29.0-0"
+annotations:
+  charts.openshift.io/name: fargocd-manager
+home: https://github.com/kubeops/fargocd
+icon: https://cdn.appscode.com/images/products/bytebuilders/icons/android-icon-192x192.png
+sources:
+- https://github.com/kubeops/fargocd
+maintainers:
+- name: appscode
+  email: support@appscode.com
