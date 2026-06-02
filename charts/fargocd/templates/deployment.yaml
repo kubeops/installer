@@ -70,31 +70,31 @@ spec:
         - --metrics-bind-address=:8443
         - --health-probe-bind-address=:8081
         - --cert-dir=/var/serving-cert
-        - --mode={{ .Values.fargocd.mode }}
-        {{- with .Values.fargocd.argoNamespace }}
+        - --mode={{ .Values.argocd.mode }}
+        {{- with .Values.argocd.namespace }}
         - --argo-namespace={{ . }}
         {{- end }}
-        {{- with .Values.fargocd.argoDestServer }}
+        {{- with .Values.argocd.destServer }}
         - --argo-dest-server={{ . }}
         {{- end }}
-        {{- with .Values.fargocd.argoDestName }}
+        {{- with .Values.argocd.destName }}
         - --argo-dest-name={{ . }}
         {{- end }}
-        {{- with .Values.fargocd.argoProject }}
+        {{- with .Values.argocd.project }}
         - --argo-project={{ . }}
         {{- end }}
-        {{- with .Values.fargocd.clusterName }}
+        {{- with .Values.argocd.clusterName }}
         - --cluster-name={{ . }}
         {{- end }}
-        {{- if .Values.fargocd.argoKubeconfigSecret }}
+        {{- if .Values.argocd.kubeconfigSecret }}
         - --argo-kubeconfig=/etc/fargocd/argo/kubeconfig
         {{- end }}
-        {{- if eq .Values.fargocd.mode "managed" }}
-        {{- if not .Values.fargocd.argoKubeconfigSecret }}
-        {{- fail "fargocd.argoKubeconfigSecret is required when fargocd.mode is managed" }}
+        {{- if eq .Values.argocd.mode "managed" }}
+        {{- if not .Values.argocd.kubeconfigSecret }}
+        {{- fail "argocd.kubeconfigSecret is required when argocd.mode is managed" }}
         {{- end }}
-        {{- if not .Values.fargocd.clusterName }}
-        {{- fail "fargocd.clusterName is required when fargocd.mode is managed" }}
+        {{- if not .Values.argocd.clusterName }}
+        {{- fail "argocd.clusterName is required when argocd.mode is managed" }}
         {{- end }}
         {{- end }}
         env:
@@ -135,7 +135,7 @@ spec:
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
-        {{- if .Values.fargocd.argoKubeconfigSecret }}
+        {{- if .Values.argocd.kubeconfigSecret }}
         - mountPath: /etc/fargocd/argo
           name: argo-kubeconfig
           readOnly: true
@@ -145,11 +145,11 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "fargocd.fullname" . }}-cert
-      {{- if .Values.fargocd.argoKubeconfigSecret }}
+      {{- if .Values.argocd.kubeconfigSecret }}
       - name: argo-kubeconfig
         secret:
           defaultMode: 420
-          secretName: {{ .Values.fargocd.argoKubeconfigSecret }}
+          secretName: {{ .Values.argocd.kubeconfigSecret }}
       {{- end }}
       {{- if eq "true" ( include "distro.openshift" . ) }}
       securityContext:

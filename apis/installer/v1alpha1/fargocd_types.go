@@ -84,6 +84,37 @@ type FargocdSpec struct {
 	NetworkPolicy NetworkPolicySpec `json:"networkPolicy"`
 	// +optional
 	Distro shared.DistroSpec `json:"distro"`
+	Argocd FargocdArgocd     `json:"argocd"`
+}
+
+// FargocdArgocd configures how the controller talks to Argo CD. It
+// mirrors the `fargocd run` flags.
+type FargocdArgocd struct {
+	// Mode is one of "in-cluster", "autonomous", or "managed".
+	// +kubebuilder:validation:Enum=in-cluster;autonomous;managed
+	Mode string `json:"mode"`
+	// Namespace overrides argocd-server namespace auto-discovery.
+	// +optional
+	Namespace string `json:"namespace"`
+	// DestServer is written into Application.spec.destination.server.
+	// +optional
+	DestServer string `json:"destServer"`
+	// DestName is written into Application.spec.destination.name; used
+	// when Argo CD references the workload cluster by symbolic name.
+	// +optional
+	DestName string `json:"destName"`
+	// Project is the Argo CD Project assigned to generated Applications.
+	// +optional
+	Project string `json:"project"`
+	// ClusterName is the symbolic name of the workload cluster.
+	// Required in managed mode.
+	// +optional
+	ClusterName string `json:"clusterName"`
+	// KubeconfigSecret is the name of a Secret (in the release namespace)
+	// whose key `kubeconfig` holds the kubeconfig for the Argo CD
+	// principal cluster. Required in managed mode.
+	// +optional
+	KubeconfigSecret string `json:"kubeconfigSecret"`
 }
 
 type FargocdApiserver struct {

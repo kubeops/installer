@@ -1315,6 +1315,29 @@ properties:
     - healthcheck
     - servingCerts
     type: object
+  argocd:
+    properties:
+      clusterName:
+        type: string
+      destName:
+        type: string
+      destServer:
+        type: string
+      kubeconfigSecret:
+        type: string
+      mode:
+        enum:
+        - in-cluster
+        - autonomous
+        - managed
+        type: string
+      namespace:
+        type: string
+      project:
+        type: string
+    required:
+    - mode
+    type: object
   criticalAddon:
     type: boolean
   distro:
@@ -1330,29 +1353,6 @@ properties:
     required:
     - openshift
     - ubi
-    type: object
-  fargocd:
-    properties:
-      argoDestName:
-        type: string
-      argoDestServer:
-        type: string
-      argoKubeconfigSecret:
-        type: string
-      argoNamespace:
-        type: string
-      argoProject:
-        type: string
-      clusterName:
-        type: string
-      mode:
-        enum:
-        - in-cluster
-        - autonomous
-        - managed
-        type: string
-    required:
-    - mode
     type: object
   fullnameOverride:
     type: string
@@ -2147,7 +2147,7 @@ properties:
     type: array
 required:
 - apiserver
-- fargocd
+- argocd
 - image
 - imagePullPolicy
 - monitoring
