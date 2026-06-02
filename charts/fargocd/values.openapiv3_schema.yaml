@@ -1315,6 +1315,48 @@ properties:
     - healthcheck
     - servingCerts
     type: object
+  argocd:
+    description: 'FargocdArgocd configures how the controller talks to Argo CD. It
+
+      mirrors the `fargocd run` flags.'
+    properties:
+      clusterName:
+        description: 'ClusterName is the symbolic name of the workload cluster.
+
+          Required in managed mode.'
+        type: string
+      destName:
+        description: 'DestName is written into Application.spec.destination.name;
+          used
+
+          when Argo CD references the workload cluster by symbolic name.'
+        type: string
+      destServer:
+        description: DestServer is written into Application.spec.destination.server.
+        type: string
+      kubeconfigSecret:
+        description: 'KubeconfigSecret is the name of a Secret (in the release namespace)
+
+          whose key `kubeconfig` holds the kubeconfig for the Argo CD
+
+          principal cluster. Required in managed mode.'
+        type: string
+      mode:
+        description: Mode is one of "in-cluster", "autonomous", or "managed".
+        enum:
+        - in-cluster
+        - autonomous
+        - managed
+        type: string
+      namespace:
+        description: Namespace overrides argocd-server namespace auto-discovery.
+        type: string
+      project:
+        description: Project is the Argo CD Project assigned to generated Applications.
+        type: string
+    required:
+    - mode
+    type: object
   criticalAddon:
     type: boolean
   distro:
@@ -2124,6 +2166,7 @@ properties:
     type: array
 required:
 - apiserver
+- argocd
 - image
 - imagePullPolicy
 - monitoring

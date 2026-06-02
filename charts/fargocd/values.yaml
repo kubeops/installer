@@ -115,3 +115,32 @@ distro:
   openshift: false
   # Set operator or all to use ubi images
   ubi: ""
+
+# Configuration for how the controller talks to Argo CD. Mirrors the flags
+# exposed by `fargocd run`; see https://github.com/kubeops/fargocd.
+argocd:
+  # How fargocd talks to Argo CD. One of:
+  #   in-cluster — Argo CD runs in the same cluster as this controller.
+  #   autonomous — argocd-agent in autonomous mode runs alongside the workload.
+  #   managed    — argocd-agent principal lives on a remote cluster.
+  mode: in-cluster
+  # Namespace on the Argo CD cluster where Applications are written.
+  # Auto-discovered when empty (uses the namespace of the Service labelled
+  # app.kubernetes.io/name=argocd-server).
+  namespace: ""
+  # Application.spec.destination.server. Defaults to the in-cluster API server.
+  destServer: "https://kubernetes.default.svc"
+  # Application.spec.destination.name. Set when Argo CD references the
+  # workload cluster by symbolic name (typical in managed mode).
+  destName: ""
+  # Argo CD Project assigned to generated Applications.
+  project: default
+  # Symbolic name of the workload cluster. Required when argocd.mode=managed
+  # — used as the suffix for Application names and as the agent-name label
+  # so one principal can serve many clusters without collisions.
+  clusterName: ""
+  # Required when argocd.mode=managed: name of an existing Secret in the
+  # release namespace whose data key `kubeconfig` holds a kubeconfig for the
+  # Argo CD principal cluster. The Secret is mounted into the operator pod
+  # and the kubeconfig path is passed to `fargocd run --argo-kubeconfig`.
+  kubeconfigSecret: ""
