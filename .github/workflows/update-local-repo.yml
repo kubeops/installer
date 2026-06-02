@@ -18,6 +18,13 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0
+          # Don't let actions/checkout install an http.extraheader carrying
+          # the auto-injected GITHUB_TOKEN — it would otherwise override the
+          # LGTM-app credentials embedded in the remote URL by the
+          # "Prepare git" step below, causing the push in trigger.sh to fail
+          # with a 403 ("Permission to kubeops/installer.git denied to
+          # github-actions[bot]").
+          persist-credentials: false
 
       - name: Generate LGTM App token
         id: lgtm-app-token
