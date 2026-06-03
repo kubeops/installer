@@ -113,9 +113,6 @@ spec:
         - containerPort: 8443
           name: metrics
           protocol: TCP
-        - containerPort: 9443
-          name: https
-          protocol: TCP
       {{- if .Values.apiserver.healthcheck.enabled }}
         readinessProbe:
           httpGet:

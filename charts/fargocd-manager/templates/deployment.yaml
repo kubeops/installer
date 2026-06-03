@@ -78,6 +78,25 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
+          ports:
+            - containerPort: 8081
+              name: probes
+              protocol: TCP
+            - containerPort: 8443
+              name: metrics
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: probes
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: probes
+            initialDelaySeconds: 5
+            periodSeconds: 10
           volumeMounts:
             # readOnlyRootFilesystem: true blocks the addon-framework
             # controller cmdfactory from writing its serving-cert temp
