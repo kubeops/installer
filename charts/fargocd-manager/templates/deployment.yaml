@@ -79,22 +79,21 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           {{- end }}
           ports:
-            - containerPort: 8081
-              name: probes
-              protocol: TCP
             - containerPort: 8443
               name: metrics
               protocol: TCP
           readinessProbe:
             httpGet:
               path: /healthz
-              port: probes
+              port: metrics
+              scheme: HTTPS
             initialDelaySeconds: 15
             periodSeconds: 20
           livenessProbe:
             httpGet:
               path: /healthz
-              port: probes
+              port: metrics
+              scheme: HTTPS
             initialDelaySeconds: 5
             periodSeconds: 10
           volumeMounts:
