@@ -58,6 +58,29 @@ Returns whether the OpenShift distribution is used
 {{- end }}
 
 {{/*
+Returns the enabled monitoring agent name
+*/}}
+{{- define "monitoring.agent" -}}
+{{- .Values.monitoring.agent }}
+{{- end }}
+
+{{/*
+Returns whether the ServiceMonitor will be labeled with custom label
+*/}}
+{{- define "monitoring.apply-servicemonitor-label" -}}
+{{- ternary "false" "true" ( empty .Values.monitoring.serviceMonitor.labels ) -}}
+{{- end }}
+
+{{/*
+Returns the ServiceMonitor labels
+*/}}
+{{- define "monitoring.servicemonitor-label" -}}
+{{- range $key, $val := .Values.monitoring.serviceMonitor.labels }}
+{{ $key }}: {{ $val }}
+{{- end }}
+{{- end }}
+
+{{/*
 Returns the raw Argo CD principal kubeconfig
 */}}
 {{- define "argocd.kubeconfig" -}}

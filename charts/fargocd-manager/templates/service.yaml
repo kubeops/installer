@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fargocd.fullname" . }}
+  name: {{ include "fargocd-manager.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "fargocd.labels" . | nindent 4 }}
+    {{- include "fargocd-manager.labels" . | nindent 4 }}
 {{- if eq "prometheus.io/builtin" ( include "monitoring.agent" . ) }}
   annotations:
     prometheus.io/scrape: "true"
@@ -19,4 +19,4 @@ spec:
     protocol: TCP
     targetPort: metrics
   selector:
-    {{- include "fargocd.selectorLabels" . | nindent 4 }}
+    {{- include "fargocd-manager.selectorLabels" . | nindent 4 }}

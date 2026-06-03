@@ -1,0 +1,43 @@
+{{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "fargocd-manager.fullname" . }}-metrics-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: "fargocd-manager"
+type: kubernetes.io/service-account-token
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "fargocd-manager.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- if eq "true" ( include "monitoring.apply-servicemonitor-label" . ) }}
+    {{- include "monitoring.servicemonitor-label" . | nindent 4 }}
+  {{- else }}
+    {{- include "fargocd-manager.selectorLabels" . | nindent 4 }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{- include "fargocd-manager.selectorLabels" . | nindent 6 }}
+  endpoints:
+  - authorization:
+      type: Bearer
+      credentials:
+        name: {{ include "fargocd-manager.fullname" . }}-metrics-token
+        key: token
+    path: /metrics
+    port: metrics
+    scheme: https
+    tlsConfig:
+      # OCM addon-framework generates a self-signed serving cert at
+      # runtime with SAN=localhost,127.0.0.1, which won't match the
+      # service DNS name. Skip verification.
+      insecureSkipVerify: true
+{{- end }}
