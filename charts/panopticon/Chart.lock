@@ -1,6 +1,6 @@
 dependencies:
 - name: ace-user-roles
   repository: file://../ace-user-roles
-  version: v2026.2.16
-digest: sha256:8ebb50d898e45afa11b04daf76165c2fb22f95a7a59568d28fbc592d3f20d748
-generated: "2026-02-18T07:11:39.889616+05:30"
+  version: v2026.6.12
+digest: sha256:02eb658e99201f139350aa6d4933467948547f562342cf455bd750659d8ceab4
+generated: "2026-06-04T13:37:16.766199+06:00"
