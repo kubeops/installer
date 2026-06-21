@@ -1,13 +1,13 @@
 module kubeops.dev/installer
 
-go 1.25
+go 1.25.0
 
 require (
 	github.com/google/gofuzz v1.2.0
 	k8s.io/api v0.34.3
 	k8s.io/apimachinery v0.34.3
-	kmodules.xyz/image-packer v0.0.0-20260603060232-aba754904b6a
-	kmodules.xyz/resource-metadata v0.46.0
+	kmodules.xyz/image-packer v0.0.0-20260621104135-d6091139328a
+	kmodules.xyz/resource-metadata v0.47.0
 	kmodules.xyz/schema-checker v0.4.2
 )
 
@@ -76,13 +76,13 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.46.0 // indirect
-	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
 	golang.org/x/oauth2 v0.33.0 // indirect
-	golang.org/x/sync v0.19.0 // indirect
-	golang.org/x/sys v0.40.0 // indirect
-	golang.org/x/term v0.38.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/sync v0.20.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/term v0.43.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	gomodules.xyz/go-sh v0.1.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
