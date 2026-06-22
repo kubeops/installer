@@ -2,15 +2,15 @@ apiVersion: v2
 name: operator-shard-manager
 description: A Helm chart for OpenShift
 type: application
-version: v2026.2.16
-appVersion: v0.0.5
+version: v2026.6.22
+appVersion: v0.0.6
 kubeVersion: ">=1.26.0-0"
 annotations:
   charts.openshift.io/name: operator-shard-manager
 home: https://github.com/appscode-cloud
 icon: https://cdn.appscode.com/images/products/bytebuilders/icons/android-icon-192x192.png
 sources:
-- https://github.com/appscode-cloud
+  - https://github.com/appscode-cloud
 maintainers:
-- name: appscode
-  email: support@appscode.com
+  - name: appscode
+    email: support@appscode.com
