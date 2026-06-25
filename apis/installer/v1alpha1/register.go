@@ -86,6 +86,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&SupervisorList{},
 		&Taskqueue{},
 		&TaskqueueList{},
+		&VcdLbGc{},
+		&VcdLbGcList{},
 	)
 
 	scheme.AddKnownTypes(SchemeGroupVersion,

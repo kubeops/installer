@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vcd-lb-gc.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vcd-lb-gc.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "vcd-lb-gc.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        {{- include "vcd-lb-gc.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- include "appscode.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "vcd-lb-gc.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: vcd-lb-gc
+        securityContext:
+          {{- toYaml .Values.image.securityContext | nindent 10 }}
+        image: {{ include "image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        args:
+        - --cluster-id={{ .Values.config.clusterID }}
+        - --edge-gateway-id={{ .Values.config.edgeGatewayID }}
+        - --interval={{ .Values.config.interval }}
+        - --dry-run={{ .Values.config.dryRun }}
+        - --skip-dnat={{ .Values.config.skipDNAT }}
+        - --vcd-insecure={{ .Values.vcd.insecure }}
+        - --v={{ .Values.logLevel }}
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        envFrom:
+        - secretRef:
+            name: {{ include "vcd-lb-gc.secretName" . }}
+        resources:
+          {{- toYaml .Values.image.resources | nindent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

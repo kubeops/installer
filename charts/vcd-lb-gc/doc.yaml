@@ -1,0 +1,18 @@
+project:
+  name: VCD Load Balancer Garbage Collector by AppsCode
+  shortName: vcd-lb-gc
+  url: https://github.com/kubeops/vcd-lb-gc
+  description: Garbage collector for orphaned VMware Cloud Director load-balancer objects
+  app: a vcd-lb-gc controller
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: vcd-lb-gc
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.26+
+release:
+  name: vcd-lb-gc
+  namespace: vcd

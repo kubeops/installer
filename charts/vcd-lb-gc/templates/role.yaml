@@ -1,0 +1,28 @@
+# Leader-election Lease (RBAC scoped to Leases in the release namespace).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "vcd-lb-gc.fullname" . }}-leader
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vcd-lb-gc.labels" . | nindent 4 }}
+rules:
+- apiGroups: ["coordination.k8s.io"]
+  resources: ["leases"]
+  verbs: ["get", "create", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "vcd-lb-gc.fullname" . }}-leader
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "vcd-lb-gc.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "vcd-lb-gc.fullname" . }}-leader
+subjects:
+- kind: ServiceAccount
+  name: {{ include "vcd-lb-gc.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
