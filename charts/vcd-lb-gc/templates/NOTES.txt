@@ -1,0 +1,10 @@
+To verify that vcd-lb-gc has started, run:
+
+  kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "vcd-lb-gc.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"
+
+vcd-lb-gc is currently running with --dry-run={{ .Values.config.dryRun }}.
+{{- if .Values.config.dryRun }}
+
+It will only log orphaned VCD load-balancer objects without deleting them.
+Set `config.dryRun=false` to enable deletions once you have validated the output.
+{{- end }}

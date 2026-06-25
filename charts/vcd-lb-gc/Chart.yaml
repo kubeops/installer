@@ -1,0 +1,13 @@
+apiVersion: v2
+description: VCD Load Balancer Garbage Collector by AppsCode
+name: vcd-lb-gc
+version: v2026.6.25
+appVersion: v0.1.0
+kubeVersion: ">=1.26.0-0"
+home: https://github.com/kubeops/vcd-lb-gc
+icon: https://cdn.appscode.com/images/products/searchlight/icons/android-icon-192x192.png
+sources:
+  - https://github.com/kubeops/vcd-lb-gc
+maintainers:
+  - name: appscode
+    email: support@appscode.com
