@@ -8,6 +8,7 @@ rules:
 - apiGroups:
   - core.k8s.appscode.com
   - cost.k8s.appscode.com
+  - editor.ui.k8s.appscode.com
   - identity.k8s.appscode.com
   - management.k8s.appscode.com
   - meta.k8s.appscode.com
