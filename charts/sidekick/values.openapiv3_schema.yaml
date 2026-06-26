@@ -1706,6 +1706,11 @@ properties:
     properties:
       enabled:
         type: boolean
+      flavor:
+        enum:
+        - kubernetes
+        - cilium
+        type: string
     required:
     - enabled
     type: object
