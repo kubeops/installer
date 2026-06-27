@@ -84,7 +84,7 @@ rules:
 - apiGroups:
   - editor.ui.k8s.appscode.com
   resources:
-  - editortemplates
+  - editormodels
   verbs: ["create"]
 - apiGroups:
   - meta.k8s.appscode.com
