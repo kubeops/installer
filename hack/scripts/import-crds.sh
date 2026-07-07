@@ -20,6 +20,7 @@ FLUXCD_HELM_CONTROLLER_TAG=${FLUXCD_HELM_CONTROLLER_TAG:-v1.3.0}
 FLUXCD_SOURCE_CONTROLLER_TAG=${FLUXCD_SOURCE_CONTROLLER_TAG:-v1.6.2}
 KMODULES_CUSTOM_RESOURCES_TAG=${KMODULES_CUSTOM_RESOURCES_TAG:-v0.34.0}
 KMODULES_RESOURCE_METADATA_TAG=${KMODULES_RESOURCE_METADATA_TAG:-master}
+KUBEOPS_CATTLESET_TAG=${KUBEOPS_CATTLESET_TAG:-v0.0.1}
 KUBEOPS_CSI_DRIVER_CACERTS_TAG=${KUBEOPS_CSI_DRIVER_CACERTS_TAG:-v0.5.0}
 KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG=${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG:-v0.3.0}
 KUBEOPS_OPERATOR_SHARD_MANAGER_TAG=${KUBEOPS_OPERATOR_SHARD_MANAGER_TAG:-v0.5.0}
@@ -156,6 +157,18 @@ crd-importer \
     --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
     --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/petset/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/kubeops/cattleset/raw/${KUBEOPS_CATTLESET_TAG}/crds/apps.k8s.appscode.com_cattlesets.yaml \
+    --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_placementpolicies.yaml \
+    --out=./charts/cattleset/crds
+
+crd-importer \
+    --no-description \
+    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
+    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
+    --out=./charts/cattleset/crds
 
 crd-importer \
     --no-description \
