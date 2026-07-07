@@ -1,0 +1,3 @@
+To verify that CattleSet has started, run:
+
+  kubectl get deployment --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "cattleset.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"

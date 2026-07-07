@@ -1,0 +1,15 @@
+{{- if gt (int .Values.replicaCount) 1 }}
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+  name: {{ include "cattleset.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cattleset.labels" . | nindent 4 }}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "cattleset.selectorLabels" . | nindent 6 }}
+
+{{- end }}

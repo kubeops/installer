@@ -1,0 +1,18 @@
+project:
+  name: CattleSet Operator by AppsCode
+  shortName: CattleSet Operator
+  url: https://github.com/kubeops/cattleset
+  description: CattleSet Operator by AppsCode
+  app: CattleSet operator
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: cattleset
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.21+
+release:
+  name: cattleset
+  namespace: kubeops

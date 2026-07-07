@@ -1,0 +1,15 @@
+apiVersion: v1
+description: CattleSet Operator by AppsCode
+name: cattleset
+version: v2026.7.8
+appVersion: v0.0.1
+kubeVersion: ">=1.26.0-0"
+annotations:
+  charts.openshift.io/name: cattleset
+home: https://kubedb.com
+icon: https://cdn.appscode.com/images/products/stash/cattleset-icon.png
+sources:
+- https://github.com/stashed
+maintainers:
+- name: appscode
+  email: support@appscode.com
