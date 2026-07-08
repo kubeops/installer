@@ -294,6 +294,8 @@ $(OUTBIN): $(BUILD_DIRS)
 .PHONY: test
 test: unit-tests
 
+TEST_LICENSE_KEY ?= fake-license
+
 unit-tests: $(BUILD_DIRS)
 	@docker run                                                 \
 	    -i                                                      \
@@ -306,11 +308,13 @@ unit-tests: $(BUILD_DIRS)
 	    -v $$(pwd)/.go/cache:/.cache                            \
 	    --env HTTP_PROXY=$(HTTP_PROXY)                          \
 	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
+	    --env TEST_LICENSE_KEY=$(TEST_LICENSE_KEY)              \
 	    $(BUILD_IMAGE)                                          \
 	    /bin/bash -c "                                          \
 	        ARCH=$(ARCH)                                        \
 	        OS=$(OS)                                            \
 	        VERSION=$(VERSION)                                  \
+	        LICENSE_KEY=$(LICENSE_KEY)                          \
 	        ./hack/test.sh $(SRC_PKGS)                          \
 	    "
 
