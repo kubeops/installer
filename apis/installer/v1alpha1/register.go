@@ -82,6 +82,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ScannerList{},
 		&Sidekick{},
 		&SidekickList{},
+		&StorageMetricsApiserver{},
+		&StorageMetricsApiserverList{},
 		&Supervisor{},
 		&SupervisorList{},
 		&Taskqueue{},
