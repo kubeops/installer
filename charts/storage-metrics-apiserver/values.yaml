@@ -87,7 +87,7 @@ podDisruptionBudget:
 #   - kind: ServiceAccount
 #     name: prometheus
 #     namespace: monitoring
-#metricsReaderSubjects: []
+# metricsReaderSubjects: []
 metricsReaderSubjects:
   - kind: Group
     name: system:unauthenticated
