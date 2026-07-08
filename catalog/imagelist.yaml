@@ -2,7 +2,7 @@
 - ghcr.io/appscode/cluster-connector:v0.0.14
 - ghcr.io/appscode/config-syncer:v0.15.5-ent
 - ghcr.io/appscode/csi-driver-cacerts:v0.5.0
-- ghcr.io/appscode/external-dns-operator:v0.3.0
+- ghcr.io/appscode/external-dns-operator:v0.4.0
 - ghcr.io/appscode/falco-ui-server:v0.0.6
 - ghcr.io/appscode/fargocd:v0.0.3
 - ghcr.io/appscode/kube-ui-server:v0.5.0
@@ -13,6 +13,7 @@
 - ghcr.io/appscode/pgoutbox:v0.0.3
 - ghcr.io/appscode/scanner:v0.0.21
 - ghcr.io/appscode/sidekick:v0.0.15
+- ghcr.io/appscode/storage-metrics-apiserver:v0.1.0
 - ghcr.io/appscode/supervisor:v0.0.12
 - ghcr.io/appscode/taskqueue:v0.0.3
 - ghcr.io/appscode/trivydb:0.0.3

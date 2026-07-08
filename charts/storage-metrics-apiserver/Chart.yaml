@@ -1,0 +1,21 @@
+apiVersion: v1
+description: Kubernetes Storage Metrics API server by AppsCode
+name: storage-metrics-apiserver
+version: v2026.7.8
+appVersion: v0.1.0
+kubeVersion: ">=1.26.0-0"
+annotations:
+  charts.openshift.io/name: storage-metrics-apiserver
+home: https://github.com/kubeops/storage-metrics-apiserver
+icon: https://cdn.appscode.com/images/products/bytebuilders/bytebuilders-512x512.png
+keywords:
+  - kubernetes
+  - metrics
+  - autoscaling
+  - storage
+  - pvc
+sources:
+  - https://github.com/kubeops/storage-metrics-apiserver
+maintainers:
+  - name: appscode
+    email: support@appscode.com

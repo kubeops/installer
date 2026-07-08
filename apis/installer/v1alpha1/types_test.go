@@ -42,6 +42,7 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.PgoutboxSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.ScannerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SidekickSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.StorageMetricsApiserverSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.TaskqueueSpec{}},
 	)
