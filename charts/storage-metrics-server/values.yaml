@@ -1,18 +1,18 @@
-## storage-metrics-apiserver default values
+## storage-metrics-server default values
 
 # nameOverride / fullnameOverride let users keep the chart-generated names
 # but override one or both ends.
 nameOverride: ""
 fullnameOverride: ""
 
-# Docker registry FQDN used to pull the storage-metrics-apiserver image.
+# Docker registry FQDN used to pull the storage-metrics-server image.
 # Set this to use a docker registry hosted at ${registryFQDN}/${registry}/${image}
 registryFQDN: ghcr.io
 image:
   # Docker registry used to pull the image
   registry: appscode
   # Name of the container image
-  repository: storage-metrics-apiserver
+  repository: storage-metrics-server
   # Container image tag; defaults to the chart appVersion when empty
   tag: ""
 

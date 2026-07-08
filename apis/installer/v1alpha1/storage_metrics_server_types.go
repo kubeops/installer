@@ -24,12 +24,12 @@ import (
 )
 
 const (
-	ResourceKindStorageMetricsApiserver = "StorageMetricsApiserver"
-	ResourceStorageMetricsApiserver     = "storagemetricsapiserver"
-	ResourceStorageMetricsApiservers    = "storagemetricsapiservers"
+	ResourceKindStorageMetricsServer = "StorageMetricsServer"
+	ResourceStorageMetricsServer     = "storagemetricsserver"
+	ResourceStorageMetricsServers    = "storagemetricsservers"
 )
 
-// StorageMetricsApiserver defines the schema for the Storage Metrics API server installer.
+// StorageMetricsServer defines the schema for the Storage Metrics API server installer.
 
 // +genclient
 // +genclient:skipVerbs=updateStatus
@@ -37,14 +37,14 @@ const (
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // +kubebuilder:object:root=true
-type StorageMetricsApiserver struct {
+type StorageMetricsServer struct {
 	metav1.TypeMeta   `json:",inline,omitempty"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              StorageMetricsApiserverSpec `json:"spec,omitempty"`
+	Spec              StorageMetricsServerSpec `json:"spec,omitempty"`
 }
 
-// StorageMetricsApiserverSpec is the schema for the storage-metrics-apiserver chart values file.
-type StorageMetricsApiserverSpec struct {
+// StorageMetricsServerSpec is the schema for the storage-metrics-server chart values file.
+type StorageMetricsServerSpec struct {
 	//+optional
 	NameOverride string `json:"nameOverride"`
 	//+optional
@@ -111,10 +111,10 @@ type StorageMetricsPodDisruptionBudget struct {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// StorageMetricsApiserverList is a list of StorageMetricsApiservers
-type StorageMetricsApiserverList struct {
+// StorageMetricsServerList is a list of StorageMetricsServers
+type StorageMetricsServerList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	// Items is a list of StorageMetricsApiserver CRD objects
-	Items []StorageMetricsApiserver `json:"items,omitempty"`
+	// Items is a list of StorageMetricsServer CRD objects
+	Items []StorageMetricsServer `json:"items,omitempty"`
 }
