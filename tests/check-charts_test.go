@@ -25,10 +25,6 @@ import (
 	"kmodules.xyz/image-packer/pkg/lib"
 )
 
-var ignoreMissingList = []string{
-	"ghcr.io/appscode/config-syncer:v0.15.4",
-}
-
 func Test_CheckImageArchitectures(t *testing.T) {
 	dir, err := rootDir()
 	if err != nil {
@@ -37,7 +33,7 @@ func Test_CheckImageArchitectures(t *testing.T) {
 
 	if err := lib.CheckImageArchitectures([]string{
 		filepath.Join(dir, "catalog", "imagelist.yaml"),
-	}, nil, ignoreMissingList); err != nil {
+	}, nil, nil); err != nil {
 		t.Errorf("CheckImageArchitectures() error = %v", err)
 	}
 }
@@ -72,7 +68,7 @@ func Test_CheckUBIImageArchitectures(t *testing.T) {
 		"supervisor":                      ubiOperator,
 		"taskqueue":                       ubiOperator,
 	}
-	if err := lib.CheckHelmChartImageArchitectures(filepath.Join(dir, "charts"), values, nil, ignoreMissingList); err != nil {
+	if err := lib.CheckHelmChartImageArchitectures(filepath.Join(dir, "charts"), values, nil, nil); err != nil {
 		t.Errorf("CheckUBIImageArchitectures() error = %v", err)
 	}
 }
