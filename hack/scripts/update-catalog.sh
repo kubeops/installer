@@ -16,7 +16,21 @@
 
 set -eou pipefail
 
+CI_VALUES=charts/config-syncer/ci/ci-values.yaml
+
+# Set a fake license so config-syncer templates render for image discovery,
+# then reset it back to an empty license afterwards.
+reset_license() {
+    sed -i.bak 's/^license: .*/license: ""/' "$CI_VALUES" && rm -f "${CI_VALUES}.bak"
+}
+trap reset_license EXIT
+
+sed -i.bak 's/^license: .*/license: fake-license/' "$CI_VALUES" && rm -f "${CI_VALUES}.bak"
+
 image-packer list --root-dir=charts --output-dir=catalog
+
+reset_license
+trap - EXIT
 
 # image-packer generate-scripts --insecure --allow-nondistributable-artifacts \
 #     --output-dir=catalog \
