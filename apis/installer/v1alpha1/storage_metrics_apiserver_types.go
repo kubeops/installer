@@ -20,6 +20,7 @@ import (
 	core "k8s.io/api/core/v1"
 	rbac "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"kmodules.xyz/resource-metadata/apis/shared"
 )
 
 const (
@@ -82,6 +83,9 @@ type StorageMetricsApiserverSpec struct {
 	// Additional subjects bound to the metrics-reader ClusterRole.
 	//+optional
 	MetricsReaderSubjects []rbac.Subject `json:"metricsReaderSubjects"`
+	// Distro-specific overrides (OpenShift, UBI image variant).
+	//+optional
+	Distro shared.DistroSpec `json:"distro"`
 }
 
 // StorageMetricsServiceSpec configures the metrics Service fronting the aggregated apiserver.

@@ -1285,6 +1285,21 @@ properties:
     - insecureSkipTLSVerify
     - versionPriority
     type: object
+  distro:
+    description: Distro-specific overrides (OpenShift, UBI image variant).
+    properties:
+      openshift:
+        type: boolean
+      ubi:
+        enum:
+        - all
+        - catalog
+        - operator
+        type: string
+    required:
+    - openshift
+    - ubi
+    type: object
   extraArgs:
     description: Extra args appended to the container command line.
     items:

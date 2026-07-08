@@ -22,6 +22,13 @@ imagePullSecrets: []
 # Container image pull policy
 imagePullPolicy: IfNotPresent
 
+# Distro-specific overrides.
+distro:
+  # Set true, if installed in OpenShift
+  openshift: false
+  # Set operator or all to use ubi images
+  ubi: ""
+
 replicaCount: 1
 
 # Extra args appended to the container command line. Use this to override

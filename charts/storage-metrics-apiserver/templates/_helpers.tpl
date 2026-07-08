@@ -47,3 +47,17 @@ Returns the registry used for the storage-metrics-apiserver docker image.
 {{- define "storage-metrics-apiserver.image.registry" -}}
 {{- list .Values.registryFQDN .Values.image.registry | compact | join "/" }}
 {{- end -}}
+
+{{/*
+Returns whether the OpenShift distribution is used
+*/}}
+{{- define "storage-metrics-apiserver.distro.openshift" -}}
+{{- or (.Capabilities.APIVersions.Has "project.openshift.io/v1/Project") .Values.distro.openshift -}}
+{{- end -}}
+
+{{/*
+Returns if ubi images are to be used
+*/}}
+{{- define "storage-metrics-apiserver.image.ubi" -}}
+{{ ternary "-ubi" "" (list "operator" "all" | has .Values.distro.ubi) }}
+{{- end -}}

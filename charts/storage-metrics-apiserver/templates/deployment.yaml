@@ -37,7 +37,7 @@ spec:
       {{- end }}
       containers:
       - name: storage-metrics-apiserver
-        image: {{ include "storage-metrics-apiserver.image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        image: {{ include "storage-metrics-apiserver.image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ include "storage-metrics-apiserver.image.ubi" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
         - --secure-port={{ .Values.service.targetPort }}
@@ -69,8 +69,13 @@ spec:
           failureThreshold: 3
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
+        {{- if eq "true" ( include "storage-metrics-apiserver.distro.openshift" . ) }}
+        securityContext:
+          {{- toYaml (omit .Values.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
+        {{- else }}
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
         volumeMounts:
         - mountPath: /tmp
           name: tmp
