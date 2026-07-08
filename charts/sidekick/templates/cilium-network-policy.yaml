@@ -11,10 +11,34 @@ spec:
       {{- include "sidekick.selectorLabels" . | nindent 6 }}
   egress:
   - toEntities:
-    - remote-node
-    - host
+    - kube-apiserver
     toPorts:
     - ports:
       - port: "6443"
         protocol: TCP
+---
+# Allow the sidekick operator pods to resolve DNS.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "sidekick.fullname" . }}-egress-dns
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "sidekick.selectorLabels" . | nindent 6 }}
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: "53"
+        protocol: UDP
+      - port: "53"
+        protocol: TCP
+      rules:
+        dns:
+        - matchPattern: '*'
 {{- end }}

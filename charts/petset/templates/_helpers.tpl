@@ -116,19 +116,12 @@ Returns whether the NetworkPolicy should be enabled
 {{/*
 Returns the configured NetworkPolicy flavor.
 "cilium" emits cilium.io/v2 CiliumNetworkPolicy; anything else emits the
-default networking.k8s.io/v1 NetworkPolicy. The local chart's
-networkPolicy.flavor wins over the global value.
+default networking.k8s.io/v1 NetworkPolicy. The global value wins so the
+flavor propagates when this chart is pulled in as a subchart.
 */}}
 {{- define "security.networkPolicyFlavor" -}}
-{{- $globalFlavor := "" -}}
-{{- if and .Values.global .Values.global.networkPolicy -}}
-{{- $globalFlavor = .Values.global.networkPolicy.flavor -}}
-{{- end -}}
-{{- $localFlavor := "" -}}
-{{- if and .Values.networkPolicy .Values.networkPolicy.flavor -}}
-{{- $localFlavor = .Values.networkPolicy.flavor -}}
-{{- end -}}
-{{- default (default "kubernetes" $globalFlavor) $localFlavor -}}
+{{- $local := .Values.networkPolicy.flavor | default "kubernetes" -}}
+{{- dig "networkPolicy" "flavor" $local (default dict .Values.global) -}}
 {{- end }}
 
 {{/*
