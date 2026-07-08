@@ -2,13 +2,13 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "storage-metrics-apiserver.fullname" . }}
+  name: {{ include "storage-metrics-server.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "storage-metrics-apiserver.labels" . | nindent 4 }}
+    {{- include "storage-metrics-server.labels" . | nindent 4 }}
 spec:
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
   selector:
     matchLabels:
-      {{- include "storage-metrics-apiserver.selectorLabels" . | nindent 6 }}
+      {{- include "storage-metrics-server.selectorLabels" . | nindent 6 }}
 {{- end }}

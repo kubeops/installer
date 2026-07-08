@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "storage-metrics-apiserver.fullname" . }}
+  name: {{ include "storage-metrics-server.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "storage-metrics-apiserver.labels" . | nindent 4 }}
+    {{- include "storage-metrics-server.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "storage-metrics-apiserver.selectorLabels" . | nindent 6 }}
+      {{- include "storage-metrics-server.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "storage-metrics-apiserver.selectorLabels" . | nindent 8 }}
+        {{- include "storage-metrics-server.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "storage-metrics-apiserver.serviceAccountName" . }}
+      serviceAccountName: {{ include "storage-metrics-server.serviceAccountName" . }}
       {{- with .Values.priorityClassName }}
       priorityClassName: {{ . }}
       {{- end }}
@@ -36,8 +36,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-      - name: storage-metrics-apiserver
-        image: {{ include "storage-metrics-apiserver.image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ include "storage-metrics-apiserver.image.ubi" . }}
+      - name: storage-metrics-server
+        image: {{ include "storage-metrics-server.image.registry" . }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}{{ include "storage-metrics-server.image.ubi" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
         - --secure-port={{ .Values.service.targetPort }}
@@ -69,7 +69,7 @@ spec:
           failureThreshold: 3
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
-        {{- if eq "true" ( include "storage-metrics-apiserver.distro.openshift" . ) }}
+        {{- if eq "true" ( include "storage-metrics-server.distro.openshift" . ) }}
         securityContext:
           {{- toYaml (omit .Values.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 10 }}
         {{- else }}

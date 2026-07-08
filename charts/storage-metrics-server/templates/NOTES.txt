@@ -1,4 +1,4 @@
-{{ include "storage-metrics-apiserver.fullname" . }} is now installed.
+{{ include "storage-metrics-server.fullname" . }} is now installed.
 
 Verify the APIService registration:
 

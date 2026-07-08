@@ -6,12 +6,12 @@ kind: APIService
 metadata:
   name: {{ $version }}.custom.metrics.k8s.io
   labels:
-    {{- include "storage-metrics-apiserver.labels" $ | nindent 4 }}
+    {{- include "storage-metrics-server.labels" $ | nindent 4 }}
 spec:
   group: custom.metrics.k8s.io
   version: {{ $version }}
   service:
-    name: {{ include "storage-metrics-apiserver.fullname" $ }}
+    name: {{ include "storage-metrics-server.fullname" $ }}
     namespace: {{ $.Release.Namespace }}
     port: {{ $.Values.service.port }}
   insecureSkipTLSVerify: {{ $.Values.apiService.insecureSkipTLSVerify }}
