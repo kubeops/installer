@@ -13,7 +13,7 @@
 - ghcr.io/appscode/pgoutbox:v0.0.3
 - ghcr.io/appscode/scanner:v0.0.21
 - ghcr.io/appscode/sidekick:v0.0.15
-- ghcr.io/appscode/storage-metrics-apiserver:v0.1.0
+- ghcr.io/appscode/storage-metrics-server:v0.1.0
 - ghcr.io/appscode/supervisor:v0.0.12
 - ghcr.io/appscode/taskqueue:v0.0.3
 - ghcr.io/appscode/trivydb:0.0.3
