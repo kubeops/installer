@@ -2,8 +2,8 @@ apiVersion: v2
 name: kube-ui-server
 description: A Helm chart for kube-ui-server by AppsCode
 type: application
-version: v2026.6.19
-appVersion: v0.5.0
+version: v2026.7.10
+appVersion: v0.6.0
 kubeVersion: '>=1.26.0-0'
 annotations:
   charts.openshift.io/name: kube-ui-server
