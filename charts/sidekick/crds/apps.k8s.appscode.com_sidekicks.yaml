@@ -3711,6 +3711,7 @@ spec:
                 - Current
                 - Failed
                 - Succeeded
+                - Degraded
                 type: string
               pod:
                 type: string
