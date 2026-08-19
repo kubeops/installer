@@ -19,7 +19,10 @@ image:
   # Operator container image tag
   tag: ""
   # Compute Resources required by the operator container
-  resources: {}
+  resources: # +doc-gen:break
+    requests:
+      cpu: 500m
+      memory: 1.5Gi
   # Security options this container should run with
   securityContext: # +doc-gen:break
     allowPrivilegeEscalation: false
