@@ -22,7 +22,7 @@ image:
   resources: # +doc-gen:break
     requests:
       cpu: 500m
-      memory: 1.5Gi
+      memory: 1536Mi
   # Security options this container should run with
   securityContext: # +doc-gen:break
     allowPrivilegeEscalation: false
