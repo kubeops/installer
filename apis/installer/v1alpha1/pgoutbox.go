@@ -78,6 +78,8 @@ type PgoutboxSpec struct {
 	// +optional
 	Monitoring *Monitoring `json:"monitoring"`
 	// +optional
+	StartupProbe *core.Probe `json:"startupProbe"`
+	// +optional
 	LivenessProbe *core.Probe `json:"livenessProbe"`
 	// +optional
 	ReadinessProbe *core.Probe        `json:"readinessProbe"`

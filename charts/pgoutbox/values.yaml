@@ -91,6 +91,14 @@ resources: {}
   #   memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# The startup probe holds the liveness probe off until the first connection to PostgreSQL succeeds.
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 70
 livenessProbe:
   httpGet:
     path: /healthz
