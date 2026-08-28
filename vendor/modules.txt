@@ -796,10 +796,10 @@ kmodules.xyz/client-go/tools/parser
 # kmodules.xyz/go-containerregistry v0.0.15
 ## explicit; go 1.24.0
 kmodules.xyz/go-containerregistry/name
-# kmodules.xyz/image-packer v0.0.0-20260712174708-18b029a2e515
+# kmodules.xyz/image-packer v0.0.0-20260828095825-4ee8d7b90748
 ## explicit; go 1.25.0
 kmodules.xyz/image-packer/pkg/lib
-# kmodules.xyz/resource-metadata v0.48.0
+# kmodules.xyz/resource-metadata v0.49.0
 ## explicit; go 1.25.0
 kmodules.xyz/resource-metadata/apis/shared
 # kmodules.xyz/schema-checker v0.4.2

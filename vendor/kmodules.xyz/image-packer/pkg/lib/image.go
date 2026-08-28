@@ -17,7 +17,6 @@ limitations under the License.
 package lib
 
 import (
-	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -25,6 +24,7 @@ import (
 	"strings"
 
 	"kmodules.xyz/client-go/tools/parser"
+	"kmodules.xyz/go-containerregistry/name"
 
 	shell "gomodules.xyz/go-sh"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -73,24 +73,13 @@ func mapChartImages(rootDir string, values map[string]string, sh *shell.Session,
 
 	content, ok := values[chartName]
 	if ok {
-		tmpfile, err := os.CreateTemp("", chartName+"-val-*.yaml")
+		filename, err := writeTempValues(chartName, []byte(content))
 		if err != nil {
 			klog.Fatal(err)
 		}
-		defer os.Remove(tmpfile.Name()) // nolint:errcheck
+		defer os.Remove(filename) // nolint:errcheck
 
-		if _, err := io.WriteString(tmpfile, content); err != nil {
-			tmpfile.Close() // nolint:errcheck
-			klog.Fatal(err)
-		}
-
-		// 4. Close the file handle
-		// We must close the file handle before attempting to read from it or before the defer os.Remove runs.
-		if err := tmpfile.Close(); err != nil {
-			klog.Fatal(err)
-		}
-
-		args = append(args, "--values="+tmpfile.Name())
+		args = append(args, "--values="+filename)
 	}
 
 	if _, err := os.Stat(filepath.Join(rootDir, chartName, "ci", "ci-values.yaml")); err == nil {
@@ -107,21 +96,84 @@ func mapChartImages(rootDir string, values map[string]string, sh *shell.Session,
 		}
 	}
 	if out, err := sh.SetDir(rootDir).Command("helm", args...).Output(); err == nil {
-		helmout, err := parser.ListResources(out)
-		if err != nil {
+		if err := CollectRenderedImages(out, images); err != nil {
 			panic(err)
-		}
-
-		for _, ri := range helmout {
-			collectImages(ri.Object.UnstructuredContent(), images, ri.Object.GetObjectKind().GroupVersionKind().GroupKind().String())
 		}
 	} else {
 		klog.Infof("Skipping %s due to error: %v", chartName, err)
 	}
 }
 
+func writeTempValues(chartName string, content []byte) (string, error) {
+	tmpfile, err := os.CreateTemp("", chartName+"-val-*.yaml")
+	if err != nil {
+		return "", err
+	}
+
+	if _, err := tmpfile.Write(content); err != nil {
+		tmpfile.Close()           // nolint:errcheck
+		os.Remove(tmpfile.Name()) // nolint:errcheck
+		return "", err
+	}
+
+	// The handle must be closed before helm reads the file.
+	if err := tmpfile.Close(); err != nil {
+		os.Remove(tmpfile.Name()) // nolint:errcheck
+		return "", err
+	}
+	return tmpfile.Name(), nil
+}
+
+// CollectRenderedImages records every image referenced by the resources in a
+// `helm template` output into images, keyed by image and valued by the GroupKind
+// of the resource that referenced it.
+func CollectRenderedImages(out []byte, images map[string]string) error {
+	resources, err := parser.ListResources(out)
+	if err != nil {
+		return err
+	}
+	for _, ri := range resources {
+		collectImages(ri.Object.UnstructuredContent(), images, ri.Object.GetObjectKind().GroupVersionKind().GroupKind().String())
+	}
+	return nil
+}
+
 // placeholderRE matches a shell-style ${...} template placeholder.
 var placeholderRE = regexp.MustCompile(`\$\{[^}]*\}`)
+
+// containerArgRE matches a --flag=value container argument.
+var containerArgRE = regexp.MustCompile(`^--[A-Za-z0-9._-]+=(\S+)$`)
+
+// imageFromContainerArg reports an image reference passed to a container as a
+// flag, e.g. --acme-http01-solver-image=<ref> or --prometheus-config-reloader=<ref>.
+// An operator that launches other workloads takes their image this way, and the
+// reference appears nowhere else in the manifest.
+func imageFromContainerArg(arg string) (string, bool) {
+	m := containerArgRE.FindStringSubmatch(arg)
+	if m == nil {
+		return "", false
+	}
+	ref := m[1]
+
+	// name.ParseReference is far too permissive on its own: it defaults the
+	// registry to docker.io and the tag to latest, so it accepts most flag
+	// values (--log-level=info parses). Demand an explicit registry host and an
+	// explicit tag or digest, which every image passed this way carries.
+	if strings.Contains(ref, "://") {
+		return "", false
+	}
+	host, remainder, ok := strings.Cut(ref, "/")
+	if !ok || (!strings.ContainsAny(host, ".:") && host != "localhost") {
+		return "", false
+	}
+	if last := remainder[strings.LastIndex(remainder, "/")+1:]; !strings.ContainsAny(last, ":@") {
+		return "", false
+	}
+	if _, err := name.ParseReference(ref); err != nil {
+		return "", false
+	}
+	return ref, true
+}
 
 func collectImages(obj map[string]any, images map[string]string, srcGK string) {
 	for k, v := range obj {
@@ -129,6 +181,16 @@ func collectImages(obj map[string]any, images map[string]string, srcGK string) {
 			if s, ok := v.(string); ok && strings.ContainsRune(s, ':') {
 				for _, img := range expandVersionedImage(s, obj) {
 					images[img] = srcGK
+				}
+			}
+		} else if k == "args" || k == "command" {
+			if items, ok := v.([]any); ok {
+				for _, item := range items {
+					if s, ok := item.(string); ok {
+						if img, ok := imageFromContainerArg(s); ok {
+							images[img] = srcGK
+						}
+					}
 				}
 			}
 		} else if m, ok := v.(map[string]any); ok {
