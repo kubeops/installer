@@ -3,8 +3,7 @@ nameOverride: ""
 # Overrides fullname template
 fullnameOverride: ""
 
-# Docker registry fqdn used to pull fargocd docker images on every spoke
-# (propagated as the chart-level registryFQDN value of the spoke chart).
+# Docker registry fqdn used to pull fargocd images on every spoke.
 registryFQDN: ghcr.io
 
 # Manager image. Set tag to override the chart appVersion.
@@ -12,9 +11,7 @@ image: ghcr.io/appscode/fargocd
 tag: ""
 imagePullPolicy: Always
 
-# OCM Placement that selects spoke clusters which receive the fargocd
-# addon. When create=true the chart also creates a ManagedClusterSetBinding
-# for the `global` ClusterSet.
+# OCM Placement selecting spoke clusters that receive the fargocd addon.
 placement:
   create: true
   name: global
@@ -28,34 +25,26 @@ argocd:
   # Namespace on the Argo CD cluster where Applications are written.
   # Auto-discovered when empty.
   namespace: ""
-  # Application.spec.destination.server. Defaults to the in-cluster API server.
-  destServer: "https://kubernetes.default.svc"
+  # Left empty; fargocd's controller falls back to the in-cluster server
+  # when both this and destName are empty. Must stay empty if destName is set.
+  destServer: ""
   # Application.spec.destination.name. Set when Argo CD references the
   # workload cluster by symbolic name (typical in managed mode).
   destName: ""
   # Argo CD Project assigned to generated Applications.
   project: default
-  # Raw kubeconfig content for the Argo CD principal cluster (managed mode).
-  # When set, the chart creates a Secret in the manager namespace holding
-  # this kubeconfig and mounts it into the manager pod; the manager then
-  # propagates the kubeconfig to every spoke. Mutually exclusive with
-  # kubeconfigSecret.
-  # Example:
-  #   helm upgrade -i fargocd-manager appscode/fargocd-manager \
-  #     --set-file argocd.kubeconfig=/path/to/kubeconfig
+  # Raw kubeconfig for the Argo CD principal (managed mode); the manager
+  # mounts it and propagates it to every spoke. Mutually exclusive with kubeconfigSecret.
   kubeconfig: ""
-  # Name of an existing Secret in the manager namespace whose data key
-  # `kubeconfig` holds the Argo CD principal kubeconfig (managed mode).
-  # Mutually exclusive with argocd.kubeconfig.
+  # Name of an existing Secret (data key `kubeconfig`) holding the Argo CD
+  # principal kubeconfig (managed mode). Mutually exclusive with argocd.kubeconfig.
   kubeconfigSecret: ""
   # Name of a pre-created Secret on each spoke holding the principal
-  # kubeconfig. When set, the manager propagates this name to spokes
-  # instead of pushing the inline kubeconfig.
+  # kubeconfig, instead of the manager pushing the inline kubeconfig.
   kubeconfigSpokeSecret: ""
 
-# Name of a Secret holding a kubeconfig for the OCM hub. When set, the
-# manager pod mounts the Secret and uses --kubeconfig instead of the
-# in-cluster ServiceAccount.
+# Name of a Secret holding an OCM hub kubeconfig; when set, the manager
+# uses --kubeconfig instead of the in-cluster ServiceAccount.
 kubeconfigSecretName: ""
 
 securityContext:

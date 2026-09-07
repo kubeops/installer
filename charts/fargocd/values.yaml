@@ -119,39 +119,26 @@ distro:
 # Configuration for how the controller talks to Argo CD. Mirrors the flags
 # exposed by `fargocd run`; see https://github.com/kubeops/fargocd.
 argocd:
-  # How fargocd talks to Argo CD. One of:
-  #   in-cluster — Argo CD runs in the same cluster as this controller.
-  #   autonomous — argocd-agent in autonomous mode runs alongside the workload.
-  #   managed    — argocd-agent principal lives on a remote cluster.
+  # How fargocd talks to Argo CD: in-cluster (local), autonomous
+  # (argocd-agent + headless Argo CD, installed by b3 not this chart), or managed (remote principal).
   mode: in-cluster
   # Namespace on the Argo CD cluster where Applications are written.
-  # Auto-discovered when empty (uses the namespace of the Service labelled
-  # app.kubernetes.io/name=argocd-server).
+  # Auto-discovered when empty (Service labelled app.kubernetes.io/name=argocd-server).
   namespace: ""
-  # Application.spec.destination.server. Defaults to the in-cluster API server.
-  destServer: "https://kubernetes.default.svc"
+  # Left empty; controller falls back to the in-cluster server when both
+  # this and destName are empty. Must stay empty when destName is set.
+  destServer: ""
   # Application.spec.destination.name. Set when Argo CD references the
   # workload cluster by symbolic name (typical in managed mode).
   destName: ""
   # Argo CD Project assigned to generated Applications.
   project: default
   # Symbolic name of the workload cluster. Required when argocd.mode=managed
-  # — used as the suffix for Application names and as the agent-name label
-  # so one principal can serve many clusters without collisions.
+  # -- suffixes Application names so one principal can serve many clusters.
   clusterName: ""
-  # Required when argocd.mode=managed (unless argocd.kubeconfig is set):
-  # name of an existing Secret in the release namespace whose data key
-  # `kubeconfig` holds a kubeconfig for the Argo CD principal cluster.
-  # The Secret is mounted into the operator pod and the kubeconfig path
-  # is passed to `fargocd run --argo-kubeconfig`.
+  # Name of an existing Secret (data key `kubeconfig`) holding the Argo CD
+  # principal's kubeconfig. Required when argocd.mode=managed, unless argocd.kubeconfig is set.
   kubeconfigSecret: ""
-  # Raw kubeconfig content for the Argo CD principal cluster. When set,
-  # the chart creates a Secret with this kubeconfig and mounts it into
-  # the operator pod. Use this as an alternative to kubeconfigSecret.
-  # Example:
-  # helm upgrade -i fargocd appscode/fargocd \
-  #   --set-file argocd.kubeconfig=/path/to/kubeconfig
-  # or
-  # helm upgrade -i fargocd appscode/fargocd \
-  #   --set argocd.kubeconfig=<kubeconfig content>
+  # Raw kubeconfig content for the Argo CD principal cluster; alternative
+  # to kubeconfigSecret. e.g. --set-file argocd.kubeconfig=/path/to/kubeconfig
   kubeconfig: ""
