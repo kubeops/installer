@@ -1,8 +1,8 @@
 apiVersion: v2
 description: Kubernetes Panopticon by AppsCode
 name: panopticon
-version: v2026.6.22
-appVersion: v0.0.23
+version: v2026.9.18
+appVersion: v0.0.24
 kubeVersion: ">=1.26.0-0"
 annotations:
   charts.openshift.io/name: panopticon
