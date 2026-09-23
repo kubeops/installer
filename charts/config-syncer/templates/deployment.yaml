@@ -47,6 +47,8 @@ spec:
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
           - run
+          - --secure-port={{ default "8443" .Values.apiserver.securePort }}
+          - --cert-dir=/tmp/apiserver.local.config/certificates
         {{- if .Values.license }}
           - --license-file=/var/run/secrets/appscode/license/key.txt
         {{- end }}
