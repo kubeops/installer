@@ -1,6 +1,6 @@
 - ghcr.io/appscode/cattleset:v0.0.1
 - ghcr.io/appscode/cluster-connector:v0.0.14
-- ghcr.io/appscode/config-syncer:v0.15.5-ent
+- ghcr.io/appscode/config-syncer:v0.16.0-ent
 - ghcr.io/appscode/csi-driver-cacerts:v0.6.0
 - ghcr.io/appscode/external-dns-operator:v0.4.0
 - ghcr.io/appscode/falco-ui-server:v0.0.6
