@@ -2,8 +2,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.2
-    operator.prometheus.io/version: 0.81.0
+    controller-gen.kubebuilder.io/version: v0.19.0
+    operator.prometheus.io/version: 0.87.1
   name: alertmanagerconfigs.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -153,6 +153,12 @@ spec:
                             - key
                             type: object
                             x-kubernetes-map-type: atomic
+                          avatarURL:
+                            pattern: ^https?://.+$
+                            type: string
+                          content:
+                            minLength: 1
+                            type: string
                           httpConfig:
                             properties:
                               authorization:
@@ -215,6 +221,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -290,7 +298,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -419,7 +427,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -519,6 +527,9 @@ spec:
                           sendResolved:
                             type: boolean
                           title:
+                            type: string
+                          username:
+                            minLength: 1
                             type: string
                         required:
                         - apiURL
@@ -745,6 +756,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -820,7 +833,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -949,7 +962,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -1069,46 +1082,9 @@ spec:
                         - webhookUrl
                         type: object
                       type: array
-                    name:
-                      minLength: 1
-                      type: string
-                    opsgenieConfigs:
+                    msteamsv2Configs:
                       items:
                         properties:
-                          actions:
-                            type: string
-                          apiKey:
-                            properties:
-                              key:
-                                type: string
-                              name:
-                                default: ""
-                                type: string
-                              optional:
-                                type: boolean
-                            required:
-                            - key
-                            type: object
-                            x-kubernetes-map-type: atomic
-                          apiURL:
-                            type: string
-                          description:
-                            type: string
-                          details:
-                            items:
-                              properties:
-                                key:
-                                  minLength: 1
-                                  type: string
-                                value:
-                                  type: string
-                              required:
-                              - key
-                              - value
-                              type: object
-                            type: array
-                          entity:
-                            type: string
                           httpConfig:
                             properties:
                               authorization:
@@ -1171,6 +1147,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -1246,7 +1224,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -1375,7 +1353,433 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
+                                type: string
+                              tlsConfig:
+                                properties:
+                                  ca:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  cert:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  insecureSkipVerify:
+                                    type: boolean
+                                  keySecret:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  maxVersion:
+                                    enum:
+                                    - TLS10
+                                    - TLS11
+                                    - TLS12
+                                    - TLS13
+                                    type: string
+                                  minVersion:
+                                    enum:
+                                    - TLS10
+                                    - TLS11
+                                    - TLS12
+                                    - TLS13
+                                    type: string
+                                  serverName:
+                                    type: string
+                                type: object
+                            type: object
+                          sendResolved:
+                            type: boolean
+                          text:
+                            minLength: 1
+                            type: string
+                          title:
+                            minLength: 1
+                            type: string
+                          webhookURL:
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                default: ""
+                                type: string
+                              optional:
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                        type: object
+                      type: array
+                    name:
+                      minLength: 1
+                      type: string
+                    opsgenieConfigs:
+                      items:
+                        properties:
+                          actions:
+                            type: string
+                          apiKey:
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                default: ""
+                                type: string
+                              optional:
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          apiURL:
+                            type: string
+                          description:
+                            type: string
+                          details:
+                            items:
+                              properties:
+                                key:
+                                  minLength: 1
+                                  type: string
+                                value:
+                                  type: string
+                              required:
+                              - key
+                              - value
+                              type: object
+                            type: array
+                          entity:
+                            type: string
+                          httpConfig:
+                            properties:
+                              authorization:
+                                properties:
+                                  credentials:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type:
+                                    type: string
+                                type: object
+                              basicAuth:
+                                properties:
+                                  password:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  username:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                type: object
+                              bearerTokenSecret:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    default: ""
+                                    type: string
+                                  optional:
+                                    type: boolean
+                                required:
+                                - key
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
+                              followRedirects:
+                                type: boolean
+                              noProxy:
+                                type: string
+                              oauth2:
+                                properties:
+                                  clientId:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  clientSecret:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  endpointParams:
+                                    additionalProperties:
+                                      type: string
+                                    type: object
+                                  noProxy:
+                                    type: string
+                                  proxyConnectHeader:
+                                    additionalProperties:
+                                      items:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      type: array
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  proxyFromEnvironment:
+                                    type: boolean
+                                  proxyUrl:
+                                    pattern: ^(http|https|socks5)://.+$
+                                    type: string
+                                  scopes:
+                                    items:
+                                      type: string
+                                    type: array
+                                  tlsConfig:
+                                    properties:
+                                      ca:
+                                        properties:
+                                          configMap:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                          secret:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                        type: object
+                                      cert:
+                                        properties:
+                                          configMap:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                          secret:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                        type: object
+                                      insecureSkipVerify:
+                                        type: boolean
+                                      keySecret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      maxVersion:
+                                        enum:
+                                        - TLS10
+                                        - TLS11
+                                        - TLS12
+                                        - TLS13
+                                        type: string
+                                      minVersion:
+                                        enum:
+                                        - TLS10
+                                        - TLS11
+                                        - TLS12
+                                        - TLS13
+                                        type: string
+                                      serverName:
+                                        type: string
+                                    type: object
+                                  tokenUrl:
+                                    minLength: 1
+                                    type: string
+                                required:
+                                - clientId
+                                - clientSecret
+                                - tokenUrl
+                                type: object
+                              proxyConnectHeader:
+                                additionalProperties:
+                                  items:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type: array
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              proxyFromEnvironment:
+                                type: boolean
+                              proxyURL:
+                                type: string
+                              proxyUrl:
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -1484,6 +1888,12 @@ spec:
                                 name:
                                   type: string
                                 type:
+                                  enum:
+                                  - team
+                                  - teams
+                                  - user
+                                  - escalation
+                                  - schedule
                                   minLength: 1
                                   type: string
                                 username:
@@ -1592,6 +2002,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -1667,7 +2079,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -1796,7 +2208,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -2019,6 +2431,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -2094,7 +2508,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -2223,7 +2637,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -2320,6 +2734,8 @@ spec:
                             type: object
                           message:
                             type: string
+                          monospace:
+                            type: boolean
                           priority:
                             type: string
                           retry:
@@ -2368,6 +2784,468 @@ spec:
                             x-kubernetes-map-type: atomic
                           userKeyFile:
                             type: string
+                        type: object
+                      type: array
+                    rocketchatConfigs:
+                      items:
+                        properties:
+                          actions:
+                            items:
+                              properties:
+                                msg:
+                                  minLength: 1
+                                  type: string
+                                text:
+                                  minLength: 1
+                                  type: string
+                                url:
+                                  pattern: ^https?://.+$
+                                  type: string
+                              type: object
+                            minItems: 1
+                            type: array
+                          apiURL:
+                            pattern: ^https?://.+$
+                            type: string
+                          channel:
+                            minLength: 1
+                            type: string
+                          color:
+                            minLength: 1
+                            type: string
+                          emoji:
+                            minLength: 1
+                            type: string
+                          fields:
+                            items:
+                              properties:
+                                short:
+                                  type: boolean
+                                title:
+                                  minLength: 1
+                                  type: string
+                                value:
+                                  minLength: 1
+                                  type: string
+                              type: object
+                            minItems: 1
+                            type: array
+                          httpConfig:
+                            properties:
+                              authorization:
+                                properties:
+                                  credentials:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type:
+                                    type: string
+                                type: object
+                              basicAuth:
+                                properties:
+                                  password:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  username:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                type: object
+                              bearerTokenSecret:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    default: ""
+                                    type: string
+                                  optional:
+                                    type: boolean
+                                required:
+                                - key
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
+                              followRedirects:
+                                type: boolean
+                              noProxy:
+                                type: string
+                              oauth2:
+                                properties:
+                                  clientId:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  clientSecret:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  endpointParams:
+                                    additionalProperties:
+                                      type: string
+                                    type: object
+                                  noProxy:
+                                    type: string
+                                  proxyConnectHeader:
+                                    additionalProperties:
+                                      items:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      type: array
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  proxyFromEnvironment:
+                                    type: boolean
+                                  proxyUrl:
+                                    pattern: ^(http|https|socks5)://.+$
+                                    type: string
+                                  scopes:
+                                    items:
+                                      type: string
+                                    type: array
+                                  tlsConfig:
+                                    properties:
+                                      ca:
+                                        properties:
+                                          configMap:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                          secret:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                        type: object
+                                      cert:
+                                        properties:
+                                          configMap:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                          secret:
+                                            properties:
+                                              key:
+                                                type: string
+                                              name:
+                                                default: ""
+                                                type: string
+                                              optional:
+                                                type: boolean
+                                            required:
+                                            - key
+                                            type: object
+                                            x-kubernetes-map-type: atomic
+                                        type: object
+                                      insecureSkipVerify:
+                                        type: boolean
+                                      keySecret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      maxVersion:
+                                        enum:
+                                        - TLS10
+                                        - TLS11
+                                        - TLS12
+                                        - TLS13
+                                        type: string
+                                      minVersion:
+                                        enum:
+                                        - TLS10
+                                        - TLS11
+                                        - TLS12
+                                        - TLS13
+                                        type: string
+                                      serverName:
+                                        type: string
+                                    type: object
+                                  tokenUrl:
+                                    minLength: 1
+                                    type: string
+                                required:
+                                - clientId
+                                - clientSecret
+                                - tokenUrl
+                                type: object
+                              proxyConnectHeader:
+                                additionalProperties:
+                                  items:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  type: array
+                                type: object
+                                x-kubernetes-map-type: atomic
+                              proxyFromEnvironment:
+                                type: boolean
+                              proxyURL:
+                                type: string
+                              proxyUrl:
+                                pattern: ^(http|https|socks5)://.+$
+                                type: string
+                              tlsConfig:
+                                properties:
+                                  ca:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  cert:
+                                    properties:
+                                      configMap:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                      secret:
+                                        properties:
+                                          key:
+                                            type: string
+                                          name:
+                                            default: ""
+                                            type: string
+                                          optional:
+                                            type: boolean
+                                        required:
+                                        - key
+                                        type: object
+                                        x-kubernetes-map-type: atomic
+                                    type: object
+                                  insecureSkipVerify:
+                                    type: boolean
+                                  keySecret:
+                                    properties:
+                                      key:
+                                        type: string
+                                      name:
+                                        default: ""
+                                        type: string
+                                      optional:
+                                        type: boolean
+                                    required:
+                                    - key
+                                    type: object
+                                    x-kubernetes-map-type: atomic
+                                  maxVersion:
+                                    enum:
+                                    - TLS10
+                                    - TLS11
+                                    - TLS12
+                                    - TLS13
+                                    type: string
+                                  minVersion:
+                                    enum:
+                                    - TLS10
+                                    - TLS11
+                                    - TLS12
+                                    - TLS13
+                                    type: string
+                                  serverName:
+                                    type: string
+                                type: object
+                            type: object
+                          iconURL:
+                            pattern: ^https?://.+$
+                            type: string
+                          imageURL:
+                            pattern: ^https?://.+$
+                            type: string
+                          linkNames:
+                            type: boolean
+                          sendResolved:
+                            type: boolean
+                          shortFields:
+                            type: boolean
+                          text:
+                            minLength: 1
+                            type: string
+                          thumbURL:
+                            pattern: ^https?://.+$
+                            type: string
+                          title:
+                            minLength: 1
+                            type: string
+                          titleLink:
+                            minLength: 1
+                            type: string
+                          token:
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                default: ""
+                                type: string
+                              optional:
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                          tokenID:
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                default: ""
+                                type: string
+                              optional:
+                                type: boolean
+                            required:
+                            - key
+                            type: object
+                            x-kubernetes-map-type: atomic
+                        required:
+                        - token
+                        - tokenID
                         type: object
                       type: array
                     slackConfigs:
@@ -2510,6 +3388,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -2585,7 +3465,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -2714,7 +3594,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -2910,6 +3790,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -2985,7 +3867,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -3114,7 +3996,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -3249,6 +4131,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              useFIPSSTSEndpoint:
+                                type: boolean
                             type: object
                           subject:
                             type: string
@@ -3345,6 +4229,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -3420,7 +4306,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -3549,7 +4435,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -3756,6 +4642,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -3831,7 +4719,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -3960,7 +4848,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -4135,6 +5023,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -4210,7 +5100,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -4339,7 +5229,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -4510,6 +5400,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -4585,7 +5477,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -4714,7 +5606,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
@@ -4815,6 +5707,9 @@ spec:
                             type: integer
                           sendResolved:
                             type: boolean
+                          timeout:
+                            pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
+                            type: string
                           url:
                             type: string
                           urlSecret:
@@ -4916,6 +5811,8 @@ spec:
                                 - key
                                 type: object
                                 x-kubernetes-map-type: atomic
+                              enableHttp2:
+                                type: boolean
                               followRedirects:
                                 type: boolean
                               noProxy:
@@ -4991,7 +5888,7 @@ spec:
                                   proxyFromEnvironment:
                                     type: boolean
                                   proxyUrl:
-                                    pattern: ^http(s)?://.+$
+                                    pattern: ^(http|https|socks5)://.+$
                                     type: string
                                   scopes:
                                     items:
@@ -5120,7 +6017,7 @@ spec:
                               proxyURL:
                                 type: string
                               proxyUrl:
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               tlsConfig:
                                 properties:
