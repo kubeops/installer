@@ -150,6 +150,7 @@ crd-importer \
     --no-description \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_petsets.yaml \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_placementpolicies.yaml \
+    --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_failovergroups.yaml \
     --out=./charts/petset/crds
 
 crd-importer \
