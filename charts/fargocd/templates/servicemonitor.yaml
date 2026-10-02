@@ -1,4 +1,4 @@
-{{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+{{- if and (eq "prometheus.io/operator" ( include "monitoring.agent" . )) (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1/ServiceMonitor") }}
 apiVersion: v1
 kind: Secret
 metadata:
