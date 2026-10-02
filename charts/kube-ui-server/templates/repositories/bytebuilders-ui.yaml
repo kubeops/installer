@@ -1,4 +1,4 @@
-{{- if .Values.helmRepositories.create }}
+{{- if and .Values.helmRepositories.create (.Capabilities.APIVersions.Has "source.toolkit.fluxcd.io/v1beta2/HelmRepository") }}
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:

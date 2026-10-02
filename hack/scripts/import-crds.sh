@@ -14,10 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARGOPROJ_ARGO_CD_TAG=${ARGOPROJ_ARGO_CD_TAG:-v3.4.3}
 CERT_MANAGER_CERT_MANAGER_TAG=${CERT_MANAGER_CERT_MANAGER_TAG:-v1.19.2}
-FLUXCD_HELM_CONTROLLER_TAG=${FLUXCD_HELM_CONTROLLER_TAG:-v1.6.4}
-FLUXCD_SOURCE_CONTROLLER_TAG=${FLUXCD_SOURCE_CONTROLLER_TAG:-v1.9.5}
 KMODULES_CUSTOM_RESOURCES_TAG=${KMODULES_CUSTOM_RESOURCES_TAG:-v0.34.0}
 KMODULES_RESOURCE_METADATA_TAG=${KMODULES_RESOURCE_METADATA_TAG:-master}
 KUBEOPS_CATTLESET_TAG=${KUBEOPS_CATTLESET_TAG:-v0.0.1}
@@ -46,33 +43,8 @@ crd-importer \
 
 crd-importer \
     --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
-    --out=./charts/taskqueue/crds
-
-crd-importer \
-    --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Issuer.cert-manager.io \
-    --out=./charts/cert-manager-csi-driver-cacerts/crds
-
-crd-importer \
-    --no-description \
     --input=https://github.com/kubeops/external-dns-operator/raw/${KUBEOPS_EXTERNAL_DNS_OPERATOR_TAG}/crds/external-dns.appscode.com_externaldnses.yaml \
     --out=./charts/external-dns-operator/crds
-
-crd-importer \
-    --no-description \
-    --input=https://github.com/argoproj/argo-cd/raw/${ARGOPROJ_ARGO_CD_TAG}/manifests/crds/application-crd.yaml \
-    --input=https://github.com/fluxcd/helm-controller/raw/${FLUXCD_HELM_CONTROLLER_TAG}/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
-    --input=https://github.com/fluxcd/source-controller/raw/${FLUXCD_SOURCE_CONTROLLER_TAG}/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
-    --out=./charts/fargocd/crds
-
-crd-importer \
-    --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
-    --out=./charts/fargocd/crds
 
 crd-importer \
     --no-description \
@@ -97,14 +69,6 @@ crd-importer \
 
 crd-importer \
     --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
-    --out=./charts/sidekick/crds
-
-crd-importer \
-    --no-description \
-    --input=https://github.com/fluxcd/helm-controller/raw/${FLUXCD_HELM_CONTROLLER_TAG}/config/crd/bases/helm.toolkit.fluxcd.io_helmreleases.yaml \
-    --input=https://github.com/fluxcd/source-controller/raw/${FLUXCD_SOURCE_CONTROLLER_TAG}/config/crd/bases/source.toolkit.fluxcd.io_helmrepositories.yaml \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/management.k8s.appscode.com_projectquotas.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_clusterprofiles.yaml \
@@ -113,7 +77,6 @@ crd-importer \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_resourcedashboards.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_resourceeditors.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_resourceoutlinefilters.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_chartpresets.yaml \
     --input=https://github.com/x-helm/apimachinery/raw/${X_HELM_APIMACHINERY_TAG}/crds/charts.x-helm.dev_clusterchartpresets.yaml \
     --out=./charts/kube-ui-server/crds
@@ -126,24 +89,16 @@ crd-importer \
 crd-importer \
     --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/panopticon/crds
 
 crd-importer \
     --no-description \
     --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/falco-ui-server/crds
 
 crd-importer \
     --no-description \
     --input=https://github.com/kubeops/operator-shard-manager/raw/${KUBEOPS_OPERATOR_SHARD_MANAGER_TAG}/crds/operator.k8s.appscode.com_shardconfigurations.yaml \
-    --out=./charts/operator-shard-manager/crds
-
-crd-importer \
-    --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
     --out=./charts/operator-shard-manager/crds
 
 crd-importer \
@@ -154,26 +109,13 @@ crd-importer \
 
 crd-importer \
     --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
-    --out=./charts/petset/crds
-
-crd-importer \
-    --no-description \
     --input=https://github.com/kubeops/cattleset/raw/${KUBEOPS_CATTLESET_TAG}/crds/apps.k8s.appscode.com_cattlesets.yaml \
     --input=https://github.com/kubeops/petset/raw/${KUBEOPS_PETSET_TAG}/crds/apps.k8s.appscode.com_placementpolicies.yaml \
     --out=./charts/cattleset/crds
 
 crd-importer \
     --no-description \
-    --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-    --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
-    --out=./charts/cattleset/crds
-
-crd-importer \
-    --no-description \
     --input=https://github.com/open-viz/apimachinery/raw/${OPEN_VIZ_APIMACHINERY_TAG}/crds/openviz.dev_grafanadashboards.yaml \
-    --input=https://github.com/prometheus-operator/prometheus-operator/raw/${PROMETHEUS_OPERATOR_PROMETHEUS_OPERATOR}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml \
     --out=./charts/scanner/crds
 
 # import cert-manager crds
@@ -231,12 +173,6 @@ rm -rf charts/kmodules-crds/crds/auditor.appscode.com_siteinfos.yaml
         crd-importer \
             --no-description \
             --input=${supervisor_dir} \
-            --out=./charts/supervisor/crds
-
-        crd-importer \
-            --no-description \
-            --input=https://github.com/cert-manager/cert-manager/releases/download/${CERT_MANAGER_CERT_MANAGER_TAG}/cert-manager.crds.yaml \
-            --gk=Certificate.cert-manager.io --gk=Issuer.cert-manager.io \
             --out=./charts/supervisor/crds
     fi
 }

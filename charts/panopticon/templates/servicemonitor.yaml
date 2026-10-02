@@ -1,4 +1,4 @@
-{{- if eq "prometheus.io/operator" ( include "monitoring.agent" . ) }}
+{{- if and (eq "prometheus.io/operator" ( include "monitoring.agent" . )) (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1/ServiceMonitor") }}
 
 {{- $labels := mergeOverwrite (dict) .Values.monitoring.serviceMonitor.labels }}
 {{- $_ := set $labels "app.kubernetes.io/name" (include "panopticon.name" .) }}

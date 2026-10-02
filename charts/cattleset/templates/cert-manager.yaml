@@ -1,4 +1,7 @@
 {{- if .Values.apiserver.servingCerts.certManager.enabled }}
+{{- if not (.Capabilities.APIVersions.Has "cert-manager.io/v1/Certificate") }}
+{{- fail "cert-manager.io/v1 CRDs are required when apiserver.servingCerts.certManager.enabled is true" }}
+{{- end }}
 {{- $fullname := include "cattleset.fullname" . }}
 {{- $issuerRef := .Values.apiserver.servingCerts.certManager.issuerRef }}
 {{- $issuerName := default (printf "%s-selfsign" $fullname) $issuerRef.name }}
