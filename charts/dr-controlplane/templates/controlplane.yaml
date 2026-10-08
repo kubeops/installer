@@ -122,7 +122,7 @@ spec:
       containers:
         - name: controlplane
           image: {{ required "controlplane.image is required when controlplane.enabled is true" .Values.controlplane.image }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: {{ .Values.controlplane.command | default (list "/multicluster-controlplane") | toJson }}
           args:
             - server

@@ -15,8 +15,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" }}
 {{- end -}}
 
+{{/*
+Returns the registry used for the dr-controlplane docker image
+*/}}
+{{- define "image.registry" -}}
+{{- list .Values.registryFQDN .Values.image.registry | compact | join "/" -}}
+{{- end -}}
+
 {{- define "dr.image" -}}
-{{- printf "%s:%s" .Values.image.repository (default .Chart.AppVersion .Values.image.tag) -}}
+{{- printf "%s/%s:%s" (include "image.registry" .) .Values.image.repository (default .Chart.AppVersion .Values.image.tag) -}}
 {{- end -}}
 
 {{/*

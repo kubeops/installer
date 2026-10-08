@@ -8,11 +8,13 @@
 namespace: dc-failover
 createNamespace: true
 
+# Docker registry fqdn used to pull dr-controlplane docker images
+registryFQDN: ghcr.io
+
 # Container image for the dr-agent, dr-topology, and drctl binaries (one image, three binaries).
-image:
-  repository: ghcr.io/appscode/dr-controlplane
-  tag: ""          # defaults to .Chart.AppVersion
-  pullPolicy: IfNotPresent
+image: ghcr.io/appscode/dr-controlplane
+tag: ""          # defaults to .Chart.AppVersion
+imagePullPolicy: IfNotPresent
 imagePullSecrets: []
 
 # ----------------------------------------------------------------------------
@@ -306,10 +308,12 @@ addon:
     # https://<controlplane.externalHostname>:<controlplane.port>. Set to "" on both to
     # disable the copy and provision coord-kubeconfig yourself.
     coordExternalEndpoint: ""
+    # The spoke agent image is ${registryFQDN}/${registry}/${repository}:${tag},
+    # with the registryFQDN taken from the top level registryFQDN.
     image:
-      # Empty falls back to the top level image.repository.
-      repository: ""
-      # Empty falls back to the top level image.tag, then .Chart.AppVersion.
+      registry: appscode
+      repository: dr-controlplane
+      # Empty falls back to the top level tag, then .Chart.AppVersion.
       tag: ""
     # imagePullSecret NAMES (plain strings) for the agent Deployment. The Secrets
     # must already exist in installNamespace on every managed cluster. Empty falls
@@ -328,13 +332,6 @@ addon:
   # The hub side addon-manager. It runs the addon-manager subcommand in cluster.
   manager:
     replicas: 1
-    image:
-      # Empty falls back to the top level image.repository.
-      repository: ""
-      # Empty falls back to the top level image.tag, then .Chart.AppVersion.
-      tag: ""
-      # Empty falls back to the top level image.pullPolicy.
-      pullPolicy: ""
     # Extra args appended after the addon-manager subcommand.
     args: []
     resources: {}

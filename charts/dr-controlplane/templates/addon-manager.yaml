@@ -1,12 +1,9 @@
 {{- if .Values.addon.autoInstall.enabled }}
 {{- $ns := .Values.namespace -}}
 {{- $name := printf "%s-addon-manager" (include "dr.fullname" .) -}}
-{{- $repo := .Values.addon.manager.image.repository | default .Values.image.repository -}}
-{{- $tag := .Values.addon.manager.image.tag | default .Values.image.tag | default .Chart.AppVersion -}}
-{{- $pullPolicy := .Values.addon.manager.image.pullPolicy | default .Values.image.pullPolicy -}}
+{{- $tag := .Values.tag | default .Chart.AppVersion -}}
 {{- $agent := .Values.addon.agent -}}
-{{- $agentRepo := $agent.image.repository | default .Values.image.repository -}}
-{{- $agentTag := $agent.image.tag | default .Values.image.tag | default .Chart.AppVersion -}}
+{{- $agentTag := $agent.image.tag | default .Values.tag | default .Chart.AppVersion -}}
 {{- $agentPullSecrets := include "dr.addonAgentPullSecrets" . -}}
 apiVersion: v1
 kind: ServiceAccount
@@ -155,8 +152,8 @@ spec:
       {{- end }}
       containers:
         - name: addon-manager
-          image: {{ printf "%s:%s" $repo $tag }}
-          imagePullPolicy: {{ $pullPolicy }}
+          image: {{ printf "%s:%s" .Values.image $tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: ["/dr-controlplane"]
           args:
             - addon-manager
@@ -175,7 +172,9 @@ spec:
             {{- else if .Values.controlplane.externalHostname }}
             - --agent-coord-external-endpoint=https://{{ .Values.controlplane.externalHostname }}:{{ .Values.controlplane.port }}
             {{- end }}
-            - --agent-image-repository={{ $agentRepo }}
+            - --agent-registry-fqdn={{ .Values.registryFQDN }}
+            - --agent-image-registry={{ $agent.image.registry }}
+            - --agent-image-repository={{ $agent.image.repository }}
             - --agent-image-tag={{ $agentTag }}
             {{- if $agent.replicas }}
             - --agent-replicas={{ $agent.replicas }}

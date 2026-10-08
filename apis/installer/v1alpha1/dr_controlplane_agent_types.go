@@ -48,9 +48,12 @@ type DrControlplaneAgentSpec struct {
 	ClusterName string `json:"clusterName"`
 	Namespace   string `json:"namespace"`
 	//+optional
-	AddonInstallNamespace string              `json:"addonInstallNamespace"`
-	CreateNamespace       bool                `json:"createNamespace"`
-	Image                 DrControlplaneImage `json:"image"`
+	AddonInstallNamespace string `json:"addonInstallNamespace"`
+	CreateNamespace       bool   `json:"createNamespace"`
+	// Docker registry fqdn used to pull the dr-controlplane docker image
+	RegistryFQDN    string                   `json:"registryFQDN"`
+	Image           DrControlplaneAddonImage `json:"image"`
+	ImagePullPolicy string                   `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []core.LocalObjectReference `json:"imagePullSecrets"`
 	Replicas         int                         `json:"replicas"`

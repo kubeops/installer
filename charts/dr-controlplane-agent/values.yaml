@@ -27,13 +27,22 @@ addonInstallNamespace: ""
 # with it. Only turn this on for a namespace nothing else lives in.
 createNamespace: false
 
+# Docker registry fqdn used to pull the dr-controlplane image.
+# Set this to use docker registry hosted at ${registryFQDN}/${registry}/${repository}.
+# Injected by the addon manager from --agent-registry-fqdn.
+registryFQDN: ghcr.io
 # Container image for the dr-controlplane binary. Injected by the addon manager
-# from --agent-image-repository / --agent-image-tag so spokes that pull from a
-# private registry do not need a chart edit.
+# from --agent-image-registry / --agent-image-repository / --agent-image-tag so
+# spokes that pull from a private registry do not need a chart edit.
 image:
-  repository: ghcr.io/appscode/dr-controlplane
+  # Docker registry used to pull the image
+  registry: appscode
+  # Name of the container image
+  repository: dr-controlplane
+  # Container image tag
   tag: ""          # defaults to .Chart.AppVersion
-  pullPolicy: IfNotPresent
+# Container image pull policy
+imagePullPolicy: IfNotPresent
 # imagePullSecrets are Secret references that must exist in .Values.namespace on
 # each spoke. Injected by the addon manager from --agent-image-pull-secrets.
 imagePullSecrets: []

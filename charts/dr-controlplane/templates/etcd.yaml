@@ -48,7 +48,7 @@ spec:
   containers:
     - name: etcd
       image: {{ .Values.etcd.image }}
-      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      imagePullPolicy: {{ .Values.imagePullPolicy }}
       ports:
         - name: client
           containerPort: {{ $m.clientPort }}
@@ -234,7 +234,7 @@ spec:
       containers:
         - name: etcd
           image: {{ .Values.etcd.image }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: client
               containerPort: 2379

@@ -96,7 +96,7 @@ spec:
       containers:
         - name: agent
           image: {{ include "dr.image" . }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           command: ["/dr-controlplane"]
           args:
             - agent

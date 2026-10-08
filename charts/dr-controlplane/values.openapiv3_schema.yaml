@@ -36,10 +36,15 @@ properties:
             type: object
           image:
             properties:
+              registry:
+                type: string
               repository:
                 type: string
               tag:
                 type: string
+            required:
+            - registry
+            - repository
             type: object
           imagePullSecrets:
             items:
@@ -78,15 +83,6 @@ properties:
             items:
               type: string
             type: array
-          image:
-            properties:
-              pullPolicy:
-                type: string
-              repository:
-                type: string
-              tag:
-                type: string
-            type: object
           replicas:
             type: integer
           resources:
@@ -162,7 +158,6 @@ properties:
                 type: object
             type: object
         required:
-        - image
         - replicas
         type: object
       placement:
@@ -1792,17 +1787,10 @@ properties:
     - storageSize
     type: object
   image:
-    properties:
-      pullPolicy:
-        type: string
-      repository:
-        type: string
-      tag:
-        type: string
-    required:
-    - pullPolicy
-    - repository
-    type: object
+    description: Container image (registry, organization and name) without the tag
+    type: string
+  imagePullPolicy:
+    type: string
   imagePullSecrets:
     items:
       description: 'LocalObjectReference contains enough information to let you locate
@@ -1832,6 +1820,11 @@ properties:
     additionalProperties:
       type: string
     type: object
+  registryFQDN:
+    description: Docker registry fqdn used to pull dr-controlplane docker images
+    type: string
+  tag:
+    type: string
   tolerations:
     items:
       description: 'The pod this Toleration is attached to tolerates any taint that
@@ -1979,6 +1972,8 @@ required:
 - createNamespace
 - etcd
 - image
+- imagePullPolicy
 - namespace
+- registryFQDN
 - topology
 type: object

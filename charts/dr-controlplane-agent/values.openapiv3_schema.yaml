@@ -115,16 +115,18 @@ properties:
     type: boolean
   image:
     properties:
-      pullPolicy:
+      registry:
         type: string
       repository:
         type: string
       tag:
         type: string
     required:
-    - pullPolicy
+    - registry
     - repository
     type: object
+  imagePullPolicy:
+    type: string
   imagePullSecrets:
     items:
       description: 'LocalObjectReference contains enough information to let you locate
@@ -154,6 +156,9 @@ properties:
     additionalProperties:
       type: string
     type: object
+  registryFQDN:
+    description: Docker registry fqdn used to pull the dr-controlplane docker image
+    type: string
   replicas:
     type: integer
   tolerations:
@@ -210,6 +215,8 @@ required:
 - agent
 - createNamespace
 - image
+- imagePullPolicy
 - namespace
+- registryFQDN
 - replicas
 type: object

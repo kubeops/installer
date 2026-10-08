@@ -45,9 +45,15 @@ type DrControlplane struct {
 
 // DrControlplaneSpec is the schema for the dr-controlplane chart values file
 type DrControlplaneSpec struct {
-	Namespace       string              `json:"namespace"`
-	CreateNamespace bool                `json:"createNamespace"`
-	Image           DrControlplaneImage `json:"image"`
+	Namespace       string `json:"namespace"`
+	CreateNamespace bool   `json:"createNamespace"`
+	// Docker registry fqdn used to pull dr-controlplane docker images
+	RegistryFQDN string `json:"registryFQDN"`
+	// Container image (registry, organization and name) without the tag
+	Image string `json:"image"`
+	//+optional
+	Tag             string `json:"tag"`
+	ImagePullPolicy string `json:"imagePullPolicy"`
 	//+optional
 	ImagePullSecrets []core.LocalObjectReference `json:"imagePullSecrets"`
 	Etcd             DrControlplaneEtcd          `json:"etcd"`
@@ -61,13 +67,6 @@ type DrControlplaneSpec struct {
 	Tolerations []core.Toleration `json:"tolerations"`
 	//+optional
 	Affinity *core.Affinity `json:"affinity"`
-}
-
-type DrControlplaneImage struct {
-	Repository string `json:"repository"`
-	//+optional
-	Tag        string `json:"tag"`
-	PullPolicy string `json:"pullPolicy"`
 }
 
 type DrControlplaneEtcd struct {
@@ -230,28 +229,18 @@ type DrControlplaneAddonAgent struct {
 }
 
 type DrControlplaneAddonImage struct {
-	//+optional
+	Registry   string `json:"registry"`
 	Repository string `json:"repository"`
 	//+optional
 	Tag string `json:"tag"`
 }
 
 type DrControlplaneAddonManager struct {
-	Replicas int                             `json:"replicas"`
-	Image    DrControlplaneAddonManagerImage `json:"image"`
+	Replicas int `json:"replicas"`
 	//+optional
 	Args []string `json:"args"`
 	//+optional
 	Resources core.ResourceRequirements `json:"resources"`
-}
-
-type DrControlplaneAddonManagerImage struct {
-	//+optional
-	Repository string `json:"repository"`
-	//+optional
-	Tag string `json:"tag"`
-	//+optional
-	PullPolicy string `json:"pullPolicy"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
