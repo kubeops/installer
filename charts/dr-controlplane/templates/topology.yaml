@@ -1,0 +1,159 @@
+{{- if .Values.topology.enabled }}
+{{- $ns := .Values.namespace -}}
+{{- $name := printf "%s-topology" (include "dr.fullname" .) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: topology
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["apps.k8s.appscode.com"]
+    resources: ["placementpolicies", "failovergroups"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps.k8s.appscode.com"]
+    resources: ["failovergroups/status"]
+    verbs: ["get", "patch", "update"]
+  # FailoverGroup members: a dependent group's databases are asked to follow their
+  # dependencies through the engine's dr.kubedb.com/switchover-to annotation.
+  - apiGroups: ["kubedb.com"]
+    resources: ["*"]
+    verbs: ["get", "patch"]
+  # The controller confirms the Lease namespace exists before managing Leases. On a
+  # separate coordination control plane its kubeconfig carries that right; when the
+  # hub itself holds the Leases (no coordKubeconfigSecret) this ServiceAccount needs it.
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    resourceNames: [{{ $ns | quote }}]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: topology
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: topology
+  template:
+    metadata:
+      labels:
+        {{- include "dr.labels" . | nindent 8 }}
+        app.kubernetes.io/component: topology
+    spec:
+      serviceAccountName: {{ $name }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: topology
+          image: {{ include "dr.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/dr-controlplane"]
+          args:
+            - controller
+            - --namespace={{ $ns }}
+            - --require-spread={{ .Values.topology.requireSpread }}
+            {{- if .Values.topology.hubKubeconfigSecret }}
+            - --hub-kubeconfig=/etc/dr/hub/kubeconfig
+            {{- end }}
+            {{- if .Values.topology.coordKubeconfigSecret }}
+            - --coord-kubeconfig=/etc/dr/coord/kubeconfig
+            {{- end }}
+            {{- if .Values.topology.regions }}
+            - --region={{ range $k, $v := .Values.topology.regions }}{{ $k }}={{ $v }},{{ end }}
+            {{- end }}
+          {{- if or .Values.topology.hubKubeconfigSecret .Values.topology.coordKubeconfigSecret }}
+          volumeMounts:
+            {{- if .Values.topology.hubKubeconfigSecret }}
+            - name: hub-kubeconfig
+              mountPath: /etc/dr/hub
+              readOnly: true
+            {{- end }}
+            {{- if .Values.topology.coordKubeconfigSecret }}
+            - name: coord-kubeconfig
+              mountPath: /etc/dr/coord
+              readOnly: true
+            {{- end }}
+          {{- end }}
+          {{- with .Values.topology.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- if or .Values.topology.hubKubeconfigSecret .Values.topology.coordKubeconfigSecret }}
+      volumes:
+        {{- if .Values.topology.hubKubeconfigSecret }}
+        - name: hub-kubeconfig
+          secret:
+            secretName: {{ .Values.topology.hubKubeconfigSecret }}
+        {{- end }}
+        {{- if .Values.topology.coordKubeconfigSecret }}
+        - name: coord-kubeconfig
+          secret:
+            secretName: {{ .Values.topology.coordKubeconfigSecret }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

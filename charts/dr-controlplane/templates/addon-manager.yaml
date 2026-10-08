@@ -1,0 +1,213 @@
+{{- if .Values.addon.autoInstall.enabled }}
+{{- $ns := .Values.namespace -}}
+{{- $name := printf "%s-addon-manager" (include "dr.fullname" .) -}}
+{{- $repo := .Values.addon.manager.image.repository | default .Values.image.repository -}}
+{{- $tag := .Values.addon.manager.image.tag | default .Values.image.tag | default .Chart.AppVersion -}}
+{{- $pullPolicy := .Values.addon.manager.image.pullPolicy | default .Values.image.pullPolicy -}}
+{{- $agent := .Values.addon.agent -}}
+{{- $agentRepo := $agent.image.repository | default .Values.image.repository -}}
+{{- $agentTag := $agent.image.tag | default .Values.image.tag | default .Chart.AppVersion -}}
+{{- $agentPullSecrets := include "dr.addonAgentPullSecrets" . -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+---
+# Cluster scoped permissions the addon-framework needs to run a helm agent addon.
+# Mirrors the addon-framework documented RBAC, plus placements/placementdecisions
+# read access for the Placements install strategy.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+rules:
+  # Write the mirrored coordination kubeconfig into the configured hub namespaces
+  # (coord-kubeconfig mirror). Cluster scoped because the target namespaces are
+  # configurable and belong to other components.
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["configmaps", "events"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "deletecollection", "patch"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+  - apiGroups: ["authorization.k8s.io"]
+    resources: ["subjectaccessreviews"]
+    verbs: ["get", "create"]
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["certificatesigningrequests", "certificatesigningrequests/approval"]
+    verbs: ["get", "list", "watch", "create", "update"]
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["signers"]
+    verbs: ["approve"]
+  - apiGroups: ["cluster.open-cluster-management.io"]
+    resources: ["managedclusters", "placements", "placementdecisions"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["work.open-cluster-management.io"]
+    resources: ["manifestworks"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "deletecollection", "patch"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["managedclusteraddons"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["managedclusteraddons/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["managedclusteraddons/finalizers"]
+    verbs: ["update"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["clustermanagementaddons"]
+    verbs: ["get", "list", "watch", "patch"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["clustermanagementaddons/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["clustermanagementaddons/finalizers"]
+    verbs: ["update"]
+  - apiGroups: ["addon.open-cluster-management.io"]
+    resources: ["addondeploymentconfigs"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+# Namespaced access to the bootstrap CA Secret the addon-manager mints and reads
+# via the secretfs backed certstore. Scoped to the release namespace only.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+spec:
+  replicas: {{ .Values.addon.manager.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: addon-manager
+  template:
+    metadata:
+      labels:
+        {{- include "dr.labels" . | nindent 8 }}
+        app.kubernetes.io/component: addon-manager
+    spec:
+      serviceAccountName: {{ $name }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: addon-manager
+          image: {{ printf "%s:%s" $repo $tag }}
+          imagePullPolicy: {{ $pullPolicy }}
+          command: ["/dr-controlplane"]
+          args:
+            - addon-manager
+            # Spoke agent tunables. These travel one path: chart values here ->
+            # addon-manager flags -> injected into the embedded agent chart per
+            # ManagedCluster. Nothing about the agent is hardcoded per cluster.
+            - --agent-install-namespace={{ $agent.installNamespace }}
+            - --agent-create-namespace={{ $agent.createNamespace }}
+            - --agent-coord-kubeconfig-secret={{ $agent.coordKubeconfigSecret }}
+            - --agent-coord-kubeconfig-source-secret={{ .Values.addon.agent.coordKubeconfigSourceSecret }}
+            {{- with .Values.addon.coordKubeconfigMirrorNamespaces }}
+            - --coord-kubeconfig-mirror-namespaces={{ join "," . }}
+            {{- end }}
+            {{- if .Values.addon.agent.coordExternalEndpoint }}
+            - --agent-coord-external-endpoint={{ .Values.addon.agent.coordExternalEndpoint }}
+            {{- else if .Values.controlplane.externalHostname }}
+            - --agent-coord-external-endpoint=https://{{ .Values.controlplane.externalHostname }}:{{ .Values.controlplane.port }}
+            {{- end }}
+            - --agent-image-repository={{ $agentRepo }}
+            - --agent-image-tag={{ $agentTag }}
+            {{- if $agent.replicas }}
+            - --agent-replicas={{ $agent.replicas }}
+            {{- end }}
+            {{- if $agentPullSecrets }}
+            - --agent-image-pull-secrets={{ $agentPullSecrets }}
+            {{- end }}
+            - --agent-health-lease-duration={{ $agent.health.leaseDurationSeconds }}s
+            - --agent-health-renew-interval={{ $agent.health.renewIntervalSeconds }}s
+            # The addon-manager rejects an election lease duration at or below the
+            # 30s data plane marker fence TTL, see values.yaml.
+            - --agent-election-lease-duration={{ $agent.election.leaseDurationSeconds }}s
+            - --agent-election-renew-deadline={{ $agent.election.renewDeadlineSeconds }}s
+            - --agent-election-retry-period={{ $agent.election.retryPeriodSeconds }}s
+            {{- with .Values.addon.manager.args }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          {{- with .Values.addon.manager.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
