@@ -2,8 +2,8 @@ apiVersion: v2
 name: dr-controlplane
 description: Common DC failover service. A three data center etcd quorum and an OCM control plane that exposes the Kubernetes Lease API as the cross data center failover signal, plus the per DC agent and the topology controller.
 type: application
-version: 0.1.0
-appVersion: "0.1.0"
+version: v0.1.0
+appVersion: v0.1.0
 keywords:
   - disaster-recovery
   - failover

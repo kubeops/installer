@@ -2,8 +2,8 @@ apiVersion: v2
 name: dr-controlplane-agent
 description: OCM addon chart that installs the dr-controlplane per data center agent (Deployment, ServiceAccount, Role, RoleBinding) onto a ManagedCluster. Rendered by the addon-framework, one release per ManagedCluster, with the cluster name injected as the agent --dc-name.
 type: application
-version: 0.1.0
-appVersion: "0.1.0"
+version: v0.1.0
+appVersion: v0.1.0
 keywords:
   - disaster-recovery
   - failover
