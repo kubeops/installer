@@ -1,0 +1,79 @@
+# Values for the dr-controlplane-agent OCM addon chart.
+# The addon manager (dr-controlplane addon-manager) injects every value below that
+# an operator can tune: clusterName (the ManagedCluster name), namespace,
+# createNamespace, image.repository, image.tag, imagePullSecrets, and the whole
+# agent.* block. The defaults here are the safe production values, so a render
+# without injection still produces a correct agent.
+
+# clusterName is the ManagedCluster name. Injected by the addon manager and used
+# as the agent --dc-name. Required at render time.
+clusterName: ""
+
+# namespace where the agent runs and the coordination Leases live on the spoke.
+# It must be the namespace that already holds the coordination credential Secret
+# (agent.coordKubeconfigSecret), otherwise the agent pod never leaves
+# ContainerCreating. The addon manager pins this to its --agent-install-namespace
+# and also sets the addon-framework install namespace to the same value.
+namespace: dc-failover
+# addonInstallNamespace is a built in value the addon-framework always sets to the
+# effective addon install namespace. It wins over namespace when present, so the
+# rendered objects can never drift from where the framework installs the release.
+addonInstallNamespace: ""
+# createNamespace makes the chart emit the target Namespace object, which makes the
+# addon's ManifestWork OWN that namespace. Default false on purpose: the agent
+# shares the pre existing dc-failover namespace with the coordination credential
+# Secret, the active DC markers and, on some clusters, etcd. If the addon owned
+# that namespace, deleting the addon would garbage collect the entire DR install
+# with it. Only turn this on for a namespace nothing else lives in.
+createNamespace: false
+
+# Container image for the dr-controlplane binary. Injected by the addon manager
+# from --agent-image-repository / --agent-image-tag so spokes that pull from a
+# private registry do not need a chart edit.
+image:
+  repository: ghcr.io/appscode/dr-controlplane
+  tag: ""          # defaults to .Chart.AppVersion
+  pullPolicy: IfNotPresent
+# imagePullSecrets are Secret references that must exist in .Values.namespace on
+# each spoke. Injected by the addon manager from --agent-image-pull-secrets.
+imagePullSecrets: []
+#  - name: regcred
+
+# replicas is the agent pod count on this spoke. Injected by the addon manager
+# from --agent-replicas. More than one is pod crash insurance only: every replica
+# shares the DC identity (same --dc-name), renews the same Leases, and projects
+# the same markers, so extras are harmless but carry no quorum weight; quorum
+# lives in the etcd members alone.
+replicas: 1
+
+agent:
+  # base64 kubeconfig injected by the addon manager; empty means an operator
+  # provisioned Secret of the same name is used instead.
+  coordKubeconfigData: ""
+  # Kubeconfig Secret for the coordination control plane (key: kubeconfig).
+  # Empty disables the mount and the agent uses the in cluster config.
+  coordKubeconfigSecret: coord-kubeconfig
+  metricsAddr: ":8080"
+  health:
+    leaseDurationSeconds: 15
+    renewIntervalSeconds: 5
+  # Primary DC leader election. These are the live production values (45s/40s/5s).
+  #
+  # SAFETY CONSTRAINT, do not lower election.leaseDurationSeconds below 30:
+  # the agent projects an active DC marker ConfigMap that the database data plane
+  # (pg-coordinator) reads with a 30 SECOND fail closed TTL. A partitioned primary
+  # DC keeps accepting writes until its marker goes stale at lastRenew+30s. A
+  # survivor can only acquire the expired primary DC Lease at
+  # lastRenew+leaseDurationSeconds. If leaseDurationSeconds <= 30 the survivor
+  # becomes writable BEFORE the old primary has fenced itself, and both data
+  # centers accept writes at once (split brain). Keep leaseDurationSeconds
+  # comfortably above 30s to also absorb cross DC clock skew. The addon manager
+  # rejects anything <= 30s at startup.
+  election:
+    leaseDurationSeconds: 45
+    renewDeadlineSeconds: 40
+    retryPeriodSeconds: 5
+  resources: {}
+
+nodeSelector: {}
+tolerations: []

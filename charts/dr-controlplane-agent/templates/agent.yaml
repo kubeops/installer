@@ -1,0 +1,155 @@
+{{- $ns := include "dr.namespace" . -}}
+{{- $dc := required "clusterName is required (injected by the addon manager from the ManagedCluster name)" .Values.clusterName -}}
+{{- $name := printf "%s-%s" (include "dr.fullname" .) $dc -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: agent
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+rules:
+  # Includes the spoke-local writer election Lease (dr-agent-writer-<dc>): with
+  # more than one replica, exactly one pod holds the writer role and it is
+  # decided here on the spoke, never on the coordination plane.
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  # The agent projects the active-DC marker ConfigMap onto its local spoke, which
+  # the engine coordinator reads and fails closed on. This is a local-cluster grant.
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  # The writer election publishes leader-change events; harmless if denied, but
+  # granted so the transition trail is visible in kubectl events.
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: agent
+    dr.open-cluster-management.io/dc: {{ $dc }}
+spec:
+  replicas: {{ .Values.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: agent
+      dr.open-cluster-management.io/dc: {{ $dc }}
+  template:
+    metadata:
+      labels:
+        {{- include "dr.labels" . | nindent 8 }}
+        app.kubernetes.io/component: agent
+        dr.open-cluster-management.io/dc: {{ $dc }}
+    spec:
+      serviceAccountName: {{ $name }}
+      # Soft anti-affinity: spread replicas across nodes when the spoke has more
+      # than one, co-schedule without complaint when it does not (single-node
+      # spokes still gain pod-crash failover from a second replica).
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: {{ include "dr.name" . }}
+                    app.kubernetes.io/component: agent
+                    dr.open-cluster-management.io/dc: {{ $dc }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: agent
+          image: {{ include "dr.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/dr-controlplane"]
+          args:
+            - agent
+            - --dc-name={{ $dc }}
+            - --namespace={{ $ns }}
+            - --metrics-addr={{ .Values.agent.metricsAddr }}
+            - --health-lease-duration={{ .Values.agent.health.leaseDurationSeconds }}s
+            - --health-renew-interval={{ .Values.agent.health.renewIntervalSeconds }}s
+            - --election-lease-duration={{ .Values.agent.election.leaseDurationSeconds }}s
+            - --election-renew-deadline={{ .Values.agent.election.renewDeadlineSeconds }}s
+            - --election-retry-period={{ .Values.agent.election.retryPeriodSeconds }}s
+            {{- if .Values.agent.coordKubeconfigSecret }}
+            - --kubeconfig=/etc/dr/coord/kubeconfig
+            {{- end }}
+          ports:
+            - name: metrics
+              containerPort: {{ trimPrefix ":" .Values.agent.metricsAddr | int }}
+          # Liveness on the REAL signal: /healthz fails once this agent has been unable
+          # to write to the coordination control plane for HealthStaleAfter (90s), so a
+          # sustained outage restarts the pod instead of leaving it running-but-useless.
+          # That is what re-reads a rotated coordination kubeconfig from the mounted
+          # Secret, and what makes the addon's deployment-availability prober tell the
+          # truth. Thresholds are deliberately slack so transient API blips never restart
+          # a healthy agent.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ trimPrefix ":" .Values.agent.metricsAddr | int }}
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          {{- if .Values.agent.coordKubeconfigSecret }}
+          volumeMounts:
+            - name: coord-kubeconfig
+              mountPath: /etc/dr/coord
+              readOnly: true
+          {{- end }}
+          {{- with .Values.agent.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- if .Values.agent.coordKubeconfigSecret }}
+      volumes:
+        - name: coord-kubeconfig
+          secret:
+            secretName: {{ .Values.agent.coordKubeconfigSecret }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
