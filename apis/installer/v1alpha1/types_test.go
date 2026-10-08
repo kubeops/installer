@@ -46,6 +46,8 @@ func TestDefaultValues(t *testing.T) {
 		schemachecker.TestCase{Obj: v1alpha1.StorageMetricsServerSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.SupervisorSpec{}},
 		schemachecker.TestCase{Obj: v1alpha1.TaskqueueSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.DrControlplaneSpec{}},
+		schemachecker.TestCase{Obj: v1alpha1.DrControlplaneAgentSpec{}},
 	)
 	checker.TestAll(t)
 }
