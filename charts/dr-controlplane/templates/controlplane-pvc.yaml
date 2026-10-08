@@ -1,0 +1,44 @@
+{{/*
+Durable home for the control plane apiserver data directory (/.ocm).
+
+Why this is part of the chart and enabled by default: /.ocm holds the self minted
+server-ca, client-ca and request-header-ca, plus every certificate issued from
+them. On an emptyDir a single pod restart mints a brand new CA, which instantly
+invalidates every coord-kubeconfig already distributed to the data centers. The
+agents then cannot authenticate to the coordination apiserver, stop renewing the
+primary DC Lease, the active DC marker ConfigMap goes stale, and the databases
+fail closed to read only. That failure is silent at install time and only shows up
+on the next restart, so the safe default is to persist.
+
+Skipped entirely when persistence.enabled is false, or when persistence.existingClaim
+names a claim that is managed outside this chart (the Deployment still mounts it).
+*/}}
+{{- if and .Values.controlplane.enabled .Values.controlplane.persistence.enabled (not .Values.controlplane.persistence.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "dr.controlplaneClaimName" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+  annotations:
+    # helm.sh/resource-policy: keep tells Helm to leave this PVC in place on
+    # `helm uninstall` instead of deleting it. The volume holds the apiserver CA,
+    # so deleting it is unrecoverable: every previously issued coord-kubeconfig
+    # stops working and each data center has to be re-credentialed by hand. An
+    # uninstall/reinstall cycle (which is how this chart gets upgraded across
+    # incompatible changes) must therefore preserve it. A later `helm install`
+    # with the same release name and namespace re-adopts the kept PVC, because the
+    # Helm ownership metadata below is retained along with it.
+    helm.sh/resource-policy: keep
+spec:
+  accessModes:
+    {{- include "dr.controlplaneAccessModes" . | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.controlplane.persistence.size | default "1Gi" }}
+  {{- with .Values.controlplane.persistence.storageClassName }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}

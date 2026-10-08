@@ -1,0 +1,5 @@
+clusterName: ci-cluster
+agent:
+  # No coordination Secret exists in the test namespace, so use the in cluster config.
+  coordKubeconfigSecret: ""
+createNamespace: true

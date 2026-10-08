@@ -1,0 +1,45 @@
+{{- if and .Values.controlplane.enabled .Values.controlplane.apiserverCASecret .Values.controlplane.generateApiserverCA }}
+{{- /*
+The CA the control plane apiserver uses to sign its serving and client certs.
+
+Off OpenShift the control plane cannot borrow a cluster CA, so without this Secret it
+simply fails to start. It used to be a documented manual prerequisite (two openssl and
+kubectl commands before the first install), which is one more thing to get wrong on a
+fresh cluster for no good reason.
+
+CRITICAL: this CA must be STABLE across upgrades. Regenerating it would re-sign the
+apiserver with a CA that no distributed coordination kubeconfig trusts, breaking every
+agent at once with "x509: certificate signed by unknown authority" - the exact failure
+mode that made the DR service silently dead during a rebuild. So reuse the existing
+Secret whenever one is present and only mint a CA when there is none.
+
+Note `lookup` returns empty during `helm template` and dry runs, so a rendered manifest
+shows a freshly minted CA; real installs and upgrades reuse what is in the cluster.
+Set controlplane.generateApiserverCA=false to keep providing the Secret yourself.
+*/ -}}
+{{- $ns := .Values.namespace -}}
+{{- $name := .Values.controlplane.apiserverCASecret -}}
+{{- $existing := (lookup "v1" "Secret" $ns $name) -}}
+{{- $caCrt := "" -}}
+{{- $caKey := "" -}}
+{{- if and $existing $existing.data (index $existing.data "ca.crt") (index $existing.data "ca.key") }}
+{{- $caCrt = index $existing.data "ca.crt" -}}
+{{- $caKey = index $existing.data "ca.key" -}}
+{{- else }}
+{{- $ca := genCA "dr-controlplane-ca" 3650 -}}
+{{- $caCrt = b64enc $ca.Cert -}}
+{{- $caKey = b64enc $ca.Key -}}
+{{- end }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+type: Opaque
+data:
+  ca.crt: {{ $caCrt }}
+  ca.key: {{ $caKey }}
+{{- end }}

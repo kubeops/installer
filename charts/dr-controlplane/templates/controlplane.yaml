@@ -1,0 +1,194 @@
+{{- if .Values.controlplane.enabled }}
+{{- /*
+Two configurations that used to fail only at runtime, on a real cluster, with an error
+that did not name the cause. Both are caught here instead.
+*/ -}}
+{{- if and .Values.controlplane.persistence.enabled (not .Values.controlplane.persistence.existingClaim) (gt (int .Values.controlplane.replicas) 1) }}
+{{- fail "controlplane.replicas must be 1 when controlplane.persistence.enabled is true: the data dir PVC is ReadWriteOnce, so on EBS/Azure Disk the second replica can never attach it and sits Pending with a multi-attach error. Set controlplane.replicas=1, or supply a ReadWriteMany persistence.existingClaim." }}
+{{- end }}
+{{- if and (not .Values.controlplane.apiserverCASecret) (not (.Capabilities.APIVersions.Has "security.openshift.io/v1")) }}
+{{- fail "controlplane.apiserverCASecret is required off OpenShift: without it the control plane tries to borrow a cluster CA that does not exist and never becomes ready. Set it to a Secret name (with controlplane.generateApiserverCA=true the chart mints the CA into it on first install and reuses it thereafter)." }}
+{{- end }}
+{{- $ns := .Values.namespace -}}
+{{- $name := printf "%s-controlplane" (include "dr.fullname" .) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+rules:
+  # The control plane writes its generated client kubeconfigs into Secrets in its
+  # own namespace, and reads/updates ConfigMaps during bootstrap.
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $ns }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+data:
+  # The OCM control plane reads ocmconfig.yaml from --controlplane-config-dir.
+  # External etcd mode (not the embedded single node), pointed at the 3 DC quorum.
+  ocmconfig.yaml: |
+    dataDirectory: /.ocm
+    apiserver:
+      externalHostname: {{ .Values.controlplane.externalHostname }}
+      port: {{ .Values.controlplane.port }}
+      {{- if .Values.controlplane.apiserverCASecret }}
+      caFile: /controlplane_ca/ca.crt
+      caKeyFile: /controlplane_ca/ca.key
+      {{- end }}
+    etcd:
+      mode: external
+      prefix: {{ .Values.controlplane.etcdPrefix }}
+      servers:
+      {{- range (include "dr.etcdEndpoints" . | splitList ",") }}
+        - {{ . }}
+      {{- end }}
+      {{- if .Values.controlplane.etcdTLSSecret }}
+      caFile: /etc/etcd-tls/ca.crt
+      certFile: /etc/etcd-tls/tls.crt
+      keyFile: /etc/etcd-tls/tls.key
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+spec:
+  replicas: {{ .Values.controlplane.replicas }}
+  {{- if .Values.controlplane.persistence.enabled }}
+  # The data dir is on a ReadWriteOnce PVC, so the old pod must release the volume
+  # before the replacement attaches it. RollingUpdate would deadlock on the single
+  # attach PVC, so force Recreate. Keep controlplane.replicas at 1 when persisting.
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: controlplane
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ tpl (.Files.Get "templates/controlplane.yaml") . | sha256sum }}
+      labels:
+        {{- include "dr.labels" . | nindent 8 }}
+        app.kubernetes.io/component: controlplane
+    spec:
+      serviceAccountName: {{ $name }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: controlplane
+          image: {{ required "controlplane.image is required when controlplane.enabled is true" .Values.controlplane.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          command: {{ .Values.controlplane.command | default (list "/multicluster-controlplane") | toJson }}
+          args:
+            - server
+            - --controlplane-config-dir=/controlplane_config
+          ports:
+            - name: https
+              containerPort: {{ .Values.controlplane.port }}
+          volumeMounts:
+            - name: data
+              mountPath: /.ocm
+            - name: config
+              mountPath: /controlplane_config
+              readOnly: true
+            {{- if .Values.controlplane.etcdTLSSecret }}
+            - name: etcd-tls
+              mountPath: /etc/etcd-tls
+              readOnly: true
+            {{- end }}
+            {{- if .Values.controlplane.apiserverCASecret }}
+            - name: apiserver-ca
+              mountPath: /controlplane_ca
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.controlplane.persistence.enabled }}
+          # Claim name is resolved by the same helper the PVC template uses, so an
+          # externally managed persistence.existingClaim is mounted here even though
+          # the chart does not create it. See templates/controlplane-pvc.yaml for why
+          # persisting /.ocm is the default.
+          persistentVolumeClaim:
+            claimName: {{ include "dr.controlplaneClaimName" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: config
+          configMap:
+            name: {{ $name }}
+        {{- if .Values.controlplane.etcdTLSSecret }}
+        - name: etcd-tls
+          secret:
+            secretName: {{ .Values.controlplane.etcdTLSSecret }}
+        {{- end }}
+        {{- if .Values.controlplane.apiserverCASecret }}
+        - name: apiserver-ca
+          secret:
+            secretName: {{ .Values.controlplane.apiserverCASecret }}
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: controlplane
+spec:
+  # The single front endpoint clients name in their kubeconfig. Set type to
+  # LoadBalancer (or front it with a GSLB) to expose it across data centers.
+  type: {{ .Values.controlplane.service.type }}
+  selector:
+    app.kubernetes.io/name: {{ include "dr.name" . }}
+    app.kubernetes.io/component: controlplane
+  ports:
+    - name: https
+      port: {{ .Values.controlplane.port }}
+      targetPort: https
+{{- end }}

@@ -1,0 +1,276 @@
+{{- if .Values.etcd.deploy }}
+{{- $svc := include "dr.etcdServiceName" . -}}
+{{- $ns := .Values.namespace -}}
+{{- $m := .Values.etcd.member -}}
+{{- if $m.name }}
+{{- /*
+Cross data center member mode: this release deploys ONE etcd member for THIS data
+center, advertising a ROUTABLE address, and joins the quorum described by etcd.peers.
+
+This is the mode the DC-DR design actually calls for: a three member quorum with one
+member per data center, so the failover authority survives losing a site. The in-cluster
+StatefulSet below cannot express that, because its peers address each other through
+cluster-local DNS (<pod>.<svc>.<ns>.svc), which does not resolve from another cluster.
+Before this mode existed the designed topology had to be hand rolled as bare hostNetwork
+pods outside the chart.
+
+Install once per data center with a distinct member.name and member.advertiseHost, and
+the same etcd.peers list everywhere.
+*/ -}}
+{{- if not $m.advertiseHost }}{{ fail "etcd.member.advertiseHost is required when etcd.member.name is set: peers in other clusters must be able to route to this member" }}{{- end }}
+{{- if not .Values.etcd.peers }}{{ fail "etcd.peers is required when etcd.member.name is set: it is the --initial-cluster every member must agree on" }}{{- end }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ $svc }}-{{ $m.name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: etcd
+    dr.open-cluster-management.io/etcd-member: {{ $m.name | quote }}
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if $m.hostNetwork }}
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  containers:
+    - name: etcd
+      image: {{ .Values.etcd.image }}
+      imagePullPolicy: {{ .Values.imagePullPolicy }}
+      ports:
+        - name: client
+          containerPort: {{ $m.clientPort }}
+          {{- if $m.hostNetwork }}
+          hostPort: {{ $m.clientPort }}
+          {{- end }}
+        - name: peer
+          containerPort: {{ $m.peerPort }}
+          {{- if $m.hostNetwork }}
+          hostPort: {{ $m.peerPort }}
+          {{- end }}
+      command:
+        - /usr/local/bin/etcd
+        - --name={{ $m.name }}
+        - --data-dir=/var/run/etcd/default.etcd
+        {{- $scheme := ternary "https" "http" $m.tls.enabled }}
+        - --listen-peer-urls={{ $scheme }}://0.0.0.0:{{ $m.peerPort }}
+        - --listen-client-urls={{ $scheme }}://0.0.0.0:{{ $m.clientPort }}
+        - --advertise-client-urls={{ $scheme }}://{{ $m.advertiseHost }}:{{ $m.clientPort }}
+        - --initial-advertise-peer-urls={{ $scheme }}://{{ $m.advertiseHost }}:{{ $m.peerPort }}
+        {{- if $m.tls.enabled }}
+        # etcd stores the primary DC Leases, so unauthenticated access to 2379 is
+        # authority over which site is writable. Encrypt AND authenticate both planes.
+        - --cert-file=/etc/etcd-tls/tls.crt
+        - --key-file=/etc/etcd-tls/tls.key
+        - --trusted-ca-file=/etc/etcd-tls/ca.crt
+        - --peer-cert-file=/etc/etcd-tls/tls.crt
+        - --peer-key-file=/etc/etcd-tls/tls.key
+        - --peer-trusted-ca-file=/etc/etcd-tls/ca.crt
+        {{- if $m.tls.clientCertAuth }}
+        - --client-cert-auth=true
+        {{- end }}
+        {{- if $m.tls.peerClientCertAuth }}
+        - --peer-client-cert-auth=true
+        {{- end }}
+        {{- end }}
+        - --initial-cluster={{ join "," .Values.etcd.peers }}
+        - --initial-cluster-state={{ .Values.etcd.initialClusterState }}
+        - --initial-cluster-token=dr-etcd
+        # WAN tuning: comfortably above the inter data center round trip time so cross DC
+        # latency does not trigger spurious etcd elections.
+        - --heartbeat-interval={{ .Values.etcd.heartbeatIntervalMs }}
+        - --election-timeout={{ .Values.etcd.electionTimeoutMs }}
+      volumeMounts:
+        - name: data
+          mountPath: /var/run/etcd
+        {{- if $m.tls.enabled }}
+        - name: etcd-tls
+          mountPath: /etc/etcd-tls
+          readOnly: true
+        {{- end }}
+  volumes:
+    - name: data
+      {{- if $m.persistence.enabled }}
+      # PVC rather than hostPath: on a managed node group the node's disk is
+      # disposable, and a member that comes back with an empty data dir has lost its
+      # place in the quorum.
+      persistentVolumeClaim:
+        claimName: {{ $m.persistence.existingClaim | default (printf "%s-%s-data" $svc $m.name) }}
+      {{- else }}
+      hostPath:
+        path: {{ $m.hostPath }}
+        type: DirectoryOrCreate
+      {{- end }}
+    {{- if $m.tls.enabled }}
+    - name: etcd-tls
+      secret:
+        secretName: {{ required "etcd.member.tls.secretName is required when etcd.member.tls.enabled is true" $m.tls.secretName }}
+    {{- end }}
+{{- if and $m.persistence.enabled (not $m.persistence.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $svc }}-{{ $m.name }}-data
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: etcd
+spec:
+  accessModes:
+    {{- toYaml $m.persistence.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ $m.persistence.size }}
+  {{- if $m.persistence.storageClassName }}
+  storageClassName: {{ $m.persistence.storageClassName | quote }}
+  {{- end }}
+{{- end }}
+{{- if $m.service.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $svc }}-{{ $m.name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: etcd
+  {{- with $m.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $m.service.type }}
+  {{- with $m.service.loadBalancerIP }}
+  loadBalancerIP: {{ . | quote }}
+  {{- end }}
+  selector:
+    dr.open-cluster-management.io/etcd-member: {{ $m.name | quote }}
+  ports:
+    - name: client
+      port: {{ $m.clientPort }}
+      targetPort: {{ $m.clientPort }}
+    - name: peer
+      port: {{ $m.peerPort }}
+      targetPort: {{ $m.peerPort }}
+{{- end }}
+{{- else }}
+{{- /*
+Single cluster mode, for dev and test ONLY. All replicas land in one cluster and address
+each other through cluster-local DNS, so they share a failure domain: losing that cluster
+loses the entire failover authority, which is the one thing the quorum exists to survive.
+Use etcd.member/etcd.peers (above) for anything real.
+*/ -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $svc }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: etcd
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/name: {{ include "dr.name" . }}
+    app.kubernetes.io/component: etcd
+  ports:
+    - name: client
+      port: 2379
+    - name: peer
+      port: 2380
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $svc }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: etcd
+spec:
+  serviceName: {{ $svc }}
+  replicas: {{ .Values.etcd.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: etcd
+  template:
+    metadata:
+      labels:
+        {{- include "dr.labels" . | nindent 8 }}
+        app.kubernetes.io/component: etcd
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # Best effort spread, but note this cannot cross clusters: every replica is in this
+      # one cluster regardless. See the comment above.
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: topology.kubernetes.io/zone
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: {{ include "dr.name" . }}
+                    app.kubernetes.io/component: etcd
+      containers:
+        - name: etcd
+          image: {{ .Values.etcd.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: client
+              containerPort: 2379
+            - name: peer
+              containerPort: 2380
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command:
+            - /usr/local/bin/etcd
+            - --name=$(POD_NAME)
+            - --data-dir=/var/run/etcd/default.etcd
+            - --listen-peer-urls=http://0.0.0.0:2380
+            - --listen-client-urls=http://0.0.0.0:2379
+            - --advertise-client-urls=http://$(POD_NAME).{{ $svc }}.{{ $ns }}.svc:2379
+            - --initial-advertise-peer-urls=http://$(POD_NAME).{{ $svc }}.{{ $ns }}.svc:2380
+            - --initial-cluster-state=new
+            - --initial-cluster-token=dr-etcd
+            - --heartbeat-interval={{ .Values.etcd.heartbeatIntervalMs }}
+            - --election-timeout={{ .Values.etcd.electionTimeoutMs }}
+            - --initial-cluster={{ range $i := until (int .Values.etcd.replicas) }}{{ if $i }},{{ end }}{{ $svc }}-{{ $i }}=http://{{ $svc }}-{{ $i }}.{{ $svc }}.{{ $ns }}.svc:2380{{ end }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/run/etcd
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- if .Values.etcd.storageClassName }}
+        storageClassName: {{ .Values.etcd.storageClassName | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.etcd.storageSize }}
+{{- end }}
+{{- end }}

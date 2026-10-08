@@ -89,6 +89,10 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&SupervisorList{},
 		&Taskqueue{},
 		&TaskqueueList{},
+		&DrControlplane{},
+		&DrControlplaneList{},
+		&DrControlplaneAgent{},
+		&DrControlplaneAgentList{},
 		&VcdLbGc{},
 		&VcdLbGcList{},
 	)

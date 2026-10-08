@@ -1,0 +1,97 @@
+{{- if .Values.addon.autoInstall.enabled }}
+{{- $placementNS := .Values.addon.placementNamespace | default .Values.namespace -}}
+{{- $placementName := printf "%s-agent" (include "dr.fullname" .) -}}
+{{- $clusterSet := .Values.addon.clusterSet -}}
+{{- $placement := .Values.addon.placement | default dict -}}
+{{- $predicates := $placement.predicates | default list -}}
+{{- $labelSelector := $placement.labelSelector | default dict -}}
+# ClusterManagementAddOn. Its name must match the AddonName registered by the
+# addon-manager (ocm.AddonName = "dr-controlplane"). The Placements install
+# strategy is honored by the hub general addon-manager, which creates a
+# ManagedClusterAddOn on every selected cluster; the dr-controlplane
+# addon-manager then renders and deploys the agent chart to each.
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: ClusterManagementAddOn
+metadata:
+  name: dr-controlplane
+  annotations:
+    # REQUIRED for installStrategy to do anything. The hub's own addon-manager
+    # (cluster-manager-addon-manager-controller) only evaluates a
+    # ClusterManagementAddOn's installStrategy when this annotation opts the addon
+    # into hub driven lifecycle. Without it the Placement still resolves and
+    # PlacementDecisions still list the clusters, but no ManagedClusterAddOn is ever
+    # created, so no ManifestWork is delivered and no agent appears on any spoke.
+    # The failure is silent: every hub side object looks correct and only the
+    # missing ManagedClusterAddOns reveal it.
+    addon.open-cluster-management.io/lifecycle: addon-manager
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+spec:
+  addOnMeta:
+    displayName: DR ControlPlane Agent
+    description: Installs the dr-controlplane per data center agent onto managed clusters and keeps it reconciled.
+  installStrategy:
+    type: Placements
+    placements:
+      - name: {{ $placementName }}
+        namespace: {{ $placementNS }}
+---
+# Bind the ManagedClusterSet into the Placement namespace so the Placement may
+# select clusters from it. The binding name must equal the cluster set name.
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: {{ $clusterSet }}
+  namespace: {{ $placementNS }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+spec:
+  clusterSet: {{ $clusterSet }}
+---
+# Empty predicates select every cluster in the bound set. With the built in
+# "global" set, that is every ManagedCluster. Set addon.placement.predicates (raw
+# passthrough) or addon.placement.labelSelector (shorthand for a single
+# requiredClusterSelector) to scope the addon to specific clusters, which is how a
+# staged rollout onto one data center at a time is done.
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: {{ $placementName }}
+  namespace: {{ $placementNS }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: addon-manager
+spec:
+  clusterSets:
+    - {{ $clusterSet }}
+  # The DR agent must survive its cluster LOOKING dead. Without these tolerations
+  # the Placement drops an unreachable or unavailable cluster from its decisions,
+  # the hub addon-manager then DELETES that cluster's ManagedClusterAddOn, the
+  # deploy ManifestWork goes with it, and the agent is UNINSTALLED exactly when its
+  # data center is in trouble; on recovery the whole chain is recreated, churning
+  # the agent Deployment. Observed live (2026-08-03): a spoke VM outage
+  # uninstalled the down DC's agent (ManagedClusterAddOn gone, decision shrunk to
+  # the surviving clusters), and with the pre-5077333 agent binary the SIGTERM
+  # during that churn released the primary DC Lease, a false, un-asked failover
+  # (the Aug 2/3 overnight double move of the global scope). With the taints
+  # tolerated the addon stays installed through flaps and delivery simply pends
+  # until the spoke returns; verified live with a hand-patched Placement while a
+  # spoke was genuinely down: the decision held all clusters and the down DC's
+  # ManagedClusterAddOn was recreated within seconds.
+  tolerations:
+    - key: cluster.open-cluster-management.io/unreachable
+      operator: Exists
+    - key: cluster.open-cluster-management.io/unavailable
+      operator: Exists
+  {{- if $predicates }}
+  predicates:
+    {{- toYaml $predicates | nindent 4 }}
+  {{- else if $labelSelector }}
+  predicates:
+    - requiredClusterSelector:
+        labelSelector:
+          {{- toYaml $labelSelector | nindent 10 }}
+  {{- end }}
+{{- end }}

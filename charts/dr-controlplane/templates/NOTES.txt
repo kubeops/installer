@@ -1,0 +1,41 @@
+dr-controlplane ({{ .Chart.AppVersion }}) installed in namespace {{ .Values.namespace }}.
+
+Components in this release:
+{{- if .Values.etcd.deploy }}
+  - etcd quorum: {{ .Values.etcd.replicas }} member StatefulSet ({{ include "dr.etcdServiceName" . }}). For production, set etcd.deploy=false and point at one external etcd member per data center.
+{{- else }}
+  - etcd: external, endpoints {{ join ", " .Values.etcd.externalEndpoints }}
+{{- end }}
+{{- if .Values.controlplane.enabled }}
+  - control plane: {{ .Values.controlplane.replicas }} OCM control plane replica(s), serving the Lease API on port {{ .Values.controlplane.port }}.
+{{- end }}
+{{- if .Values.topology.enabled }}
+  - topology controller: ensures one primary DC Lease per trigger scope.
+{{- end }}
+{{- if .Values.agent.enabled }}
+  - agent for data center "{{ .Values.agent.dcName }}".
+{{- end }}
+
+Next steps:
+
+1. Expose the control plane behind ONE stable endpoint (LoadBalancer or GSLB) and
+   build a kubeconfig whose single server URL is that endpoint. A kubeconfig has
+   one server URL, so cross replica failover happens at the load balancer.
+
+2. Install the agent once per data center, each with its own agent.dcName:
+
+     helm install dr-dc-a . --set agent.dcName=dc-a --set controlplane.enabled=false --set etcd.deploy=false --set topology.enabled=false
+     helm install dr-dc-b . --set agent.dcName=dc-b ...
+     helm install dr-dc-c . --set agent.dcName=dc-c ...
+
+   In production, give each agent a kubeconfig Secret to the control plane via
+   agent.coordKubeconfigSecret.
+
+3. Mark a workload as cross DC by adding failoverPolicy and per rule role to its
+   PlacementPolicy clusterSpreadConstraint. See config/samples.
+
+4. Inspect and operate (one binary, subcommands):
+
+     dr-controlplane status
+     dr-controlplane switchover --to dc-b            # planned coordinated handoff (global scope)
+     dr-controlplane switchover --group orders --to dc-b

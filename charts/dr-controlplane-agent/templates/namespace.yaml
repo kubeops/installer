@@ -1,0 +1,14 @@
+{{/*
+Only rendered when createNamespace is explicitly turned on, which is NOT the
+default. Emitting this object makes the addon's ManifestWork own the namespace, so
+deleting the addon deletes everything else in it. See the createNamespace comment
+in values.yaml.
+*/}}
+{{- if .Values.createNamespace }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "dr.namespace" . }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+{{- end }}

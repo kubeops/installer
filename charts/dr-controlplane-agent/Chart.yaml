@@ -1,0 +1,18 @@
+apiVersion: v2
+name: dr-controlplane-agent
+description: OCM addon chart that installs the dr-controlplane per data center agent (Deployment, ServiceAccount, Role, RoleBinding) onto a ManagedCluster. Rendered by the addon-framework, one release per ManagedCluster, with the cluster name injected as the agent --dc-name.
+type: application
+version: v0.1.0
+appVersion: v0.1.0
+keywords:
+  - disaster-recovery
+  - failover
+  - lease
+  - open-cluster-management
+  - kubedb
+home: https://github.com/kubeops/dr-controlplane
+sources:
+  - https://github.com/kubeops/dr-controlplane
+maintainers:
+  - name: AppsCode Inc.
+    email: support@appscode.com
