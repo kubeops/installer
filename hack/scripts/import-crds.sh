@@ -87,6 +87,17 @@ crd-importer \
 
 crd-importer \
     --no-description \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/addon/v1alpha1/0000_00_addon.open-cluster-management.io_clustermanagementaddons.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/addon/v1alpha1/0000_01_addon.open-cluster-management.io_managedclusteraddons.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/cluster/v1/0000_00_clusters.open-cluster-management.io_managedclusters.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/cluster/v1beta1/0000_02_clusters.open-cluster-management.io_placements.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/cluster/v1beta2/0000_01_clusters.open-cluster-management.io_managedclustersetbindings.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/work/v1/0000_00_work.open-cluster-management.io_manifestworks.crd.yaml \
+    --input=https://github.com/open-cluster-management-io/api/raw/${OPEN_CLUSTER_MANAGEMENT_IO_API_TAG}/work/v1alpha1/0000_00_work.open-cluster-management.io_manifestworkreplicasets.crd.yaml \
+    --out=./charts/config-syncer-manager/crds
+
+crd-importer \
+    --no-description \
     --input=https://github.com/open-policy-agent/gatekeeper/raw/${OPEN_POLICY_AGENT_GATEKEEPER_TAG}/charts/gatekeeper/crds/constrainttemplate-customresourcedefinition.yaml \
     --out=./charts/gatekeeper-library/crds
 

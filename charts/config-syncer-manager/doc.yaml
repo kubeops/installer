@@ -1,0 +1,19 @@
+project:
+  name: Config Syncer OCM AddOn Manager
+  shortName: Config Syncer Manager
+  url: https://github.com/kubeops/config-syncer
+  description: Config Syncer OCM AddOn Manager
+  app: a Config Syncer OCM AddOn Manager
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: config-syncer-manager
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.29+
+- Open Cluster Management (https://open-cluster-management.io) hub
+release:
+  name: config-syncer-manager
+  namespace: open-cluster-management-addon

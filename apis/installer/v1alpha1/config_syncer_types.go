@@ -87,7 +87,14 @@ type ConfigSyncerSpec struct {
 	Apiserver          AConfigSyncerpiserverSpec `json:"apiserver"`
 	Config             ConfigSyncerConfig        `json:"config"`
 	// +optional
+	Hub ConfigSyncerHubSpec `json:"hub"`
+	// +optional
 	Distro shared.DistroSpec `json:"distro"`
+}
+
+type ConfigSyncerHubSpec struct {
+	KubeconfigSecretName string `json:"kubeconfigSecretName"`
+	Namespace            string `json:"namespace"`
 }
 
 type AConfigSyncerpiserverSpec struct {

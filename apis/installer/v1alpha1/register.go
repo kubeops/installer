@@ -61,6 +61,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ClusterConnectorList{},
 		&ConfigSyncer{},
 		&ConfigSyncerList{},
+		&ConfigSyncerManager{},
+		&ConfigSyncerManagerList{},
 		&ExternalDnsOperator{},
 		&ExternalDnsOperatorList{},
 		&FalcoUiServer{},

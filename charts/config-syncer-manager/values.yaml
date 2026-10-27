@@ -1,0 +1,56 @@
+# Overrides name template
+nameOverride: ""
+# Overrides fullname template
+fullnameOverride: ""
+
+# Docker registry fqdn used to pull config-syncer images on every spoke.
+registryFQDN: ghcr.io
+
+# Manager image. Set tag to override the chart appVersion.
+image: ghcr.io/appscode/config-syncer
+tag: ""
+imagePullPolicy: Always
+
+# Name of the hub cluster, recorded as origin cluster on objects synced to spokes.
+clusterName: hub
+
+# OCM Placement selecting spoke clusters that receive the config-syncer addon.
+placement:
+  create: true
+  name: global
+
+# Name of a Secret holding an OCM hub kubeconfig; when set, the manager
+# uses --kubeconfig instead of the in-cluster ServiceAccount.
+kubeconfigSecretName: ""
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+  runAsNonRoot: true
+  runAsUser: 65534
+  readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+
+# List of sources to populate environment variables in the container
+envFrom: []
+# List of environment variables to set in the container
+env: []
+
+monitoring:
+  # Name of monitoring agent (one of "prometheus.io", "prometheus.io/operator", "prometheus.io/builtin")
+  agent: ""
+  serviceMonitor:
+    # Specify the labels for ServiceMonitor.
+    # Prometheus crd will select ServiceMonitor using these labels.
+    # Only usable when monitoring agent is `prometheus.io/operator`.
+    labels: {}
+
+distro:
+  # Set true, if installed in OpenShift
+  openshift: false
+  # Set operator or all to use ubi images
+  ubi: ""
