@@ -1,0 +1,16 @@
+apiVersion: v2
+name: config-syncer-manager
+description: Config Syncer OCM AddOn Manager
+type: application
+version: v1.0.0
+appVersion: v1.0.0
+kubeVersion: ">=1.29.0-0"
+annotations:
+  charts.openshift.io/name: config-syncer-manager
+home: https://github.com/kubeops/config-syncer
+icon: https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png
+sources:
+- https://github.com/kubeops/config-syncer
+maintainers:
+- name: appscode
+  email: support@appscode.com

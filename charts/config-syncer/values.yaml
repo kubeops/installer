@@ -124,6 +124,13 @@ config:
   additionalOptions: []
   # - --authentication-skip-lookup
 
+# Syncs ConfigMaps and Secrets from an OCM hub. Set by the config-syncer OCM addon manager.
+hub:
+  # Name of the Secret holding the OCM hub kubeconfig
+  kubeconfigSecretName: ""
+  # Namespace on the hub holding the mirrors for this cluster
+  namespace: ""
+
 distro:
   # Set true, if installed in OpenShift
   openshift: false

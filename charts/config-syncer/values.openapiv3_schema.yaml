@@ -1335,6 +1335,16 @@ properties:
     type: object
   fullnameOverride:
     type: string
+  hub:
+    properties:
+      kubeconfigSecretName:
+        type: string
+      namespace:
+        type: string
+    required:
+    - kubeconfigSecretName
+    - namespace
+    type: object
   image:
     properties:
       registry:

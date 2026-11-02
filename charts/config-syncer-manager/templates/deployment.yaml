@@ -1,0 +1,97 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: config-syncer-manager
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "config-syncer-manager.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "config-syncer-manager.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "config-syncer-manager.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.kubeconfigSecretName }}
+      automountServiceAccountToken: false
+      {{- else }}
+      serviceAccount: config-syncer-manager
+      automountServiceAccountToken: true
+      {{- end }}
+      containers:
+        - name: manager
+          image: {{ .Values.image }}:{{ .Values.tag | default .Chart.AppVersion }}-ent
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          args:
+            - manager
+            {{- if .Values.kubeconfigSecretName }}
+            - --kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+            {{- end }}
+            - --registryFQDN={{ .Values.registryFQDN }}
+            - --cluster-name={{ .Values.clusterName }}
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+          {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+          {{- if eq "true" ( include "distro.openshift" . ) }}
+          securityContext:
+            {{- toYaml (omit .Values.securityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 12 }}
+          {{- else }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: 8443
+              name: metrics
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            # readOnlyRootFilesystem: true blocks the addon-framework
+            # controller cmdfactory from writing its serving-cert temp
+            # dir under /tmp; mount an emptyDir there so it succeeds.
+            - mountPath: /tmp
+              name: tmp-dir
+          {{- if .Values.kubeconfigSecretName }}
+            - mountPath: /var/run/secrets/ocm/auth
+              name: ocm-auth
+              readOnly: true
+          {{- end }}
+      volumes:
+        - name: tmp-dir
+          emptyDir: {}
+        {{- if .Values.kubeconfigSecretName }}
+        - name: ocm-auth
+          secret:
+            defaultMode: 420
+            secretName: {{ .Values.kubeconfigSecretName }}
+        {{- end }}

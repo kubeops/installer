@@ -1,0 +1,17 @@
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: ClusterManagementAddOn
+metadata:
+  name: config-syncer
+  labels:
+    {{- include "config-syncer-manager.labels" . | nindent 4 }}
+  annotations:
+    addon.open-cluster-management.io/lifecycle: "addon-manager"
+spec:
+  addOnMeta:
+    displayName: {{ .Chart.Name }}
+    description: {{ .Chart.Description }}
+  installStrategy:
+    type: Placements
+    placements:
+      - name: {{ .Values.placement.name }}
+        namespace: {{ .Release.Namespace }}

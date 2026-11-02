@@ -59,6 +59,10 @@ spec:
         {{- if .Values.config.kubeconfigContent }}
           - --kubeconfig-file=/srv/config-syncer/kubeconfig
         {{- end }}
+        {{- if .Values.hub.kubeconfigSecretName }}
+          - --hub-kubeconfig=/var/run/secrets/ocm/auth/kubeconfig
+          - --hub-namespace={{ required "hub.namespace is required when hub.kubeconfigSecretName is set" .Values.hub.namespace }}
+        {{- end }}
         {{- range .Values.config.additionalOptions }}
           - {{ . }}
         {{- end }}
@@ -96,6 +100,11 @@ spec:
         - mountPath: /var/run/secrets/appscode/license
           name: license
         {{- end }}
+        {{- if .Values.hub.kubeconfigSecretName }}
+        - mountPath: /var/run/secrets/ocm/auth
+          name: ocm-auth
+          readOnly: true
+        {{- end }}
       volumes:
       - name: config
         secret:
@@ -107,6 +116,12 @@ spec:
         secret:
           defaultMode: 420
           secretName: {{ include "config-syncer.fullname" . }}-license
+      {{- end }}
+      {{- if .Values.hub.kubeconfigSecretName }}
+      - name: ocm-auth
+        secret:
+          defaultMode: 420
+          secretName: {{ .Values.hub.kubeconfigSecretName }}
       {{- end }}
       {{- if eq "true" ( include "distro.openshift" . ) }}
       securityContext:

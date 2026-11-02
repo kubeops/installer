@@ -1,0 +1,28 @@
+# Ships a ClusterRole to each spoke (aggregated into klusterlet-work's role)
+# granting the RBAC the config-syncer installer chart needs.
+apiVersion: work.open-cluster-management.io/v1alpha1
+kind: ManifestWorkReplicaSet
+metadata:
+  name: config-syncer-agent
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "config-syncer-manager.labels" . | nindent 4 }}
+spec:
+  placementRefs:
+    - name: {{ .Values.placement.name }}
+  manifestWorkTemplate:
+    workload:
+      manifests:
+        - apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: open-cluster-management:klusterlet-work:config-syncer
+            labels:
+              open-cluster-management.io/aggregate-to-work: "true"
+          rules:
+            - apiGroups: ["rbac.authorization.k8s.io"]
+              resources: ["clusterroles", "clusterrolebindings"]
+              verbs: ["*"]
+            - apiGroups: [""]
+              resources: ["namespaces"]
+              verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
