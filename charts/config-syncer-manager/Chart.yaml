@@ -2,8 +2,8 @@ apiVersion: v2
 name: config-syncer-manager
 description: Config Syncer OCM AddOn Manager
 type: application
-version: v0.15.5
-appVersion: v0.15.5
+version: v1.0.0
+appVersion: v1.0.0
 kubeVersion: ">=1.29.0-0"
 annotations:
   charts.openshift.io/name: config-syncer-manager

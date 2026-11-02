@@ -7,8 +7,8 @@
 ```bash
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
-$ helm search repo appscode/config-syncer-manager --version=v0.15.5
-$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v0.15.5
+$ helm search repo appscode/config-syncer-manager --version=v1.0.0
+$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v1.0.0
 ```
 
 ## Introduction
@@ -25,7 +25,7 @@ This chart deploys a Config Syncer OCM AddOn Manager on a [Kubernetes](http://ku
 To install/upgrade the chart with the release name `config-syncer-manager`:
 
 ```bash
-$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v0.15.5
+$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v1.0.0
 ```
 
 The command deploys a Config Syncer OCM AddOn Manager on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists the parameters that can be configured during installation.
@@ -75,12 +75,12 @@ The following table lists the configurable parameters of the `config-syncer-mana
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm upgrade -i`. For example:
 
 ```bash
-$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v0.15.5 --set registryFQDN=ghcr.io
+$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v1.0.0 --set registryFQDN=ghcr.io
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while
 installing the chart. For example:
 
 ```bash
-$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v0.15.5 --values values.yaml
+$ helm upgrade -i config-syncer-manager appscode/config-syncer-manager -n open-cluster-management-addon --create-namespace --version=v1.0.0 --values values.yaml
 ```
