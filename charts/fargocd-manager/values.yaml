@@ -32,7 +32,7 @@ argocd:
   # workload cluster by symbolic name (typical in managed mode).
   destName: ""
   # Argo CD Project assigned to generated Applications.
-  project: default
+  project: ace
   # Raw kubeconfig for the Argo CD principal (managed mode); the manager
   # mounts it and propagates it to every spoke. Mutually exclusive with kubeconfigSecret.
   kubeconfig: ""
