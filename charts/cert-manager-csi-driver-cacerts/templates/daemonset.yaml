@@ -72,6 +72,7 @@ spec:
             - --drivername={{ .Values.app.driver.name }}
             - --endpoint=$(CSI_ENDPOINT)
             - --nodeid=$(KUBE_NODE_NAME)
+            - --cluster-resource-namespace={{ .Values.app.clusterResourceNamespace | default "cert-manager" }}
           env:
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
