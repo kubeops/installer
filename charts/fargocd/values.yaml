@@ -132,7 +132,7 @@ argocd:
   # workload cluster by symbolic name (typical in managed mode).
   destName: ""
   # Argo CD Project assigned to generated Applications.
-  project: default
+  project: ace
   # Symbolic name of the workload cluster. Required when argocd.mode=managed
   # -- suffixes Application names so one principal can serve many clusters.
   clusterName: ""

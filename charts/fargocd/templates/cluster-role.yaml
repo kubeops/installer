@@ -50,6 +50,12 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - argoproj.io
+  resources:
+  - appprojects
+  verbs:
+  - create
+- apiGroups:
   - ui.k8s.appscode.com
   resources:
   - features
