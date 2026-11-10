@@ -79,8 +79,11 @@ crd-importer \
     --out=./charts/sidekick/crds
 
 crd-importer \
-    --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
+    --out=./charts/kube-ui-server/crds
+
+crd-importer \
+    --no-description \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/management.k8s.appscode.com_projectquotas.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_clusterprofiles.yaml \
     --input=https://github.com/kmodules/resource-metadata/raw/${KMODULES_RESOURCE_METADATA_TAG}/crds/ui.k8s.appscode.com_features.yaml \
@@ -98,7 +101,6 @@ crd-importer \
     --out=./charts/gatekeeper-grafana-dashboards/crds
 
 crd-importer \
-    --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --out=./charts/panopticon/crds
 
@@ -143,7 +145,6 @@ crd-importer \
     --out=./charts/prometheus-operator-crds/crds
 
 crd-importer \
-    --no-description \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/appcatalog.appscode.com_appbindings.yaml \
     --input=https://github.com/kmodules/custom-resources/raw/${KMODULES_CUSTOM_RESOURCES_TAG}/crds/metrics.appscode.com_metricsconfigurations.yaml \
     --out=./charts/kmodules-crds/crds
