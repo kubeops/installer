@@ -22,11 +22,11 @@ license: ""
 registryFQDN: ghcr.io
 app:
   # Docker registry used to pull operator image
-  registry: appscode
+  registry: arnobkumarsaha
   # Name of operator container image
   repository: scanner
   # Operator container image tag
-  tag: ""
+  tag: v0.0.21-10-gc68e4532_linux_amd64
   # Compute Resources required by the operator container
   resources: {}
   # Security options this container should run with
@@ -78,7 +78,7 @@ kine:
   # Name of operator container image
   repository: kine
   # Kine container image tag
-  tag: v0.11.4
+  tag: v0.14.14
   # Compute Resources required by the operator container
   resources: # +doc-gen:break
     requests:
@@ -125,7 +125,7 @@ cacher:
 #   --set imagePullSecrets[1].name=sec1
 imagePullSecrets: []
 # Container image pull policy
-imagePullPolicy: IfNotPresent
+imagePullPolicy: Always
 # If true, installs scanner operator as critical addon
 criticalAddon: false
 # Log level for operator
