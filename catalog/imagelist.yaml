@@ -20,5 +20,6 @@
 - ghcr.io/appscode/trivydb:0.0.3
 - ghcr.io/appscode/vcd-lb-gc:v0.1.0
 - rancher/kine:v0.11.4
+- rancher/kine:v0.14.14
 - registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.14.0
 - registry.k8s.io/sig-storage/livenessprobe:v2.16.0

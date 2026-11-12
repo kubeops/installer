@@ -224,6 +224,8 @@ spec:
           name: etcd-cert
         - mountPath: /var/data
           name: storage
+        - mountPath: /tmp
+          name: tmp
     {{- end }}
       volumes:
       - name: serving-cert
