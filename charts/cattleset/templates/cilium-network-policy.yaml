@@ -1,3 +1,4 @@
+{{- if .Values.hubController.enabled }}
 {{- if eq "true" ( include "security.useCiliumNetworkPolicy" . ) }}
 # Allow the kube-apiserver to reach the CattleSet webhook server's conversion,
 # mutation and validation endpoints.
@@ -60,4 +61,5 @@ spec:
       rules:
         dns:
         - matchPattern: '*'
+{{- end }}
 {{- end }}

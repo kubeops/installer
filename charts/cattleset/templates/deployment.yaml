@@ -1,3 +1,6 @@
+{{- if not (or .Values.hubController.enabled .Values.gateAgent.enabled) }}
+{{- fail "nothing to run: enable hubController, gateAgent, or both" }}
+{{- end }}
 {{- $major := default "0" .Capabilities.KubeVersion.Major | trimSuffix "+" | int64 }}
 {{- $minor := default "0" .Capabilities.KubeVersion.Minor | trimSuffix "+" | int64 }}
 {{- $criticalAddon := and .Values.criticalAddon (or (eq .Release.Namespace "kube-system") (and (ge $major 1) (ge $minor 17))) -}}
@@ -70,11 +73,31 @@ spec:
         args:
         - run
         - --v={{ .Values.logLevel }}
+        - --hub-controller={{ .Values.hubController.enabled }}
+        - --gate-agent={{ .Values.gateAgent.enabled }}
         - --leader-elect={{ gt (int .Values.replicaCount) 1 }}
         - --metrics-secure=true
         - --metrics-bind-address=:8443
         - --health-probe-bind-address=:8081
+        {{- if .Values.hubController.enabled }}
         - --cert-dir=/var/serving-cert
+        {{- with .Values.hubController.clusterName }}
+        - --cluster-name={{ . }}
+        {{- end }}
+        {{- if .Values.hubController.arbiterHub }}
+        - --arbiter-hub=true
+        {{- end }}
+        {{- if .Values.coordination.kubeconfigSecret }}
+        - --coord-kubeconfig=/var/coord/kubeconfig
+        {{- end }}
+        {{- end }}
+        {{- if .Values.gateAgent.enabled }}
+        - --dc-name={{ required "gateAgent.dcName is required with gateAgent.enabled: the gate agent must know which DC it is" .Values.gateAgent.dcName }}
+        - --gate-resync={{ .Values.gateAgent.resync }}
+        {{- if not .Values.hubController.enabled }}
+        - --leader-election-id=cattleset-gate-agent.k8s.appscode.com
+        {{- end }}
+        {{- end }}
         {{- with $maxConcurrentReconciles }}
         - --max-concurrent-reconciles={{.}}
         {{- end }}
@@ -94,9 +117,11 @@ spec:
         - containerPort: 8443
           name: metrics
           protocol: TCP
+        {{- if .Values.hubController.enabled }}
         - containerPort: 9443
           name: https
           protocol: TCP
+        {{- end }}
       {{- if .Values.apiserver.healthcheck.enabled }}
         readinessProbe:
           httpGet:
@@ -113,14 +138,28 @@ spec:
       {{- end }}
         resources:
           {{- toYaml .Values.image.resources | nindent 10 }}
+        {{- if .Values.hubController.enabled }}
         volumeMounts:
         - mountPath: /var/serving-cert
           name: serving-cert
+        {{- if .Values.coordination.kubeconfigSecret }}
+        - mountPath: /var/coord
+          name: coord-kubeconfig
+          readOnly: true
+        {{- end }}
+        {{- end }}
+      {{- if .Values.hubController.enabled }}
       volumes:
       - name: serving-cert
         secret:
           defaultMode: 420
           secretName: {{ include "cattleset.fullname" . }}-cert
+      {{- if .Values.coordination.kubeconfigSecret }}
+      - name: coord-kubeconfig
+        secret:
+          secretName: {{ .Values.coordination.kubeconfigSecret }}
+      {{- end }}
+      {{- end }}
       {{- if eq "true" ( include "distro.openshift" . ) }}
       securityContext:
         {{- toYaml (omit .Values.podSecurityContext "runAsUser" "runAsGroup" "fsGroup" "supplementalGroups") | nindent 8 }}

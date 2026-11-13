@@ -28,6 +28,11 @@ rules:
   - apiGroups: ["kubedb.com"]
     resources: ["*"]
     verbs: ["get", "patch"]
+  # An application tier (a CattleSet) is a member of its own FailoverGroup, and is
+  # asked to follow its dependencies the same way.
+  - apiGroups: ["apps.k8s.appscode.com"]
+    resources: ["cattlesets"]
+    verbs: ["get", "patch"]
   # The controller confirms the Lease namespace exists before managing Leases. On a
   # separate coordination control plane its kubeconfig carries that right; when the
   # hub itself holds the Leases (no coordKubeconfigSecret) this ServiceAccount needs it.

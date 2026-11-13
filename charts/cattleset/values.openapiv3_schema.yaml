@@ -1315,6 +1315,17 @@ properties:
     - healthcheck
     - servingCerts
     type: object
+  coordination:
+    description: The coordination control plane that serves the dc-failover Leases.
+    properties:
+      kubeconfigSecret:
+        description: 'Name of a Secret with a `kubeconfig` key for the coordination
+          control plane.
+
+          Empty means the hub''s own API server. The hub controller only reads from
+          it.'
+        type: string
+    type: object
   criticalAddon:
     type: boolean
   distro:
@@ -1354,6 +1365,43 @@ properties:
     type: object
   fullnameOverride:
     type: string
+  gateAgent:
+    description: The gate agent. It runs on every Member spoke with the hub controller
+      off.
+    properties:
+      dcName:
+        description: 'This spoke''s OCM managed cluster name, the DC name the scope
+          markers carry.
+
+          Required when the agent is enabled.'
+        type: string
+      enabled:
+        type: boolean
+      resync:
+        description: How often a gated Service is re-evaluated, for example 5s.
+        type: string
+    required:
+    - enabled
+    type: object
+  hubController:
+    description: 'The hub controller: reconciler and webhooks. Install it once, on
+      the OCM hub.'
+    properties:
+      arbiterHub:
+        description: This hub is an Arbiter DC and runs no workloads.
+        type: boolean
+      clusterName:
+        description: 'The OCM managed cluster name of the cluster the hub controller
+          runs in. When it
+
+          is not a Member of a herd, the herd''s hub-local workload is retired, not
+          adopted.'
+        type: string
+      enabled:
+        type: boolean
+    required:
+    - enabled
+    type: object
   image:
     properties:
       registry:
@@ -2092,6 +2140,8 @@ properties:
   replicaCount:
     format: int32
     type: integer
+  requiresPlacementPolicyCRD:
+    type: boolean
   serviceAccount:
     properties:
       annotations:

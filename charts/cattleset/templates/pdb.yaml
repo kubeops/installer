@@ -2,6 +2,7 @@
 
 apiVersion: policy/v1
 kind: PodDisruptionBudget
+metadata:
   name: {{ include "cattleset.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:

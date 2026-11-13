@@ -88,6 +88,46 @@ type CattleSetSpec struct {
 	Distro shared.DistroSpec `json:"distro"`
 	// +optional
 	MaxConcurrentReconciles int `json:"maxConcurrentReconciles"`
+	// The hub controller: reconciler and webhooks. Install it once, on the OCM hub.
+	// +optional
+	HubController CattleSetHubController `json:"hubController"`
+	// The coordination control plane that serves the dc-failover Leases.
+	// +optional
+	Coordination CattleSetCoordination `json:"coordination"`
+	// The gate agent. It runs on every Member spoke with the hub controller off.
+	// +optional
+	GateAgent CattleSetGateAgent `json:"gateAgent"`
+	// +optional
+	RequiresPlacementPolicyCRD bool `json:"requiresPlacementPolicyCRD"`
+}
+
+type CattleSetHubController struct {
+	Enabled bool `json:"enabled"`
+	// The OCM managed cluster name of the cluster the hub controller runs in. When it
+	// is not a Member of a herd, the herd's hub-local workload is retired, not adopted.
+	// +optional
+	ClusterName string `json:"clusterName"`
+	// This hub is an Arbiter DC and runs no workloads.
+	// +optional
+	ArbiterHub bool `json:"arbiterHub"`
+}
+
+type CattleSetCoordination struct {
+	// Name of a Secret with a `kubeconfig` key for the coordination control plane.
+	// Empty means the hub's own API server. The hub controller only reads from it.
+	// +optional
+	KubeconfigSecret string `json:"kubeconfigSecret"`
+}
+
+type CattleSetGateAgent struct {
+	Enabled bool `json:"enabled"`
+	// This spoke's OCM managed cluster name, the DC name the scope markers carry.
+	// Required when the agent is enabled.
+	// +optional
+	DcName string `json:"dcName"`
+	// How often a gated Service is re-evaluated, for example 5s.
+	// +optional
+	Resync string `json:"resync"`
 }
 
 type CattleSetFeatures struct {

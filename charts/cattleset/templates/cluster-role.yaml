@@ -1,3 +1,4 @@
+{{- if .Values.hubController.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -21,6 +22,8 @@ rules:
       - mutatingwebhookconfigurations
       - validatingwebhookconfigurations
     verbs: ["*"]
+  # CattleSets and the objects they refer to: PlacementPolicy, FailoverGroup (the
+  # herd writes only its own member entry, in failovergroups/status).
   - apiGroups:
       - apps.k8s.appscode.com
     resources:
@@ -42,14 +45,95 @@ rules:
     resources:
       - controllerrevisions
     verbs: ["*"]
+  # A non-distributed CattleSet owns local objects, like a Deployment.
   - apiGroups:
-      - controller.kubeslice.io
+      - apps
     resources:
-      - sliceconfigs
-    verbs:
-      - list
-      - watch
-      - get
+      - deployments
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups:
+      - policy
+    resources:
+      - poddisruptionbudgets
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # The objects spec.syncResources copies to the spokes. Read one at a time.
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+      - serviceaccounts
+    verbs: ["get"]
+  # Whether a dependency reports DCDRPromotionStalled.
+  - apiGroups:
+      - kubedb.com
+    resources:
+      - "*"
+    verbs: ["get"]
+  # The primary DC and DC health Leases. Read only: CattleSet never writes a Lease,
+  # it asks dr-controlplane for a planned handoff through its FailoverGroup member.
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs: ["get", "list", "watch"]
+---
+{{- end }}
+{{- if .Values.gateAgent.enabled }}
+# The gate agent. It reads its herds' Services and the database's endpoints on this
+# spoke and writes only the Service selector and annotations and a pod label. No hub
+# credential.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cattleset.fullname" . }}-gate-agent
+  labels:
+    {{- include "cattleset.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs: ["get", "list", "watch", "patch", "update"]
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs: ["get", "list", "watch"]
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs: ["get", "list", "patch"]
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs: ["create", "patch"]
+---
+# The scope markers dr-controlplane's agent projects on this spoke, and only those.
+# The dc-failover namespace is created by dr-controlplane's agent, which must be
+# installed first.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "cattleset.fullname" . }}-gate-agent-markers
+  namespace: dc-failover
+  labels:
+    {{- include "cattleset.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs: ["get", "list", "watch"]
+---
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
