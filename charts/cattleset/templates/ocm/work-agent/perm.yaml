@@ -1,4 +1,4 @@
-{{- if .Values.features.ocm.enabled }}
+{{- if and .Values.hubController.enabled .Values.features.ocm.enabled }}
 
 apiVersion: work.open-cluster-management.io/v1alpha1
 kind: ManifestWorkReplicaSet
@@ -39,11 +39,19 @@ spec:
             labels:
               open-cluster-management.io/aggregate-to-work: "true"  # with this label, the clusterRole will be selected to aggregate
           rules:
-            # Allow agent to kubeslices
+            # What the hub controller renders per site besides core objects. A
+            # stateless CattleSet does not use KubeSlice, so there is nothing for it
+            # to apply there.
             - apiGroups:
-              - networking.kubeslice.io
+              - gateway.networking.k8s.io
               resources:
+              - httproutes
+              verbs:
               - '*'
+            - apiGroups:
+              - k8gb.absa.oss
+              resources:
+              - gslbs
               verbs:
               - '*'
 {{- end }}

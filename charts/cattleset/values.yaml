@@ -6,7 +6,9 @@
 nameOverride: ""
 # Overrides fullname template
 fullnameOverride: ""
-# Number of stash operator replicas to create (only 1 is supported)
+# Number of replicas to create. More than one turns on leader election: one
+# replica reconciles, the others take over if it goes away. Run two or more for
+# the hub controller.
 replicaCount: 1
 
 # Docker registry fqdn used to pull Stash related images.
@@ -129,16 +131,48 @@ features:
 # The maximum number of concurrent reconciles which can be run
 maxConcurrentReconciles: 0
 
-# Spoke write-path gate agent. In a distributed deployment this runs as its own
-# per-site agent; toggling it here enables it in the same manager for
-# single-cluster development. It admits a gated herd's Service only while every
-# referenced data tier reports the site as its promoted primary.
-gateAgent:
-  # Run the spoke gate agent in this manager.
+# CattleSet has two roles, installed separately.
+#
+# The hub controller reconciles CattleSets, renders their ManifestWorks, takes part
+# in FailoverGroup ordering and serves the admission webhooks. Install it once, on
+# the OCM hub. It needs no write access to Leases.
+hubController:
   enabled: true
+  # The OCM managed cluster name of the cluster the hub controller runs in. When it
+  # is not a Member of a herd (the stretched hub is the Arbiter DC and runs no
+  # workloads), the herd's hub-local workload is retired instead of adopted.
+  clusterName: ""
+  # Set true when this hub is an Arbiter DC: a non-distributed CattleSet created on
+  # it is warned about.
+  arbiterHub: false
 
-# CattleSet consumes the PlacementPolicy CRD, which is owned and installed by the
-# petset chart. This chart deliberately does not ship a second copy of that CRD;
-# install charts/petset (or otherwise ensure the PlacementPolicy CRD is present)
-# before a distributed CattleSet is created.
+# The coordination control plane serves the primary DC and DC health Leases in
+# dc-failover. The hub controller reads them (read only).
+coordination:
+  # Name of a Secret in the release namespace with a `kubeconfig` key for the
+  # coordination control plane. Empty means the hub's own API server.
+  kubeconfigSecret: ""
+
+# The gate agent runs on EVERY Member spoke, with the hub controller off:
+#
+#   helm install cattleset-gate-agent charts/cattleset -n cattleset-system \
+#     --set hubController.enabled=false \
+#     --set gateAgent.enabled=true --set gateAgent.dcName=<this spoke's managed cluster name>
+#
+# It admits a herd's Service only while the databases the herd depends on are
+# active and writable in this cluster, decided from local objects with no hub
+# credential, and fails closed. dr-controlplane's agent must already be installed on
+# the spoke: it creates the dc-failover namespace the markers live in.
+gateAgent:
+  enabled: false
+  # This spoke's OCM managed cluster name: the DC name the scope markers carry in
+  # activeDC. Required; an agent that does not know which DC it is would never admit.
+  dcName: ""
+  # How often a gated Service is re-evaluated.
+  resync: 5s
+
+# CattleSet consumes the PlacementPolicy and FailoverGroup CRDs, which are owned and
+# installed by the petset chart. This chart deliberately does not ship a second copy
+# of those CRDs; install charts/petset (or otherwise ensure they are present) before
+# a distributed CattleSet is created.
 requiresPlacementPolicyCRD: true

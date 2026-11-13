@@ -1,3 +1,4 @@
+{{- if .Values.hubController.enabled }}
 apiVersion: apps.k8s.appscode.com/v1
 kind: PlacementPolicy
 metadata:
@@ -11,3 +12,4 @@ spec:
   nodeSpreadConstraint:
     maxSkew: 1
     whenUnsatisfiable: ScheduleAnyway
+{{- end }}

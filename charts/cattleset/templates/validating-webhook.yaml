@@ -1,3 +1,4 @@
+{{- if .Values.hubController.enabled }}
 {{ template "cattleset.prepare-certs" $ }}
 
 {{- if .Values.apiserver.enableValidatingWebhook }}
@@ -36,4 +37,5 @@ webhooks:
           - cattlesets
     sideEffects: None
 
+{{- end }}
 {{- end }}
