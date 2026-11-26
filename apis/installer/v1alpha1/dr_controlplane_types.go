@@ -161,6 +161,13 @@ type DrControlplaneAgentValues struct {
 	Health                DrControlplaneHealth   `json:"health"`
 	Election              DrControlplaneElection `json:"election"`
 	//+optional
+	HolderPriorityWindowSeconds int `json:"holderPriorityWindowSeconds"`
+	//+optional
+	LogLevel int                 `json:"logLevel"`
+	HTTP2    DrControlplaneHTTP2 `json:"http2"`
+	//+optional
+	PriorityClassName string `json:"priorityClassName"`
+	//+optional
 	Resources core.ResourceRequirements `json:"resources"`
 }
 
@@ -226,6 +233,12 @@ type DrControlplaneAddonAgent struct {
 	ImagePullSecrets []string               `json:"imagePullSecrets"`
 	Health           DrControlplaneHealth   `json:"health"`
 	Election         DrControlplaneElection `json:"election"`
+	//+optional
+	HolderPriorityWindowSeconds int `json:"holderPriorityWindowSeconds"`
+	//+optional
+	PriorityClassName string `json:"priorityClassName"`
+	//+optional
+	LogLevel int `json:"logLevel"`
 }
 
 type DrControlplaneAddonImage struct {

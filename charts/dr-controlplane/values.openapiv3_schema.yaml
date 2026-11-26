@@ -34,6 +34,8 @@ properties:
             - leaseDurationSeconds
             - renewIntervalSeconds
             type: object
+          holderPriorityWindowSeconds:
+            type: integer
           image:
             properties:
               registry:
@@ -51,6 +53,10 @@ properties:
               type: string
             type: array
           installNamespace:
+            type: string
+          logLevel:
+            type: integer
+          priorityClassName:
             type: string
           replicas:
             type: integer
@@ -1532,7 +1538,25 @@ properties:
         - leaseDurationSeconds
         - renewIntervalSeconds
         type: object
+      holderPriorityWindowSeconds:
+        type: integer
+      http2:
+        description: DrControlplaneHTTP2 sets client-go's HTTP/2 health check for
+          the hub connection.
+        properties:
+          pingTimeoutSeconds:
+            type: integer
+          readIdleTimeoutSeconds:
+            type: integer
+        required:
+        - pingTimeoutSeconds
+        - readIdleTimeoutSeconds
+        type: object
+      logLevel:
+        type: integer
       metricsAddr:
+        type: string
+      priorityClassName:
         type: string
       replicas:
         type: integer
@@ -1612,6 +1636,7 @@ properties:
     - election
     - enabled
     - health
+    - http2
     - metricsAddr
     - replicas
     type: object

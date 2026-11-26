@@ -30,6 +30,22 @@ properties:
         - leaseDurationSeconds
         - renewIntervalSeconds
         type: object
+      holderPriorityWindowSeconds:
+        type: integer
+      http2:
+        description: DrControlplaneHTTP2 sets client-go's HTTP/2 health check for
+          the hub connection.
+        properties:
+          pingTimeoutSeconds:
+            type: integer
+          readIdleTimeoutSeconds:
+            type: integer
+        required:
+        - pingTimeoutSeconds
+        - readIdleTimeoutSeconds
+        type: object
+      logLevel:
+        type: integer
       metricsAddr:
         type: string
       resources:
@@ -107,6 +123,7 @@ properties:
     required:
     - election
     - health
+    - http2
     - metricsAddr
     type: object
   clusterName:
@@ -156,6 +173,15 @@ properties:
     additionalProperties:
       type: string
     type: object
+  podDisruptionBudget:
+    properties:
+      enabled:
+        type: boolean
+    required:
+    - enabled
+    type: object
+  priorityClassName:
+    type: string
   registryFQDN:
     description: Docker registry fqdn used to pull the dr-controlplane docker image
     type: string
@@ -217,6 +243,7 @@ required:
 - image
 - imagePullPolicy
 - namespace
+- podDisruptionBudget
 - registryFQDN
 - replicas
 type: object
