@@ -189,6 +189,9 @@ spec:
             - --agent-election-lease-duration={{ $agent.election.leaseDurationSeconds }}s
             - --agent-election-renew-deadline={{ $agent.election.renewDeadlineSeconds }}s
             - --agent-election-retry-period={{ $agent.election.retryPeriodSeconds }}s
+            - --agent-holder-priority-window={{ $agent.holderPriorityWindowSeconds | default 0 }}s
+            - --agent-priority-class-name={{ $agent.priorityClassName }}
+            - --agent-log-level={{ $agent.logLevel | default 0 }}
             {{- with .Values.addon.manager.args }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

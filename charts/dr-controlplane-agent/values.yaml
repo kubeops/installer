@@ -49,11 +49,26 @@ imagePullSecrets: []
 #  - name: regcred
 
 # replicas is the agent pod count on this spoke. Injected by the addon manager
-# from --agent-replicas. More than one is pod crash insurance only: every replica
-# shares the DC identity (same --dc-name), renews the same Leases, and projects
-# the same markers, so extras are harmless but carry no quorum weight; quorum
-# lives in the etcd members alone.
-replicas: 1
+# from --agent-replicas. One replica holds the spoke-local writer role; the others
+# are hot standbys that take over a crashed or stalled writer within the writer
+# Lease duration, well inside the 30s fence TTL. Two is the recommended value on
+# every spoke, whatever its node count: only one replica ever writes, so a third
+# only helps if two pods fail at once, and every extra replica keeps its own hub
+# watch. With one replica any agent crash or OOM kill is a marker gap close to the
+# fence TTL. Replicas carry no quorum weight; quorum lives in the etcd members.
+replicas: 2
+
+# priorityClassName for the agent pods. Injected by the addon manager from
+# --agent-priority-class-name. The agent is the DC's liveness signal: if it is
+# preempted or evicted under node pressure, the DC's databases fence read only and
+# the DC can be failed over. Empty leaves the cluster default.
+priorityClassName: system-cluster-critical
+
+# podDisruptionBudget keeps one agent running through voluntary disruptions (node
+# drains). Rendered only when replicas > 1, so a single-replica install never
+# blocks a drain.
+podDisruptionBudget:
+  enabled: true
 
 agent:
   # base64 kubeconfig injected by the addon manager; empty means an operator
@@ -81,8 +96,36 @@ agent:
   election:
     leaseDurationSeconds: 45
     renewDeadlineSeconds: 40
-    retryPeriodSeconds: 5
-  resources: {}
+    # 3s, not 5s: the marker restamp lags the Lease renewal by up to one retry
+    # period plus the marker refresh interval, so a shorter retry gives the fence
+    # more margin before a healthy DC reads stale. Every retry is an etcd write per
+    # scope, so do not go much lower with many scopes.
+    retryPeriodSeconds: 3
+  # holderPriorityWindowSeconds: after an outage that hit every DC (a hub or etcd
+  # brownout longer than the Lease), a non-holder DC may take over the expired
+  # primary DC Lease only once its own hub writes have been healthy this long, so
+  # the holder renews first and keeps it. A real DC loss is not delayed. 0 disables.
+  holderPriorityWindowSeconds: 20
+  # logLevel is the klog verbosity. 2 shows failed Lease renewals, which are the
+  # early warning for a false failover and invisible at 0.
+  logLevel: 2
+  # client-go detects a dead HTTP/2 connection to the hub (a NAT entry or proxy
+  # pod gone) only after readIdle + ping timeout. The defaults (30s + 15s) are the
+  # whole 45s Lease, so a dead connection alone could fail the DC over. 10s + 5s
+  # leaves room to reconnect and renew.
+  http2:
+    readIdleTimeoutSeconds: 10
+    pingTimeoutSeconds: 5
+  # Memory request equals the limit so the agent is never the first pod evicted
+  # under memory pressure, and the agent sets its Go soft memory limit to 90% of
+  # the container limit so it collects garbage before an OOM kill. No CPU limit:
+  # CFS throttling would stall Lease renewals.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 256Mi
 
 nodeSelector: {}
 tolerations: []

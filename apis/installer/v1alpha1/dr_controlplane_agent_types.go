@@ -57,7 +57,10 @@ type DrControlplaneAgentSpec struct {
 	//+optional
 	ImagePullSecrets []core.LocalObjectReference `json:"imagePullSecrets"`
 	Replicas         int                         `json:"replicas"`
-	Agent            DrControlplaneAgentAgent    `json:"agent"`
+	//+optional
+	PriorityClassName   string                   `json:"priorityClassName"`
+	PodDisruptionBudget DrControlplaneAgentPDB   `json:"podDisruptionBudget"`
+	Agent               DrControlplaneAgentAgent `json:"agent"`
 	//+optional
 	NodeSelector map[string]string `json:"nodeSelector"`
 	//+optional
@@ -73,7 +76,22 @@ type DrControlplaneAgentAgent struct {
 	Health                DrControlplaneHealth   `json:"health"`
 	Election              DrControlplaneElection `json:"election"`
 	//+optional
+	HolderPriorityWindowSeconds int `json:"holderPriorityWindowSeconds"`
+	//+optional
+	LogLevel int                 `json:"logLevel"`
+	HTTP2    DrControlplaneHTTP2 `json:"http2"`
+	//+optional
 	Resources core.ResourceRequirements `json:"resources"`
+}
+
+type DrControlplaneAgentPDB struct {
+	Enabled bool `json:"enabled"`
+}
+
+// DrControlplaneHTTP2 sets client-go's HTTP/2 health check for the hub connection.
+type DrControlplaneHTTP2 struct {
+	ReadIdleTimeoutSeconds int `json:"readIdleTimeoutSeconds"`
+	PingTimeoutSeconds     int `json:"pingTimeoutSeconds"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

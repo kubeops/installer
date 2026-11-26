@@ -189,8 +189,9 @@ agent:
   # Agent pods for this DC. With more than one, a spoke-local writer election
   # (Lease dr-agent-writer-<dc> in this namespace) picks the single replica
   # allowed to write markers, hub Leases and override annotations; the rest are
-  # hot standbys that take over within the writer election LeaseDuration.
-  replicas: 1
+  # hot standbys that take over within the writer election LeaseDuration. Two is
+  # recommended whatever the node count: only one replica ever writes.
+  replicas: 2
   dcName: ""        # REQUIRED when enabled, for example dc-a
   # Kubeconfig Secret for the coordination control plane (key: kubeconfig).
   # Empty uses the in cluster config (only correct when the agent runs inside the
@@ -213,8 +214,27 @@ agent:
   election:
     leaseDurationSeconds: 45
     renewDeadlineSeconds: 40
-    retryPeriodSeconds: 5
-  resources: {}
+    # 3s gives the marker more margin before it reads stale on a healthy DC.
+    retryPeriodSeconds: 3
+  # After an outage that hit every DC, a non-holder takes an expired primary DC
+  # Lease over only once its own hub writes have been healthy this long, so the
+  # holder renews first. A real DC loss is not delayed. 0 disables.
+  holderPriorityWindowSeconds: 20
+  # klog verbosity; 2 shows failed Lease renewals.
+  logLevel: 2
+  # client-go HTTP/2 health check: a dead hub connection is detected after
+  # readIdle + ping (defaults 30s + 15s, the whole Lease).
+  http2:
+    readIdleTimeoutSeconds: 10
+    pingTimeoutSeconds: 5
+  priorityClassName: system-cluster-critical
+  # Memory request = limit (never evicted first), no CPU limit (no throttling).
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 256Mi
 
 # ----------------------------------------------------------------------------
 # topology: one controller. Reads PlacementPolicies on the hub, ensures a primary
@@ -298,8 +318,14 @@ addon:
     # Secret (key: kubeconfig) in installNamespace on each spoke holding the
     # coordination control plane credential. Empty uses the spoke in cluster config.
     coordKubeconfigSecret: coord-kubeconfig
-    # replicas per spoke; extras are pod crash insurance only (no quorum weight).
-    replicas: 1
+    # replicas per spoke: one writer plus a hot standby. 2 is recommended on every
+    # spoke whatever its node count (only one replica writes; no quorum weight).
+    replicas: 2
+    # priorityClassName for the agent pods, so they are not preempted or evicted
+    # first. Empty leaves the cluster default.
+    priorityClassName: system-cluster-critical
+    # klog verbosity of the agent; 2 shows failed Lease renewals.
+    logLevel: 2
     # Secret on the HUB holding the coordination kubeconfig the addon copies to every
     # managed cluster, so the credential does not have to be applied per spoke by hand
     # and survives a control plane CA rotation on its own.
@@ -328,7 +354,9 @@ addon:
     election:
       leaseDurationSeconds: 45
       renewDeadlineSeconds: 40
-      retryPeriodSeconds: 5
+      retryPeriodSeconds: 3
+    # See agent.holderPriorityWindowSeconds above. 0 disables.
+    holderPriorityWindowSeconds: 20
   # The hub side addon-manager. It runs the addon-manager subcommand in cluster.
   manager:
     replicas: 1

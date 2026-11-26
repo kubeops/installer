@@ -55,6 +55,12 @@ metadata:
     dr.open-cluster-management.io/dc: {{ $dc }}
 spec:
   replicas: {{ .Values.agent.replicas | default 1 }}
+  # Surge only: the writer role is always handed to a running replica.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "dr.name" . }}
@@ -68,6 +74,9 @@ spec:
         dr.open-cluster-management.io/dc: {{ $dc }}
     spec:
       serviceAccountName: {{ $name }}
+      {{- with .Values.agent.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       # Soft anti-affinity: spread agent replicas across nodes when possible;
       # a single-node cluster still gains pod-crash failover from a second
       # replica (the spoke-local writer election picks the one that writes).
@@ -101,9 +110,21 @@ spec:
             - --election-lease-duration={{ .Values.agent.election.leaseDurationSeconds }}s
             - --election-renew-deadline={{ .Values.agent.election.renewDeadlineSeconds }}s
             - --election-retry-period={{ .Values.agent.election.retryPeriodSeconds }}s
+            - --holder-priority-window={{ .Values.agent.holderPriorityWindowSeconds | default 0 }}s
+            - --v={{ .Values.agent.logLevel | default 0 }}
             {{- if .Values.agent.coordKubeconfigSecret }}
             - --kubeconfig=/etc/dr/coord/kubeconfig
             {{- end }}
+          env:
+            # The writer election identity: stable across container restarts.
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: HTTP2_READ_IDLE_TIMEOUT_SECONDS
+              value: {{ .Values.agent.http2.readIdleTimeoutSeconds | quote }}
+            - name: HTTP2_PING_TIMEOUT_SECONDS
+              value: {{ .Values.agent.http2.pingTimeoutSeconds | quote }}
           ports:
             - name: metrics
               containerPort: {{ trimPrefix ":" .Values.agent.metricsAddr | int }}
@@ -146,4 +167,22 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- if gt (int .Values.agent.replicas) 1 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "dr.labels" . | nindent 4 }}
+    app.kubernetes.io/component: agent
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "dr.name" . }}
+      app.kubernetes.io/component: agent
+      dr.open-cluster-management.io/dc: {{ $dc }}
+{{- end }}
 {{- end }}
